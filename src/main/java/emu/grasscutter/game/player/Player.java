@@ -135,6 +135,7 @@ public class Player implements PlayerHook, FieldFetch {
     /** Debug/test: points forced locked even if GetScenePointRsp would otherwise unlock-all. */
     @Getter @Setter private Map<Integer, Set<Integer>> forceLockedScenePoints;
     @Getter @Setter private List<Integer> chatEmojiIdList;
+    @Getter private Map<Integer, PlayerRelicFilterData> relicFilterData;
     @Getter @Setter private boolean playedFirstLoginCutscene;
 
     /**
@@ -302,6 +303,7 @@ public class Player implements PlayerHook, FieldFetch {
         this.unlockedScenePoints = new HashMap<>();
         this.forceLockedScenePoints = new HashMap<>();
         this.chatEmojiIdList = new ArrayList<>();
+        this.relicFilterData = new HashMap<>();
         this.playerProgress = new PlayerProgress();
         this.activeQuestTimers = new HashSet<>();
         this.cityInfoData = new HashMap<>();
@@ -1776,6 +1778,20 @@ public class Player implements PlayerHook, FieldFetch {
     public String toString() {
         return "Player UID: %s; Nickname: %s; Account: %s"
                 .formatted(this.id, this.nickname, this.account);
+    }
+
+    public PlayerRelicFilterData getRelicFilterData(int avatarId) {
+        if (this.relicFilterData == null) {
+            this.relicFilterData = new HashMap<>();
+        }
+        return this.relicFilterData.get(avatarId);
+    }
+
+    public void setRelicFilterData(int avatarId, PlayerRelicFilterData data) {
+        if (this.relicFilterData == null) {
+            this.relicFilterData = new HashMap<>();
+        }
+        this.relicFilterData.put(avatarId, data);
     }
 
     public enum SceneLoadState {

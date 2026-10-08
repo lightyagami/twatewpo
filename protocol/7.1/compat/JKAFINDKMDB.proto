@@ -1,0 +1,10 @@
+syntax = "proto3";
+option java_package = "emu.grasscutter.net.proto";
+
+import "BFGLPLNLINP.proto";
+
+message JKAFINDKMDB {
+  repeated BFGLPLNLINP FEGGOKBFGHC = 5;
+  repeated uint32 EBMLKHEOOCO = 15;
+  uint32 avatar_id = 8;
+}

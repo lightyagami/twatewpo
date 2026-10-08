@@ -1,0 +1,17 @@
+syntax = "proto3";
+option java_package = "emu.grasscutter.net.proto";
+
+import "_GameplayRecommendationReliquarySetResponse.proto";
+import "_GameplayRecommendationElementReliquarySetResponse.proto";
+import "GameplayRecommendationElementReliquaryResponse.proto";
+import "GameplayRecommendationReliquaryResponse.proto";
+
+message KFGOBCFJGFC {
+  _GameplayRecommendationReliquarySetResponse ILIODENICDF = 12;
+  _GameplayRecommendationElementReliquarySetResponse ECMABJGEIEL = 5;
+  repeated GameplayRecommendationElementReliquaryResponse MLAMKECCPDO = 10;
+  repeated GameplayRecommendationReliquaryResponse HOHGLIOHGEM = 13;
+  uint32 element_type = 1;
+  int32 retcode = 11;
+  uint32 avatar_id = 8;
+}

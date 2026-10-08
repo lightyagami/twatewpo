@@ -1,0 +1,9 @@
+syntax = "proto3";
+option java_package = "emu.grasscutter.net.proto";
+
+import "JKAFINDKMDB.proto";
+
+message FPEDEDBJKFA {
+  repeated JKAFINDKMDB param_list = 5;
+  int32 retcode = 9;
+}

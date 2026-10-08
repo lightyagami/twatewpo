@@ -2702,6 +2702,11 @@ public final class PacketOpcodes {
     // public static final int IMOOEOELIEM = 3526;
     public static final int GetBlossomBriefInfoListRsp = 112;
     public static final int GetGameplayRecommendationRsp = 25548;
+    public static final int KFDOFCKIIFP = 28752;
+    public static final int FPEDEDBJKFA = 9037;
+    public static final int PNOPBEMGKLJ = 23044;
+    public static final int GJGMFEDCFHP = 2890;
+    public static final int KFGOBCFJGFC = 29180;
     // public static final int FOAAHOOFBEI = 33;
     // public static final int OOKEIJNPFCK = 7205;
     public static final int DungeonRestartInviteNotify = 8198;

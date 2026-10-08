@@ -1,0 +1,25 @@
+syntax = "proto3";
+option java_package = "emu.grasscutter.net.proto";
+
+import "_GameplayRecommendationElementWeaponResponse.proto";
+import "_GameplayRecommendationWeaponResponse.proto";
+import "GameplayRecommendationSkillResponse.proto";
+import "_GameplayRecommendationElementReliquarySetResponse.proto";
+import "GameplayRecommendationElementReliquaryResponse.proto";
+import "GameplayRecommendationReliquaryResponse.proto";
+import "_GameplayRecommendationReliquarySetResponse.proto";
+
+message GetGameplayRecommendationRsp {
+  uint32 avatar_id = 13;
+  int32 retcode = 5;
+  uint32 type = 12;
+  oneof detail {
+    _GameplayRecommendationElementWeaponResponse element_weapon_response = 730;
+    _GameplayRecommendationWeaponResponse weapon_response = 837;
+    GameplayRecommendationSkillResponse skill_response = 982;
+    _GameplayRecommendationElementReliquarySetResponse element_reliquary_set_response = 1456;
+    GameplayRecommendationElementReliquaryResponse element_reliquary_response = 1691;
+    GameplayRecommendationReliquaryResponse reliquary_response = 1920;
+    _GameplayRecommendationReliquarySetResponse reliquary_set_response = 2012;
+  }
+}
