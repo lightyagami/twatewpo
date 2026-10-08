@@ -102,7 +102,7 @@ public final class DungeonSystem extends BaseGameSystem {
                         player.getUid(),
                         dungeonId);
 
-        var sceneId = data.getSceneId();
+        var sceneId = DomainDungeonHelper.resolveClientSceneId(data.getSceneId());
         var scene = player.getScene();
         if (savePrevious) scene.setPrevScene(scene.getId());
 
@@ -110,7 +110,7 @@ public final class DungeonSystem extends BaseGameSystem {
         // dungeon scene so old monsters/gadgets do not linger (mirrors tower handoff).
         if (scene != null
                 && scene.getSceneType() == SceneType.SCENE_DUNGEON
-                && scene.getId() == sceneId
+                && (scene.getId() == sceneId || scene.getId() == data.getSceneId())
                 && DomainDungeonHelper.isDomainScene(scene)) {
             scene.setDontDestroyWhenEmpty(false);
             scene.removePlayer(player);
@@ -243,7 +243,7 @@ public final class DungeonSystem extends BaseGameSystem {
             return;
         }
         var dungeonData = dungeonManager.getDungeonData();
-        var sceneId = dungeonData.getSceneId();
+        var sceneId = DomainDungeonHelper.resolveClientSceneId(dungeonData.getSceneId());
         var isTower = dungeonManager.isTowerDungeon();
 
         if (isTower || TowerAbyssFix.isInTowerDungeon(player)) {

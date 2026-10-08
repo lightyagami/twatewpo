@@ -68,13 +68,28 @@ public class DungeonData extends GameResource {
      * @return The position of the player when they enter the dungeon.
      */
     public Position getStartPosition() {
-        return SceneMeta.of(this.getSceneId()).config.born_pos;
+        int targetSceneId = emu.grasscutter.game.dungeons.DomainDungeonHelper.resolveClientSceneId(this.getSceneId());
+        var meta = emu.grasscutter.scripts.ScriptLoader.getSceneMeta(targetSceneId);
+        Position bornPos = (meta != null && meta.config != null && meta.config.born_pos != null)
+                ? meta.config.born_pos
+                : SceneMeta.of(this.getSceneId()).config.born_pos;
+        if (bornPos != null) {
+            Position pos = bornPos.clone();
+            pos.addY(1.0f);
+            return pos;
+        }
+        return null;
     }
 
     /**
      * @return The rotation of the player when they enter the dungeon.
      */
     public Position getStartRotation() {
+        int targetSceneId = emu.grasscutter.game.dungeons.DomainDungeonHelper.resolveClientSceneId(this.getSceneId());
+        var meta = emu.grasscutter.scripts.ScriptLoader.getSceneMeta(targetSceneId);
+        if (meta != null && meta.config != null && meta.config.born_rot != null) {
+            return meta.config.born_rot;
+        }
         return SceneMeta.of(this.getSceneId()).config.born_rot;
     }
 

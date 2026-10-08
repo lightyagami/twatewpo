@@ -500,7 +500,11 @@ public class World implements Iterable<Player> {
             SceneConfig config = newScene.getScriptManager().getConfig();
             if (teleportProperties.getTeleportTo() == null && config != null) {
                 if (config.born_pos != null) {
-                    teleportProperties.setTeleportTo(config.born_pos);
+                    var safeBorn = config.born_pos.clone();
+                    if (newScene.getSceneType() == SceneType.SCENE_DUNGEON) {
+                        safeBorn.addY(1.0f);
+                    }
+                    teleportProperties.setTeleportTo(safeBorn);
                 }
                 if (config.born_rot != null) {
                     teleportProperties.setTeleportRot(config.born_rot);

@@ -100,6 +100,11 @@ public final class DomainContinueSpawnHelper {
         if (player == null) {
             return false;
         }
+        Long until = CONTINUE_UNTIL_MS.get(player.getUid());
+        if (until == null || System.currentTimeMillis() > until) {
+            CONTINUE_UNTIL_MS.remove(player.getUid());
+            return false;
+        }
         Scene scene = player.getScene();
         if (scene == null || !DomainDungeonHelper.isDomainScene(scene)) {
             return false;
@@ -188,7 +193,8 @@ public final class DomainContinueSpawnHelper {
 
     private static Position[] findKeyAndBornFromMeta(int n) {
         try {
-            SceneMeta sceneMeta = SceneMeta.of((int)n);
+            int sceneId = DomainDungeonHelper.resolveClientSceneId(n);
+            SceneMeta sceneMeta = SceneMeta.of(sceneId);
             if (sceneMeta == null) {
                 return null;
             }
@@ -197,8 +203,8 @@ public final class DomainContinueSpawnHelper {
             Map<Integer, SceneBlock> map = sceneMeta.blocks;
             if (map != null) {
                 for (SceneBlock sceneBlock : map.values()) {
-                    DomainContinueSpawnHelper.ensureBlockGroupsLoaded(sceneBlock, n, sceneMeta);
-                    position2 = DomainContinueSpawnHelper.findKeyInBlock(sceneBlock, n);
+                    DomainContinueSpawnHelper.ensureBlockGroupsLoaded(sceneBlock, sceneId, sceneMeta);
+                    position2 = DomainContinueSpawnHelper.findKeyInBlock(sceneBlock, sceneId);
                     if (position2 == null) continue;
                     break;
                 }

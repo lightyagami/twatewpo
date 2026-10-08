@@ -136,10 +136,32 @@ public final class DomainDungeonHelper {
             return null;
         }
         int n = DomainDungeonHelper.resolveClientSceneId(teleportProperties.getSceneId());
-        if (n == teleportProperties.getSceneId()) {
+        Position safePos = teleportProperties.getTeleportTo();
+        Position safeRot = teleportProperties.getTeleportRot();
+        if (n != teleportProperties.getSceneId()) {
+            var meta = emu.grasscutter.scripts.ScriptLoader.getSceneMeta(n);
+            if (meta != null && meta.config != null) {
+                if (meta.config.born_pos != null) {
+                    safePos = meta.config.born_pos.clone();
+                    safePos.addY(1.0f);
+                }
+                if (meta.config.born_rot != null) {
+                    safeRot = meta.config.born_rot.clone();
+                }
+            }
+        }
+        if (n == teleportProperties.getSceneId() && safePos == teleportProperties.getTeleportTo()) {
             return teleportProperties;
         }
-        return TeleportProperties.builder().sceneId(n).dungeonId(teleportProperties.getDungeonId()).teleportType(teleportProperties.getTeleportType()).enterReason(teleportProperties.getEnterReason()).teleportTo(teleportProperties.getTeleportTo()).teleportRot(teleportProperties.getTeleportRot()).enterType(teleportProperties.getEnterType()).build();
+        return TeleportProperties.builder()
+                .sceneId(n)
+                .dungeonId(teleportProperties.getDungeonId())
+                .teleportType(teleportProperties.getTeleportType())
+                .enterReason(teleportProperties.getEnterReason())
+                .teleportTo(safePos)
+                .teleportRot(safeRot)
+                .enterType(teleportProperties.getEnterType())
+                .build();
     }
 
     public static void prepareOpenWorldExit(Player player, int n) {
@@ -371,10 +393,18 @@ public final class DomainDungeonHelper {
         }
         Position position = null;
         Position position2 = null;
-        DungeonManager dungeonManager = scene.getDungeonManager();
-        if (dungeonManager != null && dungeonManager.getDungeonData() != null) {
-            position = dungeonManager.getDungeonData().getStartPosition();
-            position2 = dungeonManager.getDungeonData().getStartRotation();
+        int clientSceneId = DomainDungeonHelper.resolveClientSceneId(scene.getId());
+        var clientMeta = emu.grasscutter.scripts.ScriptLoader.getSceneMeta(clientSceneId);
+        if (clientMeta != null && clientMeta.config != null && clientMeta.config.born_pos != null) {
+            position = clientMeta.config.born_pos;
+            position2 = clientMeta.config.born_rot;
+        }
+        if (position == null) {
+            DungeonManager dungeonManager = scene.getDungeonManager();
+            if (dungeonManager != null && dungeonManager.getDungeonData() != null) {
+                position = dungeonManager.getDungeonData().getStartPosition();
+                position2 = dungeonManager.getDungeonData().getStartRotation();
+            }
         }
         SceneScriptManager sceneScriptManager = scene.getScriptManager();
         if (position == null && sceneScriptManager != null && sceneScriptManager.getConfig() != null) {
@@ -385,13 +415,15 @@ public final class DomainDungeonHelper {
         if (position == null) {
             return;
         }
-        player.getPosition().set(position);
+        Position safePos = position.clone();
+        safePos.addY(1.0f);
+        player.getPosition().set(safePos);
         if (position2 != null) {
             player.getRotation().set(position2);
         }
         var avatarEntity = player.getTeamManager().getCurrentAvatarEntity();
         if (avatarEntity != null) {
-            avatarEntity.move(position, position2 != null ? position2 : player.getRotation());
+            avatarEntity.move(safePos, position2 != null ? position2 : player.getRotation());
         }
     }
 
@@ -408,7 +440,9 @@ public final class DomainDungeonHelper {
         if (scene == null) {
             return false;
         }
-        if (scene.getSceneType() == SceneType.SCENE_DUNGEON && scene.getId() == dungeonData.getSceneId()) {
+        if (scene.getSceneType() == SceneType.SCENE_DUNGEON
+                && (scene.getId() == dungeonData.getSceneId()
+                        || scene.getId() == DomainDungeonHelper.resolveClientSceneId(dungeonData.getSceneId()))) {
             return true;
         }
         if (scene.getSceneType() != SceneType.SCENE_WORLD) {
