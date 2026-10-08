@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+// Build-only import stub. The canonical PlayerDieType descriptor comes from protocol.desc.
+enum PlayerDieType {
+  PLAYER_DIE_NONE = 0;
+}

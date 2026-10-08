@@ -657,6 +657,9 @@ public final class QuestManager extends BasePlayerManager {
                     }
 
                     if (shouldAccept) {
+                        if (GAME_OPTIONS.questing.archonOnly && !ForcedQuests.isArchonQuest(questData.getMainId())) {
+                            return;
+                        }
                         GameQuest quest = owner.getQuestManager().addQuest(questData);
                         Grasscutter.getLogger().debug("Added quest {}", questData.getSubId());
                     }

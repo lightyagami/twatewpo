@@ -24,6 +24,9 @@ public class PacketOpcodesUtils {
                     PacketOpcodes.SceneTimeNotify,
                     PacketOpcodes.PlayerSetPauseReq,
                     PacketOpcodes.PlayerSetPauseRsp,
+                    PacketOpcodes.SceneAvatarStaminaStepReq,
+                    PacketOpcodes.SceneAvatarStaminaStepRsp,
+                    PacketOpcodes.GetWidgetQuickSlotListReq,
                     PacketOpcodes.UnionCmdNotify);
     private static final Int2ObjectMap<String> opcodeMap;
 

@@ -1597,9 +1597,21 @@ public class Player implements PlayerHook, FieldFetch {
         this.loadDailyTaskManager();
         this.dailyTaskManager.onPlayerLogin();
 
-        // The client is told nothing about these on its own - they exist only as a forged notify,
-        // so a relog has to re-assert them or the quests come back unfinished.
-        if (this.forcedFinishedQuests != null && !this.forcedFinishedQuests.isEmpty()) {
+        // When archonOnly is enabled, mark and notify all Story/World/Event quests as finished
+        // so that the client treats them as completed and only Archon Quests remain active.
+        if (GAME_OPTIONS.questing.archonOnly) {
+            var nonAq = ForcedQuests.nonArchonMainQuests();
+            if (this.forcedFinishedQuests == null) {
+                this.forcedFinishedQuests = new HashSet<>();
+            }
+            if (this.forcedFinishedQuests.addAll(nonAq)) {
+                this.save();
+            }
+            ForcedQuests.notify(this, nonAq);
+        }
+        if (GAME_OPTIONS.questing.skipTo7) {
+            ForcedQuests.skipTo7(this);
+        } else if (this.forcedFinishedQuests != null && !this.forcedFinishedQuests.isEmpty()) {
             ForcedQuests.notify(this, this.forcedFinishedQuests);
         }
 

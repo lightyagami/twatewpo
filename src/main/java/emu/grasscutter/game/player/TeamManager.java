@@ -972,6 +972,17 @@ public final class TeamManager extends BasePlayerDataManager {
                     new PlayerTeamDeathEvent(
                         this.getPlayer(), this.getActiveTeam().get(this.getCurrentCharacterIndex()));
                 event.call();
+
+                // Open-world team wipe fallback: if client revive modal fails to fire,
+                // automatically respawn team at nearest waypoint after delay to avoid camera soft-lock.
+                Scene curScene = this.getPlayer().getScene();
+                if (curScene != null && curScene.getSceneType() == SceneType.SCENE_WORLD) {
+                    curScene.getScheduler().scheduleDelayedTask(() -> {
+                        if (getDeadAvatarReplacement() == -1 && this.getPlayer().isOnline()) {
+                            respawnTeam();
+                        }
+                    }, 4);
+                }
             }
         }
 

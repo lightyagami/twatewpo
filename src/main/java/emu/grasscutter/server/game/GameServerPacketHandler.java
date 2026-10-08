@@ -151,6 +151,15 @@ public final class GameServerPacketHandler {
     }
 
     public void handle(GameSession session, int opcode, byte[] header, byte[] payload) {
+        if (!PacketOpcodesUtils.LOOP_PACKETS.contains(opcode)
+                && opcode != PacketOpcodes.PingReq
+                && opcode != PacketOpcodes.PingRsp
+                && opcode != PacketOpcodes.AbilityInvocationsNotify
+                && opcode != PacketOpcodes.CombatInvocationsNotify
+                && opcode != 22336) {
+            Grasscutter.getLogger().info("RECV opcode={} ({}) len={}",
+                    opcode, PacketOpcodesUtils.getOpcodeName(opcode), payload == null ? 0 : payload.length);
+        }
         PacketHandler handler = this.handlers.get(opcode);
 
         if (handler != null) {
@@ -220,21 +229,19 @@ public final class GameServerPacketHandler {
             // Unhandled requests go to debug: a 7.1 client sends dozens this server has no
             // handler for, and listing them at every login was noise.
             var logger = Grasscutter.getLogger();
-            if (logger.isDebugEnabled()) {
-                String hex = "";
-                if (payload != null && payload.length > 0 && payload.length <= 128) {
-                    hex = " hex=" + HexFormat.of().formatHex(payload);
-                }
-                var line = "Unhandled packet opcode {} ({}) len={} from {}{}";
-                Object[] args = {
-                    opcode,
-                    PacketOpcodesUtils.getOpcodeName(opcode),
-                    payload == null ? 0 : payload.length,
-                    session.getAddress(),
-                    hex
-                };
-                logger.debug(line, args);
+            String hex = "";
+            if (payload != null && payload.length > 0 && payload.length <= 128) {
+                hex = " hex=" + HexFormat.of().formatHex(payload);
             }
+            var line = "Unhandled packet opcode {} ({}) len={} from {}{}";
+            Object[] args = {
+                opcode,
+                PacketOpcodesUtils.getOpcodeName(opcode),
+                payload == null ? 0 : payload.length,
+                session.getAddress(),
+                hex
+            };
+            logger.info(line, args);
             if (session.getPlayer() != null) {
                 emu.grasscutter.game.systems.ReliquaryDustSystem.noteRecvOpcode(
                         session.getPlayer(), opcode);

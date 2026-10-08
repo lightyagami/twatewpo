@@ -480,6 +480,30 @@ public class Scene {
         GameEntity target = getEntityById(result.getDefenseId());
         ElementType attackType = ElementType.getTypeByValue(result.getElementType());
 
+        if (target == null && result.getDamage() > 0) {
+            GameEntity attacker = getEntityById(result.getAttackerId());
+            Position searchPos = attacker != null ? attacker.getPosition() : null;
+            if (searchPos != null) {
+                float bestDist2 = 15.0f * 15.0f;
+                GameEntity bestMonster = null;
+                for (GameEntity entity : getEntities().values()) {
+                    if (entity instanceof EntityMonster m && m.isAlive() && m.getPosition() != null) {
+                        float dx = searchPos.getX() - m.getPosition().getX();
+                        float dz = searchPos.getZ() - m.getPosition().getZ();
+                        float d2 = dx * dx + dz * dz;
+                        if (d2 < bestDist2) {
+                            bestDist2 = d2;
+                            bestMonster = m;
+                        }
+                    }
+                }
+                if (bestMonster != null) {
+                    target = bestMonster;
+                    Grasscutter.getLogger().info("handleAttack fallback defenseId {} -> monster {}", result.getDefenseId(), target.getId());
+                }
+            }
+        }
+
         if (target == null) {
             // Ordinary: the client keeps swinging at something the server already removed. One
             // line per hit, and nobody acts on any of them.

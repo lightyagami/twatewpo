@@ -185,11 +185,11 @@ public class BlossomManager {
                             .debug("Blossom chest {} has no dropVec configured", blossomChestId);
                     return null;
                 }
-                if (worldLevel < 0 || worldLevel >= dropVecList.length) {
-                    Grasscutter.getLogger().error("Illegal world level {}", worldLevel);
+                if (worldLevel < 0 || dropVecList.length == 0) {
                     return null;
                 }
-                return dropVecList[worldLevel].getPreviewReward();
+                int idx = Math.min(worldLevel, dropVecList.length - 1);
+                return dropVecList[idx].getPreviewReward();
             }
         }
         // Missing resource rows, so every refresh would log it again (five camps at a time).

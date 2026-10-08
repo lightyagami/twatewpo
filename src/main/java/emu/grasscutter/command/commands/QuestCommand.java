@@ -17,10 +17,11 @@ import java.util.stream.Collectors;
         permission = "player.quest",
         permissionTargeted = "player.quest.others")
 public final class QuestCommand implements CommandHandler {
-    private static final List<String> SINGLE_ARG = List.of("dungeons", "list");
-    /** `forcefinish all` has a word where the id goes, so the id parse must be skipped. */
+    private static final List<String> SINGLE_ARG = List.of("dungeons", "list", "skip_to_7", "skipto7", "skip7");
+    private static final Set<String> WORD_ARGS = Set.of("all", "non_aq", "story", "world", "side", "pre_7", "pre7", "skip_to_7");
+    /** `forcefinish all` or `forcefinish non_aq` has a word where the id goes, so the id parse must be skipped. */
     private static boolean isWordArg(List<String> args) {
-        return args.size() > 1 && "all".equalsIgnoreCase(args.get(1));
+        return args.size() > 1 && WORD_ARGS.contains(args.get(1).toLowerCase());
     }
 
     @Override
@@ -46,21 +47,35 @@ public final class QuestCommand implements CommandHandler {
             // Marks a main quest finished on the CLIENT only, for quests this server has no data
             // for. Region barriers are quest-gated, and a region released after the resource set
             // was cut cannot be reached with `finish`. Does not persist across a relog.
+            case "skip_to_7", "skipto7", "skip7" -> {
+                int added = emu.grasscutter.game.quest.ForcedQuests.skipTo7(targetPlayer);
+                CommandHandler.sendMessage(
+                        sender,
+                        "Skipped to 7.1! Marked all side quests and pre-7 Archon quests as finished ("
+                                + added + " newly finished). Started 7.1 Archon Quest 7011 ('Into the Wind, Into the Frigid North').");
+            }
             case "forcefinish" -> {
                 // Marks main quests finished for the CLIENT. The quest system cannot finish what it
                 // has no data for, and this resource set is older than the client, so region gates
                 // like Snezhnaya's are unreachable any other way. Persisted and replayed on login.
-                var ids =
-                        "all".equalsIgnoreCase(args.get(1))
-                                ? emu.grasscutter.game.quest.ForcedQuests.allMainQuests()
-                                : List.of(questId);
+                List<Integer> ids;
+                String arg1 = args.size() > 1 ? args.get(1).toLowerCase() : "";
+                if ("all".equals(arg1)) {
+                    ids = emu.grasscutter.game.quest.ForcedQuests.allMainQuests();
+                } else if ("non_aq".equals(arg1) || "story".equals(arg1) || "world".equals(arg1) || "side".equals(arg1)) {
+                    ids = emu.grasscutter.game.quest.ForcedQuests.nonArchonMainQuests();
+                } else if ("pre_7".equals(arg1) || "pre7".equals(arg1) || "skip_to_7".equals(arg1)) {
+                    ids = emu.grasscutter.game.quest.ForcedQuests.pre7ArchonMainQuests();
+                } else {
+                    ids = List.of(questId);
+                }
                 int added = emu.grasscutter.game.quest.ForcedQuests.apply(targetPlayer, ids);
                 CommandHandler.sendMessage(
                         sender,
                         "Force-finished " + ids.size() + " main quest(s), " + added + " newly."
                                 + " This is saved and re-sent on every login.");
             }
-            case "add" -> {
+            case "add", "start" -> {
                 // With questing off the quest is created but its update reaches the client empty,
                 // so the command reported a success the player never saw.
                 if (!QuestManager.isQuestingActive()) {
@@ -71,6 +86,12 @@ public final class QuestCommand implements CommandHandler {
 
                 if (quest != null) {
                     CommandHandler.sendMessage(sender, translate(sender, "commands.quest.added", questId));
+                    return;
+                }
+
+                if (emu.grasscutter.data.GameData.getMainQuestDataMap().containsKey(questId)) {
+                    targetPlayer.getQuestManager().startMainQuest(questId);
+                    CommandHandler.sendMessage(sender, "Started main quest " + questId + ".");
                     return;
                 }
 
@@ -182,15 +203,15 @@ public final class QuestCommand implements CommandHandler {
             case "list" -> {
                 var questManager = targetPlayer.getQuestManager();
                 var mainQuests = questManager.getActiveMainQuests();
-                var allQuestIds =
+                var logged = questManager.getLoggedQuests();
+                List<String> allQuestIds =
                         mainQuests.stream()
-                                .filter(quest -> questManager.getLoggedQuests().contains(quest.getParentQuestId()))
+                                .filter(quest -> logged.isEmpty() || logged.contains(quest.getParentQuestId()))
                                 .filter(quest -> quest.getState() != ParentQuestState.PARENT_QUEST_STATE_FINISHED)
                                 .map(quest -> quest.getChildQuests().values())
                                 .flatMap(Collection::stream)
                                 .filter(quest -> quest.getState() == QuestState.QUEST_STATE_UNFINISHED)
-                                .map(GameQuest::getSubQuestId)
-                                .map(String::valueOf)
+                                .map(q -> q.getMainQuest().getParentQuestId() + ":" + q.getSubQuestId())
                                 .toList();
 
                 CommandHandler.sendMessage(

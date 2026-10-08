@@ -570,6 +570,17 @@ public class ConfigContainer {
              * begins. It only stops the bulk fill at login.
              */
             public boolean triggerAllOnLogin = false;
+
+            /**
+             * Only run and accept Archon Quests (main storyline).
+             * Story quests (LQ), world quests (WQ), and event quests (EQ) are filtered out.
+             */
+            public boolean archonOnly = true;
+
+            /**
+             * Skip directly to 7.0/7.1 Archon storyline, marking all pre-7 quests as finished.
+             */
+            public boolean skipTo7 = false;
         }
 
         public static class WatermarkOptions {

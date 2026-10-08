@@ -9,9 +9,14 @@ import java.util.concurrent.TimeUnit;
 public class HandlerPlayerForceExitReq extends PacketHandler {
     @Override
     public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
+        if (session.getPlayer() != null && session.getPlayer().getTeamManager() != null) {
+            if (session.getPlayer().getTeamManager().getDeadAvatarReplacement() == -1) {
+                session.getPlayer().getTeamManager().respawnTeam();
+                return;
+            }
+        }
         // Client should auto disconnect right now
         session.send(new BasePacket(PacketOpcodes.PlayerForceExitRsp));
-        // Was a whole thread spawned per logout just to wait a second before closing
         CompletableFuture.runAsync(
                 session::close, CompletableFuture.delayedExecutor(1, TimeUnit.SECONDS));
     }

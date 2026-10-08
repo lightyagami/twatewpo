@@ -578,10 +578,13 @@ public abstract class GameEntity {
                             MultiShieldHelper.effectivenessFor(this, amount, killerId, attackType))) {
                 return;
             }
-            if (shieldSetup == null) return;
-            // The stack just ran out. Breaking it recomputed the flag from the modifiers left, so a
-            // separate Invincible modifier (the boss's return-to-born one, say) still blocks the hit.
-            if (this.modifierInvincible) return;
+            if (shieldSetup == null) {
+                if (!(this instanceof EntityMonster)) {
+                    return;
+                }
+            } else if (this.modifierInvincible) {
+                return;
+            }
             // Nothing else protects it - fall through so this hit lands on the HP bar.
         }
 
@@ -597,6 +600,8 @@ public abstract class GameEntity {
 
         float effectiveDamage = 0;
         float curHp = getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
+        boolean lockHpActive = isLockHP()
+                && (!(this instanceof EntityMonster) || emu.grasscutter.game.world.EffigyCombatHelper.isEffigy((EntityMonster) this));
         if (limbo) {
             float maxHp = getFightProperty(FightProperty.FIGHT_PROP_MAX_HP);
             float curRatio = curHp / maxHp;
@@ -608,9 +613,17 @@ public abstract class GameEntity {
 
                 effectiveDamage = curHp - 1;
             }
-        } else if (curHp != Float.POSITIVE_INFINITY && (!isLockHP() || !respectLockHp)
-                || isLockHP() && curHp <= event.getDamage()) {
+        } else if (curHp != Float.POSITIVE_INFINITY && (!lockHpActive || !respectLockHp)
+                || lockHpActive && curHp <= event.getDamage()) {
             effectiveDamage = event.getDamage();
+        }
+
+        if (this instanceof EntityMonster monster && effectiveDamage > 0) {
+            Grasscutter.getLogger().info("Monster damage: monsterId={} entityId={} dmg={} hp={}/{}",
+                    monster.getMonsterData() != null ? monster.getMonsterData().getId() : 0,
+                    this.getId(), effectiveDamage,
+                    curHp - effectiveDamage,
+                    this.getFightProperty(FightProperty.FIGHT_PROP_MAX_HP));
         }
 
         if (this instanceof EntityAvatar avatarCandidate) {
