@@ -24,10 +24,6 @@ public final class ActionKillGadget extends AbilityActionHandler {
         var configId = action.gadgetInfo != null ? action.gadgetInfo.configID : 0;
         if (configId == 0 || target == null) return false;
 
-        if (emu.grasscutter.game.ability.NeuvilletteAbilityHelper.isNeuvilletteDropletGadgetId(configId)) {
-            // Sourcewater Droplets do not go away after absorption (infinite droplets)
-            return true;
-        }
 
         var scene = target.getScene();
         var owner = ability != null ? ability.getOwner() : null;

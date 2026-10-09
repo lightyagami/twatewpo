@@ -37,6 +37,13 @@ public final class ActionTriggerAbility extends AbilityActionHandler {
             manager.fireAbilityOnAbilityStart(existing, target);
         }
 
+        if ("Avatar_Neuvillette_Core_Gadget".equals(action.abilityName)) {
+            if (target.getScene() != null && target instanceof emu.grasscutter.game.entity.EntityBaseGadget gadget
+                    && gadget.getGadgetId() == emu.grasscutter.game.ability.NeuvilletteAbilityHelper.SOURCEWATER_DROPLET_GADGET_ID) {
+                target.getScene().killEntity(target);
+            }
+        }
+
         if (LaumaC1HealHelper.isLaumaC1Ability(action.abilityName)) {
             try {
                 LaumaC1HealHelper.onThreadOfLife(player);
