@@ -48,7 +48,8 @@ public class SetUIDWatermarkTextCommand implements CommandHandler {
 
     private void setToDefault(Player sender, Player target) {
         CommandHandler.sendMessage(sender, "Successfully restored your UID to the server-default one.");
-        target.sendPacket(new PacketWindSeedUID());
+        byte[] textBytes = ("UID: " + target.getUid()).getBytes(StandardCharsets.UTF_8);
+        target.sendPacket(new PacketWindSeedClientNotify(toLuacBytes(textBytes)));
     }
 
     private static byte[] toLuacBytes(byte[] textBytes) {

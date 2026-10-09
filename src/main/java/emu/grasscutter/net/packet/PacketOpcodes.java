@@ -1514,8 +1514,7 @@ public final class PacketOpcodes {
     // public static final int MMKLJMCGFHB = 9540;
     // public static final int KEFILHHHBCB = 9995;
     // public static final int ABJLJDNCJNP = 27119;
-    // public static final int DLOMILCFHPB = 28098;
-    public static final int ChooseCurAvatarTeamRsp = 0; // 7.1 CmdId unknown (7.0: 20048)
+    public static final int ChooseCurAvatarTeamRsp = 29488; // 7.1 CmdId (7.0: 20048)
     public static final int GCGStartChallengeByCheckRewardRsp = 4269;
     // public static final int GCGDSDeckSaveReq = 25609;
     // public static final int _TakeAquariumTaskRewardRsp = 23990;

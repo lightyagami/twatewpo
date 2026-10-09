@@ -69,7 +69,10 @@ public class HandlerSceneInitFinishReq extends PacketHandler {
             WidgetPetHelper.syncEquippedWidget(player);
 
             session.send(new PacketSceneInitFinishRsp(player));
-            session.send(buildWatermarkPacket());
+            BasePacket watermarkPacket = buildWatermarkPacket();
+            if (watermarkPacket != null) {
+                session.send(watermarkPacket);
+            }
 
             player.setSceneLoadState(SceneLoadState.INIT);
 
@@ -80,27 +83,13 @@ public class HandlerSceneInitFinishReq extends PacketHandler {
     }
 
     /**
-     * Builds the watermark payload.
-     *
-     * <p>The default path is the {@link LuaShell} login chunk, which rewrites only the {@code "UID:"}
-     * prefix and so keeps the player's UID on screen. It is loaded once at startup and can be
-     * replaced by dropping a compiled chunk at {@code lua/login.luac}.
-     *
-     * <p>A configured {@code watermark.text} still wins: that path overwrites the whole watermark
-     * and is the only way to show per-player text, which the shared shell cannot do.
+     * Builds the watermark payload, or null if no watermark overwrite should be performed.
+     * When null, the client retains its clean native "UID: <uid>" watermark.
      */
     private static BasePacket buildWatermarkPacket() {
         ConfigContainer.GameOptions.WatermarkOptions w = Configuration.GAME_OPTIONS.watermark;
-        if (!w.enabled) {
-            return new PacketWindSeedUID();
-        }
-
-        if (w.text == null || w.text.isBlank()) {
-            byte[] shell = LuaShell.getLuaShell();
-            if (shell != null && shell.length >= 6) {
-                return new PacketWindSeedClientNotify(shell);
-            }
-            return new PacketWindSeedUID();
+        if (!w.enabled || w.text == null || w.text.isBlank()) {
+            return null;
         }
 
         Player player = WatermarkGradientHelper.getCurrentPlayer();
@@ -112,10 +101,7 @@ public class HandlerSceneInitFinishReq extends PacketHandler {
         if (WatermarkUtils.fits(text)) {
             return new PacketWindSeedClientNotify(WatermarkUtils.buildLuac(text));
         }
-        Grasscutter.getLogger().warn("Watermark text too long; using the login Lua shell instead.");
-        byte[] shell = LuaShell.getLuaShell();
-        return shell != null && shell.length >= 6
-                ? new PacketWindSeedClientNotify(shell)
-                : new PacketWindSeedUID();
+        Grasscutter.getLogger().warn("Watermark text too long; keeping default UID.");
+        return null;
     }
 }
