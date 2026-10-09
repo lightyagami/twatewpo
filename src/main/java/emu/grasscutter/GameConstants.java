@@ -67,7 +67,6 @@ public final class GameConstants {
          "Avatar_FallAnthem_Achievement_Listener",
          "GrapplingHookSkill_Ability",
          "TeamAbility_Natsaurus_Transfer_Vehicle_Skill",
-         "DynamicAbility_Phlogiston",
          "DynamicAbility_NightsoulBlessing",
          "TeamAbility_Natsaurus_Vehicle_State_Listener",
          "DynamicAbility_ArcLight_Predicate",

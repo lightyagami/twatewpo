@@ -251,6 +251,7 @@ public class Player implements PlayerHook, FieldFetch {
     @Getter @Setter private ElementType mainCharacterElement = ElementType.None;
 
     @Getter @Setter private Map<Integer, CityInfoData> cityInfoData;
+    @Getter @Setter private Map<Integer, Integer> exploreAreaPoints;
     @Getter private float phlogistonValue = 100.0f; // 燃素值
 
     @Deprecated
@@ -307,6 +308,7 @@ public class Player implements PlayerHook, FieldFetch {
         this.playerProgress = new PlayerProgress();
         this.activeQuestTimers = new HashSet<>();
         this.cityInfoData = new HashMap<>();
+        this.exploreAreaPoints = new HashMap<>();
 
         this.attackResults = new LinkedBlockingQueue<>();
         this.coopRequests = new Int2ObjectOpenHashMap<>();
@@ -565,6 +567,20 @@ public class Player implements PlayerHook, FieldFetch {
         return this.unlockedSceneAreas.computeIfAbsent(sceneId, i -> new CopyOnWriteArraySet<>());
     }
 
+    public int getExploreAreaPoint(int areaId) {
+        if (this.exploreAreaPoints == null) {
+            this.exploreAreaPoints = new HashMap<>();
+        }
+        return this.exploreAreaPoints.getOrDefault(areaId, 0);
+    }
+
+    public void setExploreAreaPoint(int areaId, int points) {
+        if (this.exploreAreaPoints == null) {
+            this.exploreAreaPoints = new HashMap<>();
+        }
+        this.exploreAreaPoints.put(areaId, points);
+    }
+
     public Set<Integer> getUnlockedScenePoints(int sceneId) {
         return this.unlockedScenePoints.computeIfAbsent(sceneId, i -> new CopyOnWriteArraySet<>());
     }
@@ -655,15 +671,14 @@ public class Player implements PlayerHook, FieldFetch {
             PlayerProperty.PROP_MAX_SPRING_VOLUME.getMax(), false);
         this.setProperty(PlayerProperty.PROP_CUR_SPRING_VOLUME,
             PlayerProperty.PROP_MAX_SPRING_VOLUME.getMax(), false);
+        boolean skipTo7 = GAME_OPTIONS.questing.skipTo7;
         this.setOrFetch(PlayerProperty.PROP_IS_FLYABLE,
-            withQuesting ? 0 : 1);
-        this.setOrFetch(PlayerProperty.PROP_PLAYER_CAN_DIVE,
-                withQuesting ? 0 : 1);
+            (withQuesting && !skipTo7) ? 0 : 1);
+        this.setOrFetch(PlayerProperty.PROP_PLAYER_CAN_DIVE, 1);
         this.setOrFetch(PlayerProperty.PROP_IS_TRANSFERABLE, 1);
         this.setOrFetch(PlayerProperty.PROP_MAX_STAMINA,
-            withQuesting ? 10000 : 24000);
-        this.setOrFetch(PlayerProperty.PROP_DIVE_MAX_STAMINA,
-                withQuesting ? 10000 : 0);
+            (withQuesting && !skipTo7) ? 10000 : 24000);
+        this.setOrFetch(PlayerProperty.PROP_DIVE_MAX_STAMINA, 10000);
         this.setOrFetch(PlayerProperty.PROP_PLAYER_RESIN, 200);
         this.setOrFetch(PlayerProperty.PROP_PHLOGISTON_MAX_VALUE, 10000);
         this.setProperty(PlayerProperty.PROP_PHLOGISTON_ENABLE, 1);
@@ -859,9 +874,6 @@ public class Player implements PlayerHook, FieldFetch {
     }
 
     public void setMainCharacterId(int mainCharacterId) {
-        if (this.mainCharacterId != 0) {
-            return;
-        }
         this.mainCharacterId = mainCharacterId;
     }
 
@@ -1139,7 +1151,9 @@ public class Player implements PlayerHook, FieldFetch {
     }
 
     public void sendPacket(BasePacket packet) {
-        this.getSession().send(packet);
+        if (this.getSession() != null) {
+            this.getSession().send(packet);
+        }
     }
 
     public OnlinePlayerInfo getOnlinePlayerInfo() {

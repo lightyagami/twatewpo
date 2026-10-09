@@ -2,9 +2,11 @@ package emu.grasscutter.server.packet.send;
 
 import emu.grasscutter.data.GameData;
 import emu.grasscutter.net.packet.*;
+import emu.grasscutter.net.proto.CoopCgOuterClass.CoopCg;
 import emu.grasscutter.net.proto.CoopChapterOuterClass;
 import emu.grasscutter.net.proto.CoopDataNotifyOuterClass;
-import emu.grasscutter.net.proto.CoopPointOuterClass;
+import emu.grasscutter.net.proto.CoopPointOuterClass.CoopPoint;
+import emu.grasscutter.net.proto.CoopRewardOuterClass.CoopReward;
 
 public class PacketCoopDataNotify extends BasePacket {
 
@@ -14,31 +16,47 @@ public class PacketCoopDataNotify extends BasePacket {
         var proto = CoopDataNotifyOuterClass.CoopDataNotify.newBuilder();
         proto.setIsHaveProgress(false);
 
-        // TODO: implement: determine the actual current progress point.
-        // Add every chapter and add the start point to each chapter regardless of actual progress.
         GameData.getCoopChapterDataMap()
                 .values()
                 .forEach(
-                        i -> {
+                        chapterData -> {
                             var chapter = CoopChapterOuterClass.CoopChapter.newBuilder();
-                            chapter.setId(i.getId());
+                            chapter.setId(chapterData.getId());
+                            chapter.setState(CoopChapterOuterClass.CoopChapter.State.State_ACCEPT);
 
-                            // TODO: implement: look at unlockCond to determine what state each chapter should be
-                            // in.
-                            // Set every chapter to "Accept" regardless of accept conditions.
-                            chapter.setStateValue(3); // 3 == STATE_ACCEPT
-
-                            var point = CoopPointOuterClass.CoopPoint.newBuilder();
-                            var pointList =
+                            var points =
                                     GameData.getCoopPointDataMap().values().stream()
-                                            .filter(
-                                                    j -> j.getChapterId() == i.getId() && j.getType().equals("POINT_START"))
+                                            .filter(j -> j.getChapterId() == chapterData.getId())
                                             .toList();
 
-                            if (!pointList.isEmpty()) {
-                                int pointId = pointList.get(0).getId();
-                                point.setId(pointId);
-                                chapter.addCoopPointList(point);
+                            int endCount = 0;
+                            for (var pt : points) {
+                                chapter.addCoopPointList(
+                                        CoopPoint.newBuilder()
+                                                .setId(pt.getId())
+                                                .setState(CoopPoint.State.State_FINISHED));
+                                if ("POINT_END".equals(pt.getType())) {
+                                    endCount++;
+                                    chapter.putSeenEndingMap(pt.getId(), 1);
+                                }
+                            }
+
+                            chapter.setTotalEndCount(endCount);
+                            chapter.setFinishedEndCount(endCount);
+
+                            for (int r = 1; r <= endCount; r++) {
+                                chapter.addCoopRewardList(
+                                        CoopReward.newBuilder()
+                                                .setId(chapterData.getId() * 100 + r)
+                                                .setState(CoopReward.State.State_TAKEN));
+                                chapter.addCoopCgList(
+                                        CoopCg.newBuilder()
+                                                .setId(chapterData.getId() * 100 + r)
+                                                .setIsUnlock(true));
+                                chapter.addCoopCgList(
+                                        CoopCg.newBuilder()
+                                                .setId(chapterData.getId() * 100 + 10 + r)
+                                                .setIsUnlock(true));
                             }
 
                             proto.addChapterList(chapter);

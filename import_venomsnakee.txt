@@ -1,0 +1,536 @@
+prop @851880405 ar 60
+prop @851880405 wl 8
+quest skip_to_7
+achievement grantall
+give 201 x100000000
+give 202 x100000
+give 223 x1000
+give 224 x1000
+give 10000092 lv80 c3 sl11
+give 12416 lv80 r1
+give 31543 lv20 hp atk%,3 def,1 cr,3 cd,1
+give 31524 lv20 atk atk%,2 em,3 cr,1 cd,3
+give 31553 lv20 atk% er,2 atk,2 cd,3 def,1
+give 31513 lv20 pyro cd,3 er,1 em,1 hp%,3
+give 31534 lv20 cr atk%,1 cd,3 hp%,2 atk,3
+give 10000064 lv80 c6 sl10
+give 13407 lv20 r1
+give 31544 lv20 hp def%,3 def,3 er,1 cr,2
+give 95524 lv20 atk cd,3 hp,1 em,2 def%,3
+give 95553 lv20 def% atk%,2 cd,3 atk,1 def,2
+give 95513 lv20 def% cd,2 er,2 atk,1 cr,3
+give 95534 lv20 def% atk%,3 hp,2 atk,2 cr,2
+give 10000090 lv80 c5 sl11
+give 13425 lv80 r1
+give 33543 lv20 hp cr,2 def,3 hp%,2 em,1
+give 33524 lv20 atk hp%,3 hp,2 def%,2 cd,2
+give 33553 lv20 hp% def%,2 er,2 cd,2 atk,2
+give 33514 lv20 hp% def,3 atk%,1 cr,2 cd,3
+give 30533 lv20 hp% em,2 atk,2 er,2 hp,2
+give 10000015 lv80 c2 sl8
+give 11416 lv80 r1
+give 71544 lv20 hp cr,2 def,3 cd,3 def%,1
+give 93524 lv20 atk er,1 cr,3 cd,2 hp,3
+give 94553 lv20 er atk,2 hp,1 atk%,2 cd,3
+give 20514 lv20 cryo er,3 cr,3 cd,2 atk%,1
+give 71533 lv20 cr cd,3 atk,2 hp%,1 em,2
+give 10000081 lv80 c0 sl8
+give 12418 lv80 r5
+give 75544 lv20 hp cr,1 atk,2 cd,3 def,3
+give 77524 lv20 atk cr,2 hp,2 cd,4 er,1
+give 77554 lv20 atk% atk,3 def%,1 cd,2 cr,3
+give 75514 lv20 dendro cd,4 atk,3 hp%,1 atk%,1
+give 75533 lv20 cr def%,2 atk%,3 cd,1 atk,2
+give 10000065 lv80 c6 sl10
+give 11422 lv80 r5
+give 21544 lv20 hp hp%,3 cd,2 atk%,2 er,2
+give 21524 lv20 atk def%,2 atk%,3 cd,2 em,2
+give 21553 lv20 em hp%,1 def,1 cd,3 hp,3
+give 37513 lv20 em cr,1 atk,2 er,1 hp%,4
+give 21533 lv20 em atk,1 er,3 atk%,2 def,2
+give 10000056 lv80 c6 sl9
+give 15416 lv80 r1
+give 81543 lv20 hp def,1 cd,4 er,1 hp%,2
+give 93523 lv20 atk hp,3 cr,3 cd,1 def,1
+give 94553 lv20 atk% cd,1 hp,2 def,1 cr,4
+give 81513 lv20 electro cr,1 em,2 cd,3 hp,2
+give 93533 lv20 cr cd,2 atk,2 def%,2 er,2
+give 10000023 lv80 c6 sl10
+give 13415 lv90 r5
+give 94544 lv20 hp def,3 er,2 cr,1 cd,3
+give 94523 lv20 atk cd,2 er,2 atk%,2 cr,2
+give 94554 lv20 er cd,5 def%,1 def,1 atk,2
+give 94513 lv20 pyro atk,2 er,1 cr,2 cd,3
+give 96533 lv20 cr cd,3 hp,1 atk,2 atk%,2
+give 10000114 lv90 c0 sl10
+give 11517 lv90 r1
+give 31544 lv20 hp hp%,1 cr,3 def%,1 cd,4
+give 31524 lv20 atk atk%,2 def%,1 cr,2 cd,4
+give 31554 lv20 atk% hp%,3 cd,3 cr,2 atk,1
+give 31513 lv20 cryo cd,2 er,1 atk,2 cr,3
+give 21534 lv20 cd cr,6 hp,1 er,1 em,1
+give 10000112 lv90 c0 sl9
+give 13501 lv90 r1
+give 32544 lv20 hp cd,3 atk%,1 hp%,1 cr,4
+give 32523 lv20 atk em,2 cr,2 cd,3 atk%,1
+give 32553 lv20 atk% cd,3 def,1 def%,2 er,2
+give 32514 lv20 cryo cd,2 cr,4 em,2 def,1
+give 80533 lv20 cd em,1 cr,4 def,2 atk%,1
+give 10000107 lv90 c0 sl9
+give 14403 lv90 r1
+give 37543 lv20 hp er,1 cd,3 def%,1 em,3
+give 37523 lv20 atk def,1 em,3 er,3 cd,1
+give 37553 lv20 em def%,3 er,2 hp%,2 cd,1
+give 21513 lv20 em er,3 atk,1 hp,3 atk%,1
+give 37533 lv20 em hp,3 hp%,2 cd,1 er,2
+give 10000106 lv90 c2 sl10
+give 12514 lv90 r1
+give 38544 lv20 hp cd,3 def%,2 cr,3 def,1
+give 38524 lv20 atk atk%,2 cr,1 cd,5 hp%,1
+give 80553 lv20 atk% cr,3 cd,3 def,1 def%,1
+give 38514 lv20 pyro cr,4 hp,1 em,2 er,2
+give 38533 lv20 cd atk%,1 cr,4 def%,1 hp,2
+give 10000103 lv90 c0 sl10
+give 11431 lv90 r1
+give 37543 lv20 hp cd,5 em,1 atk,1 er,1
+give 37523 lv20 atk def%,1 cr,1 cd,3 er,3
+give 37553 lv20 def% hp,2 hp%,2 cr,3 cd,1
+give 35513 lv20 geo er,1 cr,2 hp,3 cd,2
+give 37533 lv20 cr def%,3 cd,2 hp,2 er,1
+give 10000098 lv90 c0 sl10
+give 11502 lv90 r1
+give 79544 lv20 hp cr,4 atk,1 cd,2 em,2
+give 35523 lv20 atk em,1 cd,4 atk%,2 hp%,1
+give 35553 lv20 atk% hp%,1 cd,3 hp,2 cr,2
+give 35513 lv20 electro atk%,1 cr,2 cd,4 def,1
+give 35533 lv20 cd def%,2 em,2 atk%,2 cr,2
+give 10000096 lv90 c0 sl10
+give 13301 lv90 r5
+give 35543 lv20 hp cd,4 atk,1 def,1 er,2
+give 35524 lv20 atk er,2 hp,2 cd,4 cr,1
+give 35554 lv20 atk% cr,1 cd,3 atk,2 def%,3
+give 94513 lv20 pyro er,1 hp,1 cr,5 def,1
+give 35533 lv20 cr def,1 hp,2 cd,3 atk,2
+give 10000091 lv90 c0 sl8
+give 12426 lv90 r5
+give 75543 lv20 hp cr,1 cd,4 def%,1 atk,2
+give 75524 lv20 atk cd,3 cr,3 atk%,2 em,1
+give 32554 lv20 atk% er,3 hp,1 em,2 cd,3
+give 32513 lv20 geo cr,3 cd,2 hp,1 hp%,2
+give 34534 lv20 cr atk%,1 cd,3 hp,2 er,3
+give 10000089 lv90 c0 sl9
+give 11426 lv90 r5
+give 32544 lv20 hp def%,1 cd,3 cr,2 hp%,3
+give 32524 lv20 atk hp%,2 cr,3 cd,2 hp,2
+give 32553 lv20 hp% er,3 atk,1 cd,2 cr,2
+give 77513 lv20 hp% cd,4 er,1 cr,2 hp,1
+give 32534 lv20 cr hp,1 atk,2 cd,2 er,4
+give 10000087 lv90 c0 sl10
+give 14514 lv90 r1
+give 31543 lv20 hp atk%,1 cr,2 er,1 cd,4
+give 31523 lv20 atk em,1 hp%,1 cd,3 cr,3
+give 31553 lv20 hp% er,1 def,2 cr,4 cd,1
+give 77513 lv20 hp% atk,1 cd,2 cr,3 hp,2
+give 31534 lv20 hp% hp,1 atk%,1 cr,5 cd,2
+give 10000082 lv90 c0 sl8
+give 14406 lv90 r5
+give 20543 lv20 hp em,2 cd,3 hp%,1 er,2
+give 20524 lv20 atk def,1 em,2 cd,4 hp%,2
+give 20553 lv20 er cr,2 em,2 def%,2 hp,2
+give 20514 lv20 hp% cr,4 def%,2 atk%,1 hp,2
+give 20533 lv20 heal def%,1 cr,2 er,4 atk,1
+give 10000073 lv90 c0 sl10
+give 14403 lv90 r5
+give 20543 lv20 hp atk,3 cd,2 cr,2 em,1
+give 20524 lv20 atk cr,3 em,1 def,3 er,2
+give 20553 lv20 em atk,1 def%,1 cd,4 cr,2
+give 31514 lv20 em atk,2 cd,3 cr,1 def,3
+give 20533 lv20 cr em,2 def%,1 cd,4 hp,1
+give 10000071 lv90 c0 sl10
+give 13404 lv90 r1
+give 20544 lv20 hp cd,4 def,1 atk,1 cr,3
+give 21523 lv20 atk cd,1 cr,4 def%,1 hp%,2
+give 21553 lv20 em hp,2 cd,3 er,1 def%,2
+give 21513 lv20 electro atk%,3 em,1 cr,3 hp,1
+give 21533 lv20 cr atk,1 def,1 cd,4 hp,2
+give 10000070 lv90 c0 sl8
+give 11427 lv90 r1
+give 21544 lv20 hp cd,1 hp%,3 cr,4 atk,1
+give 30524 lv20 atk hp,2 def%,3 hp%,2 cr,2
+give 30554 lv20 hp% atk,1 cr,3 def,2 hp,3
+give 91513 lv20 hp% cd,3 hp,1 def%,2 atk%,2
+give 91534 lv20 hp% atk,1 em,2 cd,2 def%,4
+give 10000060 lv90 c0 sl8
+give 15401 lv90 r5
+give 94544 lv20 hp cd,2 atk%,3 cr,2 er,2
+give 94524 lv20 atk er,2 cd,3 em,2 cr,2
+give 94554 lv20 hp% em,2 cr,2 atk,2 cd,3
+give 21513 lv20 hydro er,2 cd,3 cr,1 hp,2
+give 94533 lv20 cr atk,1 cd,3 er,2 em,2
+give 10000058 lv90 c0 sl8
+give 14502 lv90 r1
+give 32543 lv20 hp er,2 cd,3 cr,2 em,1
+give 32523 lv20 atk def,2 cd,4 cr,1 em,1
+give 32554 lv20 atk% hp,1 hp%,3 cr,2 cd,3
+give 20513 lv20 electro cr,2 hp,2 em,1 cd,3
+give 32533 lv20 cd cr,3 def,1 em,3 def%,1
+give 10000057 lv90 c0 sl8
+give 12407 lv90 r3
+give 95543 lv20 hp cd,2 cr,3 atk,1 def%,2
+give 95523 lv20 atk def%,2 cr,3 em,1 cd,2
+give 95553 lv20 def% atk%,1 em,1 cd,3 atk,3
+give 20513 lv20 geo cd,3 def%,1 cr,2 atk,2
+give 95533 lv20 cd hp%,2 hp,2 atk,2 er,2
+give 10000054 lv90 c0 sl8
+give 14407 lv80 r1
+give 91544 lv20 hp er,2 em,2 atk%,2 def,3
+give 91524 lv20 atk atk%,1 hp%,5 cd,1 def%,2
+give 71553 lv20 hp% cd,3 cr,1 er,3 atk,1
+give 30513 lv20 hp% atk,1 er,2 hp,1 cd,4
+give 30533 lv20 heal er,3 hp,1 atk%,2 def,2
+give 10000052 lv90 c0 sl10
+give 13509 lv90 r1
+give 94543 lv20 hp cr,2 cd,3 atk,1 def,2
+give 94523 lv20 atk cr,3 cd,3 def%,1 def,1
+give 94553 lv20 er def%,1 cd,4 hp,1 cr,2
+give 94513 lv20 atk% cr,5 hp,1 er,1 atk,1
+give 82534 lv20 cr er,2 cd,4 atk%,1 atk,2
+give 10000049 lv90 c0 sl10
+give 15501 lv90 r1
+give 93544 lv20 hp atk%,3 cd,3 def,1 cr,2
+give 93523 lv20 atk cd,4 er,2 cr,1 def,1
+give 93554 lv20 atk% hp,1 def,2 er,3 cd,3
+give 93514 lv20 pyro er,3 cr,2 def%,2 def,2
+give 20534 lv20 cd cr,4 atk,1 em,3 hp,1
+give 10000047 lv90 c1 sl8
+give 11407 lv90 r3
+give 76544 lv20 hp er,4 hp%,2 em,2 atk%,1
+give 76524 lv20 atk er,4 hp%,1 em,2 cr,2
+give 94554 lv20 em hp,1 atk%,4 cr,3 er,1
+give 76513 lv20 em atk,1 er,2 def%,2 hp%,3
+give 76533 lv20 em def%,3 def,3 cr,1 hp%,1
+give 10000042 lv90 c2 sl8
+give 11408 lv90 r1
+give 79544 lv20 hp cr,2 atk,2 cd,3 em,2
+give 79523 lv20 atk cr,3 cd,2 atk%,2 hp,1
+give 79553 lv20 atk% hp,2 cr,3 cd,2 hp%,1
+give 79514 lv20 electro hp,3 cd,3 def,1 hp%,2
+give 93533 lv20 cr atk%,3 def,1 cd,2 def%,2
+give 10000030 lv90 c0 sl8
+give 13407 lv90 r5
+give 88543 lv20 hp cd,2 hp%,2 atk%,2 atk,2
+give 88523 lv20 atk def%,2 hp,2 cd,2 cr,2
+give 88554 lv20 hp% cd,3 def,1 atk,2 cr,3
+give 77514 lv20 hp% er,1 hp,2 cd,2 cr,4
+give 88533 lv20 cr def%,2 def,4 cd,1 hp%,1
+give 10000005 lv90 c6 sl7
+give 11428 lv60 r4
+give 37543 lv20 hp cr,1 cd,4 def%,2 er,1
+give 37524 lv20 atk er,2 em,1 cd,4 cr,2
+give 37553 lv20 atk% em,2 hp,2 cr,1 cd,3
+give 30513 lv20 pyro er,2 cr,2 atk,1 cd,3
+give 37533 lv20 cr hp,2 cd,1 def%,3 atk,2
+give 10000002 lv90 c0 sl9
+give 11414 lv90 r2
+give 71543 lv20 hp cd,3 er,2 cr,2 atk,1
+give 71524 lv20 atk hp%,3 cr,2 cd,2 er,2
+give 71554 lv20 atk% hp,2 atk,4 cr,2 def,1
+give 34514 lv20 cryo cr,2 atk,1 cd,4 em,2
+give 71534 lv20 cr atk,3 cd,3 def%,1 er,2
+give 10000109 lv80 c0 sl8
+give 14401 lv80 r5
+give 76543 lv20 hp def%,1 em,3 cd,3 hp%,1
+give 76523 lv20 atk er,2 hp,1 def%,2 cr,3
+give 76553 lv20 em hp,3 cr,2 atk,1 atk%,2
+give 76513 lv20 em cd,1 def,2 er,1 cr,4
+give 32534 lv20 em er,4 cr,2 cd,1 def%,2
+give 10000079 lv80 c0 sl8
+give 12401 lv80 r3
+give 94543 lv20 hp atk%,1 def,3 cr,1 cd,3
+give 31524 lv20 atk cd,4 hp%,1 def%,1 cr,3
+give 94553 lv20 hp% cd,3 cr,2 atk,1 hp,2
+give 94513 lv20 pyro hp,1 cd,4 er,1 atk%,2
+give 94533 lv20 cr hp%,3 atk,1 cd,3 em,1
+give 10000069 lv80 c1 sl8
+give 15512 lv90 r1
+give 77544 lv20 hp er,2 cr,3 em,1 cd,3
+give 77523 lv20 atk cr,4 hp%,1 cd,2 def,1
+give 77554 lv20 em cr,2 def,2 cd,4 hp%,1
+give 31513 lv20 dendro hp,2 cr,4 cd,1 atk%,1
+give 77534 lv20 cr cd,4 er,1 hp,2 em,2
+give 10000041 lv80 c0 sl7
+give 14403 lv50 r1
+give 31544 lv20 hp cd,3 atk,1 def,3 cr,2
+give 31524 lv20 atk cr,4 cd,3 def%,1 atk%,1
+give 77554 lv20 er cr,3 em,2 def,2 cd,2
+give 31514 lv20 hydro def,4 atk%,2 cd,2 cr,1
+give 94533 lv20 cr er,2 hp%,2 atk%,3 def%,1
+give 10000035 lv80 c4 sl9
+give 11405 lv60 r2
+give 96543 lv16 hp atk%,2 cd,2 hp%,1 er,2
+give 96524 lv10 atk atk%,1 er,2 hp%,1 cr,2
+give 96553 lv16 atk% cd,1 er,2 atk,3 def%,1
+give 96514 lv20 atk% em,1 er,2 hp,3 atk,3
+give 75534 lv16 heal cr,1 hp%,2 hp,2 cd,3
+give 10000016 lv80 c1 sl7
+give 12405 lv80 r5
+give 80543 lv20 hp cr,3 def,1 cd,2 atk,2
+give 80523 lv20 atk cd,2 hp,3 cr,2 atk%,1
+give 37553 lv20 atk% em,2 def%,1 cd,4 er,1
+give 80514 lv20 pyro hp,1 hp%,3 em,2 cd,3
+give 80533 lv20 cr hp,1 def%,2 atk%,2 cd,3
+give 10000003 lv80 c2 sl8
+give 11401 lv70 r1
+give 76544 lv20 hp cr,4 def,2 er,1 cd,2
+give 76523 lv20 atk def,2 atk%,2 em,1 cd,3
+give 76553 lv20 er hp%,2 atk%,1 cd,3 def,2
+give 77514 lv20 anemo atk%,2 cr,1 cd,5 atk,1
+give 76533 lv20 cr def,4 em,1 atk,2 cd,1
+give 10000115 lv80 c3 sl11
+give 11401 lv90 r5
+give 81544 lv20 hp er,3 cr,2 atk%,1 cd,3
+give 81524 lv20 atk def,2 atk%,2 er,3 em,2
+give 81553 lv20 hp% em,2 def,3 hp,2 cr,1
+give 81513 lv20 hp% hp,3 atk,1 em,2 def%,2
+give 31534 lv20 hp% def%,1 er,2 cr,3 cd,3
+give 10000110 lv80 c1 sl8
+give 13432 lv80 r5
+give 37543 lv20 hp def,1 cd,4 er,2 atk,1
+give 37523 lv20 atk hp,3 cd,2 er,1 cr,2
+give 37553 lv20 er atk%,2 cr,1 cd,3 def,2
+give 37513 lv20 atk% cr,2 cd,2 atk,2 def,2
+give 37533 lv20 cr def,1 atk,3 cd,3 atk%,1
+give 10000108 lv80 c1 sl6
+give 14302 lv90 r5
+give 76544 lv0 hp cd,1 atk,1 atk%,1 er,1
+give 76523 lv17 atk er,3 hp%,2 atk%,1 cr,1
+give 76554 lv17 atk% cd,1 cr,2 em,1 er,4
+give 94513 lv20 atk% atk,2 cd,2 cr,2 er,2
+give 76534 lv19 atk% hp,3 atk,3 er,1 cd,1
+give 10000105 lv80 c6 sl11
+give 15401 lv70 r1
+give 38544 lv20 hp cr,2 def%,2 hp%,1 cd,4
+give 38523 lv20 atk def%,2 cr,3 cd,2 hp,1
+give 38553 lv20 atk% cd,2 hp%,4 def%,1 er,1
+give 35513 lv20 electro atk,1 hp,2 cd,4 def,1
+give 38533 lv20 cr cd,3 em,2 atk,1 def,2
+give 10000100 lv80 c6 sl4
+give 13431 lv20 r1
+give 37543 lv20 hp er,1 cr,2 cd,2 atk,3
+give 37524 lv10 atk hp,2 cr,2 cd,1 atk%,1
+give 94554 lv20 def% cr,1 cd,3 atk%,1 em,4
+give 80513 lv20 geo def%,2 def,1 cd,4 hp,1
+give 37534 lv20 cr def,2 hp,2 atk,2 atk%,3
+give 10000097 lv80 c4 sl11
+give 15304 lv80 r5
+give 77544 lv20 hp cr,2 def%,2 cd,3 hp%,2
+give 77523 lv20 atk cr,2 def%,1 cd,3 hp,2
+give 77553 lv20 em def%,2 def,1 cd,2 hp%,3
+give 77514 lv20 electro em,1 def,2 cr,4 def%,2
+give 20533 lv20 cd atk%,2 def%,1 cr,3 hp,2
+give 10000088 lv80 c3 sl6
+give 14415 lv90 r5
+give 75544 lv17 hp def,2 em,2 atk,1 cd,3
+give 79523 lv20 atk cd,1 er,1 cr,2 atk%,4
+give 32553 lv20 atk% hp%,1 cd,3 em,2 er,2
+give 80514 lv16 atk% hp,1 cr,2 def,3 cd,2
+give 31533 lv20 atk% cd,3 def,1 cr,3 hp%,1
+give 10000085 lv80 c0 sl6
+give 12411 lv80 r1
+give 36543 lv20 hp def,2 cr,2 cd,3 def%,1
+give 31523 lv20 atk cd,3 def,3 cr,1 atk%,1
+give 80553 lv20 atk% er,2 cd,3 em,1 def,2
+give 79514 lv20 phys def%,2 cr,1 cd,3 def,3
+give 36533 lv20 cr em,1 def,2 cd,2 atk,3
+give 10000083 lv80 c4 sl9
+give 11302 lv90 r5
+give 76544 lv20 hp atk%,2 cr,2 cd,3 def,2
+give 76523 lv18 atk cd,1 def,2 atk%,2 cr,2
+give 79553 lv20 er cd,3 cr,3 def,1 hp,1
+give 93514 lv20 anemo cr,3 hp,3 def%,1 atk,2
+give 38534 lv20 cr atk%,2 cd,2 def,2 def%,3
+give 10000080 lv80 c0 sl5
+give 13426 lv80 r5
+give 94544 lv0 hp er,1 atk,1 hp%,1 cd,1
+give 94523 lv15 atk er,1 def%,2 cd,2 hp,1
+give 80554 lv20 hp% er,2 atk%,2 cd,3 cr,2
+give 31514 lv16 hp% er,2 cd,2 atk%,2 cr,2
+give 32534 lv20 heal hp%,3 em,3 cr,2 er,1
+give 10000077 lv80 c6 sl9
+give 13414 lv90 r1
+give 20543 lv20 hp em,2 cr,2 cd,2 atk,2
+give 20523 lv20 atk hp%,2 cd,2 def,3 em,1
+give 37553 lv20 hp% cr,2 cd,3 atk,2 def,1
+give 32513 lv20 hp% atk,2 hp,1 cd,3 def,2
+give 20533 lv20 hp% atk,1 def,2 cd,4 er,1
+give 10000076 lv80 c4 sl6
+give 15101 lv1 r1
+give 94544 lv20 hp er,1 cr,3 em,1 def,4
+give 94523 lv20 atk cd,2 em,2 er,1 def%,3
+give 94553 lv6 er atk%,1 em,1 def%,1 def,1
+give 36514 lv20 anemo hp,1 cd,2 cr,3 atk%,3
+give 94534 lv20 cr er,3 def,2 atk,3 def%,1
+give 10000074 lv80 c6 sl11
+give 11427 lv80 r1
+give 91543 lv18 hp def%,1 cd,1 em,1 er,4
+give 91523 lv20 atk hp%,2 cr,1 em,1 def,4
+give 91553 lv18 hp% atk,1 def%,2 er,1 hp,3
+give 31513 lv20 hp% cd,2 cr,2 atk%,1 hp,3
+give 91534 lv20 hp% atk%,1 cr,3 em,4 hp,1
+give 10000072 lv80 c5 sl11
+give 13303 lv80 r5
+give 94544 lv20 hp atk,2 cd,2 def,2 er,3
+give 80523 lv20 atk atk%,1 er,1 cr,4 hp%,2
+give 94554 lv20 atk% def%,2 atk,1 cr,4 hp,2
+give 32514 lv20 hydro er,3 cr,3 atk,2 em,1
+give 31534 lv20 cr cd,2 hp,4 def%,1 em,2
+give 10000067 lv80 c6 sl8
+give 15411 lv70 r5
+give 20544 lv6 hp def,1 atk,1 hp%,1 cr,2
+give 20523 lv20 atk cr,2 er,2 def%,1 em,3
+give 94553 lv20 atk% cd,3 cr,2 def%,2 atk,1
+give 32513 lv20 dendro hp,3 cd,2 er,2 atk,1
+give 96533 lv20 cr atk%,3 atk,2 cd,1 em,2
+give 10000061 lv80 c4 sl9
+give 11425 lv90 r5
+give 31544 lv20 hp er,1 cr,3 atk,1 hp%,4
+give 31523 lv20 atk cd,2 atk%,2 cr,2 er,2
+give 71554 lv20 hp% atk,4 cd,3 atk%,1 cr,1
+give 71513 lv20 hp% cr,2 atk,1 cd,3 er,2
+give 31533 lv20 cr atk,1 hp%,3 def,1 er,3
+give 10000059 lv80 c6 sl9
+give 14402 lv90 r5
+give 32543 lv20 hp cr,1 atk,2 cd,2 atk%,3
+give 75524 lv20 atk hp,2 cr,2 cd,2 def,3
+give 96553 lv20 atk% def%,2 cd,2 cr,1 def,3
+give 32514 lv20 anemo def%,2 cr,5 er,1 def,1
+give 75534 lv20 cr hp,2 def,3 atk,3 cd,1
+give 10000055 lv80 c6 sl9
+give 15403 lv1 r5
+give 95543 lv20 hp def%,2 hp%,3 cr,1 def,2
+give 95523 lv17 atk er,1 def,2 em,3 atk%,1
+give 20553 lv20 def% cr,3 er,2 em,1 atk,2
+give 95513 lv20 def% hp,2 cd,3 atk,2 atk%,1
+give 95533 lv20 def% hp%,1 cr,2 atk,3 hp,2
+give 10000050 lv80 c6 sl9
+give 13401 lv1 r5
+give 21544 lv16 hp atk%,4 er,2 def%,1 cr,1
+give 21523 lv19 atk hp%,2 cr,2 cd,1 hp,2
+give 21553 lv20 em def,1 cd,2 atk%,4 atk,1
+give 21513 lv20 em hp,2 def,3 hp%,2 atk,1
+give 79533 lv20 em cr,2 cd,3 hp,1 def,2
+give 10000048 lv80 c5 sl9
+give 14501 lv70 r1
+give 93543 lv20 hp atk%,1 cd,2 def,3 cr,2
+give 77523 lv20 atk er,2 cr,3 cd,2 em,1
+give 93553 lv20 em atk%,1 cd,3 cr,2 def%,2
+give 77513 lv20 pyro hp,1 cr,4 atk,2 er,1
+give 80533 lv20 cr atk,1 def,3 cd,2 def%,2
+give 10000045 lv80 c2 sl6
+give 13409 lv50 r1
+give 20543 lv20 hp cr,4 cd,2 def,1 atk%,1
+give 31524 lv20 atk cd,2 cr,3 def,3 er,1
+give 32554 lv20 er cd,2 cr,2 atk%,2 hp%,3
+give 37513 lv20 cryo cd,3 atk,2 cr,1 hp%,2
+give 76533 lv20 cd cr,3 atk%,2 em,1 def,2
+give 10000043 lv80 c3 sl9
+give 14402 lv50 r1
+give 76544 lv0 hp def,1 em,1 atk,1 er,1
+give 76524 lv20 atk def,2 hp,3 em,2 er,2
+give 76553 lv14 em cr,1 hp%,1 atk,2 def,2
+give 32514 lv0 em er,1 cd,1 atk,1 def,1
+give 76533 lv20 em def%,2 def,2 er,1 hp%,3
+give 10000039 lv80 c6 sl4
+give 15403 lv60 r5
+give 74544 lv0 hp atk,1 er,1 hp%,1 em,1
+give 74524 lv0 atk cr,1 hp%,1 em,1 hp,1
+give 74553 lv0 hp% atk,1 cr,1 er,1
+give 74514 lv0 hp% atk,1 def,1 cd,1 cr,1
+give 74533 lv0 hp% atk,1 atk%,1 cd,1
+give 10000036 lv80 c6 sl8
+give 12403 lv40 r1
+give 75543 lv20 hp cr,2 em,1 cd,3 er,2
+give 75524 lv20 atk hp%,1 hp,2 cr,4 cd,2
+give 75554 lv20 atk% hp,4 er,1 atk,1 cd,3
+give 32513 lv20 cryo atk,2 cd,4 er,1 hp,1
+give 75533 lv20 cr atk%,2 atk,3 em,2 hp,1
+give 10000034 lv80 c6 sl10
+give 12406 lv80 r1
+give 31543 lv20 hp atk,2 cr,2 cd,2 er,2
+give 31523 lv20 atk def,3 cd,3 hp,1 cr,1
+give 88553 lv20 def% atk,1 cd,4 cr,1 atk%,2
+give 93514 lv20 geo atk,3 atk%,2 cd,2 cr,2
+give 34533 lv20 cr cd,1 er,2 atk%,2 hp,3
+give 10000032 lv80 c6 sl11
+give 11417 lv80 r1
+give 81543 lv20 hp em,1 er,4 atk,1 cd,2
+give 81523 lv20 atk em,4 cr,1 cd,1 atk%,2
+give 81554 lv20 er def,2 cd,1 atk%,5 em,1
+give 74513 lv20 pyro hp%,1 def,2 cd,3 atk%,2
+give 81533 lv20 hp% cd,3 def%,2 cr,2 hp,1
+give 10000031 lv80 c6 sl10
+give 15402 lv80 r4
+give 32543 lv20 hp cr,3 def,2 cd,2 em,1
+give 32523 lv20 atk hp,1 cr,2 cd,3 def%,2
+give 32553 lv20 atk% hp,2 hp%,3 cd,2 cr,1
+give 73513 lv20 electro atk,1 cr,5 cd,1 er,1
+give 32533 lv20 cr em,2 def,3 hp%,2 cd,1
+give 10000027 lv80 c6 sl8
+give 14402 lv80 r2
+give 31543 lv20 hp cd,2 em,3 cr,2 er,1
+give 32523 lv20 atk cr,3 cd,1 def%,1 hp,3
+give 90553 lv20 atk% cr,2 cd,2 atk,1 hp,3
+give 20514 lv20 geo atk,3 cr,3 er,2 def%,1
+give 38534 lv20 cr def%,3 em,2 cd,2 def,2
+give 10000025 lv80 c6 sl11
+give 11403 lv70 r5
+give 90543 lv20 hp em,1 cr,1 cd,2 atk%,4
+give 90523 lv20 atk cd,2 cr,3 atk%,2 def,1
+give 94553 lv20 atk% cd,4 er,2 em,1 cr,1
+give 77513 lv20 hydro cd,2 hp,3 er,2 atk%,1
+give 94533 lv20 cr def%,2 atk,4 cd,1 hp%,1
+give 10000024 lv80 c2 sl8
+give 12403 lv80 r4
+give 94543 lv20 hp cd,3 atk,2 hp%,2 em,1
+give 94523 lv20 atk em,3 cd,3 hp%,1 hp,1
+give 94553 lv20 atk% cr,2 cd,3 atk,1 em,2
+give 94514 lv20 electro def%,2 cr,5 em,1 def,1
+give 75534 lv20 cr atk%,3 def,3 def%,1 cd,2
+give 10000006 lv80 c0 sl6
+give 14502 lv80 r1
+give 31543 lv20 hp cr,1 cd,4 atk,2 def%,1
+give 31523 lv20 atk er,1 cr,2 cd,3 def,2
+give 77554 lv20 atk% er,3 cr,2 cd,2 hp%,2
+give 77514 lv20 electro def,2 hp,1 atk,2 cd,4
+give 31534 lv20 cr hp%,2 atk,2 atk%,2 cd,3
+give 10000021 lv60 c0 sl4
+give 15101 lv1 r1
+give 77544 lv20 hp cr,1 cd,2 er,3 atk,3
+give 77523 lv0 atk cr,1 atk%,1 er,1
+give 77554 lv20 er hp%,2 em,2 cr,4 cd,1
+give 36513 lv20 dendro hp%,2 cr,1 cd,3 def,2
+give 31533 lv20 cr def,1 cd,3 hp%,2 def%,2
+give 10000014 lv60 c6 sl7
+give 14427 lv1 r1
+give 10000068 lv50 c4 sl4
+give 12101 lv1 r1
+give 10000053 lv50 c6 sl4
+give 12427 lv70 r2
+give 37544 lv20 hp def,1 cd,2 er,3 em,3
+give 21523 lv20 atk cr,1 def,1 em,2 er,4
+give 21553 lv20 em def,2 cd,1 atk%,4 hp,1
+give 20513 lv20 em hp,3 atk%,1 def,3 cd,1
+give 21533 lv20 em hp%,2 def,2 hp,2 def%,2
+give 10000044 lv50 c6 sl4
+give 12401 lv1 r1
+give 34543 lv20 hp def,1 em,3 cd,2 atk%,2
+give 31553 lv20 atk% cr,2 cd,2 hp,2 er,2
+give 31513 lv20 atk% cd,3 cr,1 hp,1 em,3
+give 21533 lv20 cd def,1 atk%,1 cr,4 def%,2
+give 10000020 lv50 c3 sl4
+give 12431 lv50 r1
+give 39543 lv20 hp cr,1 cd,5 er,1 em,1
+give 39523 lv20 atk cr,3 cd,2 er,2 def%,1
+give 39553 lv20 atk% cd,3 cr,1 em,2 def%,2
+give 39514 lv20 atk% cr,2 hp,1 cd,5 er,1
+give 39533 lv20 cr cd,2 er,2 atk%,3 hp,1

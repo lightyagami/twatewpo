@@ -45,4 +45,38 @@ public class PacketAvatarFetterDataNotify extends BasePacket {
 
         this.setData(proto);
     }
+
+    public PacketAvatarFetterDataNotify(java.util.Collection<Avatar> avatars) {
+        super(PacketOpcodes.AvatarFetterDataNotify);
+
+        AvatarFetterDataNotify.Builder proto = AvatarFetterDataNotify.newBuilder();
+
+        for (Avatar avatar : avatars) {
+            int fetterLevel = avatar.getFetterLevel();
+            AvatarFetterInfo.Builder avatarFetter =
+                    AvatarFetterInfo.newBuilder().setExpLevel(fetterLevel);
+
+            if (fetterLevel != 10) {
+                avatarFetter.setExpNumber(avatar.getFetterExp());
+            }
+
+            if (avatar.getFetterList() != null) {
+                for (int i = 0; i < avatar.getFetterList().size(); i++) {
+                    avatarFetter.addFetterList(
+                            FetterData.newBuilder()
+                                    .setFetterId(avatar.getFetterList().get(i))
+                                    .setFetterState(FetterState.FINISH.getValue()));
+                }
+            }
+
+            int cardId = avatar.getNameCardId();
+            if (avatar.getPlayer() != null && avatar.getPlayer().getNameCardList().contains(cardId)) {
+                avatarFetter.addRewardedFetterLevelList(10);
+            }
+
+            proto.putFetterInfoMap(avatar.getGuid(), avatarFetter.build());
+        }
+
+        this.setData(proto.build());
+    }
 }

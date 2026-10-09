@@ -1,0 +1,12 @@
+syntax = "proto3";
+option java_package = "emu.grasscutter.net.proto";
+
+import "GetGameplayRecommendationReq.proto";
+
+message AIPIEIFKIFK {
+  repeated GetGameplayRecommendationReq JBJIONAPIKL = 9;
+  bool KFNDPKDFJAB = 2;
+  uint32 reason = 3;
+  uint32 LAFAECIBDKF = 8;
+  uint32 avatar_id = 10;
+}

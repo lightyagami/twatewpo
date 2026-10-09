@@ -81,12 +81,27 @@ public final class DomainDungeonHelper {
             n3 = 40754 + (n - 40816);
         } else if (n >= 40704 && n <= 40707) {
             n3 = 40754 + (n - 40704);
+        } else if (n >= 40760 && n <= 40763) {
+            // Fontaine artifact (Pale Forgotten Glory) -> Lost Lunar Court / Spire of Solitary Enlightenment
+            n3 = 40754 + (n - 40760);
+        } else if (n >= 40764 && n <= 40767) {
+            // Natlan talent (Blazing Ruins) -> Steeple of Ignorance
+            n3 = 40750 + (n - 40764);
         } else if (n >= 40770 && n <= 40773) {
-            n3 = n;
-        } else if (n >= 40780 && n <= 40791) {
-            n3 = n;
+            // Fontaine talent -> Steeple of Ignorance
+            n3 = 40750 + (n - 40770);
+        } else if (n >= 40774 && n <= 40777) {
+            // Natlan weapon (Ancient Watchtower) -> Steeple of Ignorance
+            n3 = 40750 + (n - 40774);
+        } else if (n >= 40780 && n <= 40783) {
+            // Fontaine weapon (Echoes of Deep Tides) -> Steeple of Ignorance
+            n3 = 40750 + (n - 40780);
+        } else if (n >= 40784 && n <= 40791) {
+            // Fontaine artifact (Denouement of Sin / Waterfall Wen) -> Lost Lunar Court
+            n3 = 40754 + ((n - 40784) % 4);
         } else if (n >= 40792 && n <= 40799) {
-            n3 = n;
+            // Natlan artifact (Sanctum of Rainbow Spirits / Chamber of Thought) -> Lost Lunar Court
+            n3 = 40754 + ((n - 40792) % 4);
         } else if (n >= 40810 && n <= 40813) {
             n3 = 40506;
         } else if (n >= 40820 && n <= 40823) {
@@ -102,15 +117,13 @@ public final class DomainDungeonHelper {
             // Snezhnaya weapon: replicate the Lost Lunar Court (40754-40757) client scene art
             n3 = 40754 + (n - 40832);
         } else if (n >= 40836 && n <= 40839) {
-            // Snezhnaya talent: replicate the Fontaine Pale Forgotten Glory / Lightless Depths scenes (40760-40763)
-            n3 = 40760 + (n - 40836);
+            // Snezhnaya talent -> Steeple of Ignorance
+            n3 = 40750 + (n - 40836);
         } else if (n >= 40700 && n <= 40703) {
             n3 = n;
         } else if (n >= 40840 && n <= 40847) {
             // Extra custom domains without client art - reuse the Lost Lunar Court scene
             n3 = 40754 + ((n - 40840) % 4);
-        } else if (n >= 40760 && n <= 40767) {
-            n3 = n;
         }
         if (n3 != n) {
             // empty if block

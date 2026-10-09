@@ -74,6 +74,11 @@ public final class InvestigationHandbookHelper {
             ensureLoaded();
             forceOpenState(player, OPEN_STATE_MANUAL);
             forceOpenState(player, OPEN_STATE_MENGDE_MANUAL);
+            forceOpenState(player, 1102); // OPEN_ADVENTURE_MANUAL_CITY_LIYUE
+            forceOpenState(player, 1103); // OPEN_ADVENTURE_MANUAL_MONSTER
+            forceOpenState(player, 1104); // OPEN_ADVENTURE_MANUAL_BOSS_DUNGEON
+            forceOpenState(player, 40);   // OPEN_STATE_GUIDE_ADVENTURE_DAILYTASK
+            forceOpenState(player, 4510); // OPEN_STATE for Daily Task system
             if (player.getLevel() >= 16) {
                 forceOpenState(player, OPEN_STATE_EDUCATION);
             }

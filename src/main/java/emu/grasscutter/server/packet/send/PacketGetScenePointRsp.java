@@ -42,6 +42,10 @@ public class PacketGetScenePointRsp extends BasePacket {
             }
         }
 
+        if (sceneId == 3) {
+            player.getUnlockedScenePoints(3).add(1628);
+        }
+
         var unlockedSet = player.getUnlockedScenePoints(sceneId);
         boolean has7 = false;
         int unlockedCount = 0;

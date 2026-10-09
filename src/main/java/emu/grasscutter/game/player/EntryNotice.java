@@ -22,14 +22,7 @@ public final class EntryNotice {
         player.setEntryNoticeChecked(true);
 
         if (player.isPendingWelcomeNotice()) {
-            // The first world entry includes the 7.1 birth cinematic. A modal
-            // AntiAddictNotify here interrupts the client-controlled intro.
-            // Keep update notices and non-modal announcements on later logins.
             player.setPendingWelcomeNotice(false);
-        } else if (!Objects.equals(player.getLastSeenBuildHash(), BuildConfig.GIT_HASH)) {
-            player.sendPacket(
-                    new PacketAntiAddictNotify(
-                            1, "The server has been updated and restarted since you were last online."));
         }
 
         player.setLastSeenBuildHash(BuildConfig.GIT_HASH);

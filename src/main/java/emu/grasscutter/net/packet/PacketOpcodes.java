@@ -48,7 +48,13 @@ public final class PacketOpcodes {
     public static final int RemoveCustomTeamReq = 0;
     public static final int SceneKickPlayerReq = 29095;
     public static final int SkipPlayerGameTimeReq = 29432;
-    public static final int TheaterLobbySceneJumpReq = 0;
+    public static final int TheaterLobbySceneJumpReq = 5836;
+    public static final int CEGMFMKNCFC = 29790; // Theater magic book interact req
+    public static final int CENHPLPLEKE = 24459; // Theater magic book interact rsp
+    public static final int JCLJGJFDEBA = 8633;
+    public static final int HCIIIEJGIOD = 578;
+    public static final int AIPIEIFKIFK = 24713; // Batch gameplay recommendation req
+    public static final int OCBIKGCIONN = 5451; // Batch gameplay recommendation rsp
     public static final int UiSettingInputTypeNotify = 29767;
     public static final int UnlockPersonalLineReq = 5896; // 7.1: one of two {personal_line_id = 13} reqs, see HandlerUnlockPersonalLineReq
     public static final int _UnlockPersonalLineReqAlt = 21679; // 7.1: the other one
@@ -917,7 +923,8 @@ public final class PacketOpcodes {
     // public static final int GMAGMFEOOAM = 23760;
     public static final int HomeUpdatePictureFrameInfoRsp = 550;
     public static final int PlayerPreEnterMpNotify = 21080;
-    // public static final int KNFNMDADNDO = 8447;
+    public static final int GOIKIANBBKA = 8447;
+    public static final int KDJCECACFFO = 26681;
     public static final int EnterSceneDoneRsp = 4752;
     public static final int _TakeReunionVideoRewardRsp = 24326;
     public static final int _MoveTeamRsp = 29538;
@@ -2620,7 +2627,7 @@ public final class PacketOpcodes {
     public static final int BargainTerminateNotify = 7831;
     public static final int HomeLimitedShopInfoRsp = 2652;
     public static final int ReunionBriefInfoReq = 5886;
-    public static final int DungeonRestartReq = 0; // 7.1 CmdId unknown (7.0: 27917)
+    public static final int DungeonRestartReq = 9381;
     // public static final int OfferingPariSearchRsp = 25683;
     public static final int PushTipsChangeNotify = 4737;
     public static final int DragonSpineCoinChangeNotify = 24405;

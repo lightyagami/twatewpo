@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class PacketPersonalLineAllDataRsp extends BasePacket {
 
     public PacketPersonalLineAllDataRsp(
-            Collection<GameMainQuest> gameMainQuestList, Set<Integer> unlockedLines) {
+            Collection<GameMainQuest> gameMainQuestList, Set<Integer> unlockedLines, Set<Integer> forcedFinishedQuests) {
         super(PacketOpcodes.PersonalLineAllDataRsp);
 
         var proto = PersonalLineAllDataRspOuterClass.PersonalLineAllDataRsp.newBuilder();
@@ -28,10 +28,18 @@ public class PacketPersonalLineAllDataRsp extends BasePacket {
         var miaoUnlocked = new ArrayList<Integer>();
         var miaoLocked = new ArrayList<Integer>();
 
-        // 关键：不管玩家解不解锁，只要没在进行中的传说任务，统统填 locked
-        // （客户端靠 locked 列表画卡片 + 快速体验入口）
+        // Lines that are already finished or unlocked should NOT be added to lockedPersonalLineList.
+        // A line in lockedPersonalLineList causes the client to show a lock icon and "Quick Start Available".
         GameData.getPersonalLineDataMap().values().stream()
                 .filter(i -> !questList.contains(i.getStartQuestId()))
+                .filter(i -> unlockedLines == null || !unlockedLines.contains(i.getId()))
+                .filter(i -> {
+                    if (forcedFinishedQuests == null || forcedFinishedQuests.isEmpty()) return true;
+                    int startSub = i.getStartQuestId();
+                    var qData = GameData.getQuestDataMap().get(startSub);
+                    int mainId = qData != null ? qData.getMainId() : (startSub / 100);
+                    return !forcedFinishedQuests.contains(mainId) && !forcedFinishedQuests.contains(startSub);
+                })
                 .forEach(
                         i -> {
                             proto.addLockedPersonalLineList(
@@ -47,13 +55,11 @@ public class PacketPersonalLineAllDataRsp extends BasePacket {
                             }
                         });
 
-        // [锚点] 把发出去的列表打印出来
-        var miaoAll = new ArrayList<Integer>();
-        GameData.getPersonalLineDataMap().keySet().forEach(miaoAll::add);
-        Collections.sort(miaoAll);
-        Collections.sort(miaoUnlocked);
-        Collections.sort(miaoLocked);
-
         this.setData(proto);
+    }
+
+    public PacketPersonalLineAllDataRsp(
+            Collection<GameMainQuest> gameMainQuestList, Set<Integer> unlockedLines) {
+        this(gameMainQuestList, unlockedLines, Collections.emptySet());
     }
 }

@@ -106,6 +106,17 @@ public final class GameServerPacketHandler {
                 emu.grasscutter.server.packet.recv.HandlerPlayerOfferingReq.class);
         Grasscutter.getLogger()
                 .info("Registered PlayerOfferingReq handler at opcode {}", PacketOpcodes.PlayerOfferingReq);
+        registerIfAbsent(
+                PacketOpcodes.CEGMFMKNCFC,
+                emu.grasscutter.server.packet.recv.HandlerCEGMFMKNCFC.class);
+        Grasscutter.getLogger()
+                .info("Registered HandlerCEGMFMKNCFC at opcode {}", PacketOpcodes.CEGMFMKNCFC);
+        registerIfAbsent(
+                PacketOpcodes.JCLJGJFDEBA,
+                emu.grasscutter.server.packet.recv.HandlerNoop8633.class);
+        registerIfAbsent(
+                PacketOpcodes.HCIIIEJGIOD,
+                emu.grasscutter.server.packet.recv.HandlerNoop578.class);
     }
 
     private void registerIfAbsent(int opcode, Class<? extends PacketHandler> handlerClass) {

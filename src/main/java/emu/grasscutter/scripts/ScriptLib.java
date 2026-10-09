@@ -1044,7 +1044,7 @@ public class ScriptLib {
     }
 
     public int MarkPlayerAction(int var1, int var2, int var3) {
-        logger.warn("[LUA] Call unimplemented MarkPlayerAction with {},{},{}", var1, var2, var3);
+        logger.debug("[LUA] Call unimplemented MarkPlayerAction with {},{},{}", var1, var2, var3);
 
         return 0;
     }
@@ -1571,8 +1571,8 @@ public class ScriptLib {
     }
 
     public int ShowReminderRadius(int var1, LuaTable var2, int var3) {
-        logger.warn("[LUA] Call unimplemented ShowReminderRadius with {} {} {}", var1, printTable(var2), var3);
-
+        logger.debug("[LUA] Call ShowReminderRadius with {} {} {}", var1, printTable(var2), var3);
+        getSceneScriptManager().getScene().broadcastPacket(new PacketDungeonShowReminderNotify(var1));
         return 0;
     }
 

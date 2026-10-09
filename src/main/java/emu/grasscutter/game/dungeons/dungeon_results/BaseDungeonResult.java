@@ -31,6 +31,9 @@ public class BaseDungeonResult {
         if (dungeonData.getSettleShows() != null) {
             for (int i = 0; i < dungeonData.getSettleShows().size(); i++) {
                 var settle = dungeonData.getSettleShows().get(i);
+                if (settle == null || settle == emu.grasscutter.game.dungeons.enums.SettleShowType.SETTLE_SHOW_NONE) {
+                    continue;
+                }
                 builder.putSettleShow(
                         i + 1,
                         switch (settle) {

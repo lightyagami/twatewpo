@@ -9,7 +9,7 @@ public class TowerScheduleData extends GameResource {
     private int scheduleId;
     private List<Integer> entranceFloorId;
     // The 7.1 resources name this list LHOGNLPBILP; reading it as empty hides floors 9-12.
-    @SerializedName(value = "schedules", alternate = {"LHOGNLPBILP"})
+    @SerializedName(value = "schedules", alternate = {"LHOGNLPBILP", "Schedules"})
     private List<ScheduleDetail> schedules;
     private int monthlyLevelConfigId;
 

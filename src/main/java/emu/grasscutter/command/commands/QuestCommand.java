@@ -75,6 +75,13 @@ public final class QuestCommand implements CommandHandler {
                         "Force-finished " + ids.size() + " main quest(s), " + added + " newly."
                                 + " This is saved and re-sent on every login.");
             }
+            case "unforcefinish", "unforce", "unfinish_forced" -> {
+                int removed = emu.grasscutter.game.quest.ForcedQuests.unforce(targetPlayer, List.of(questId));
+                CommandHandler.sendMessage(
+                        sender,
+                        "Removed main quest " + questId + " from forced-finished quests ("
+                                + removed + " removed).");
+            }
             case "add", "start" -> {
                 // With questing off the quest is created but its update reaches the client empty,
                 // so the command reported a success the player never saw.

@@ -11,11 +11,12 @@ public class HandlerPersonalLineAllDataReq extends PacketHandler {
 
     @Override
     public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
-        // [锚点] 客户端来要传说任务数据了
+        var player = session.getPlayer();
         session.send(
                 new PacketPersonalLineAllDataRsp(
-                        session.getPlayer().getQuestManager().getMainQuests().values(),
-                        session.getPlayer().getPersonalLineList()));
+                        player.getQuestManager().getMainQuests().values(),
+                        player.getPersonalLineList(),
+                        player.getForcedFinishedQuests()));
         session.send(new PacketCoopDataNotify());
     }
 }

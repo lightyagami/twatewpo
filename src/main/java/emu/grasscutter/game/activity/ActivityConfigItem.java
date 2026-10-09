@@ -23,6 +23,12 @@ public class ActivityConfigItem {
             this.openTime = beginTime;
         }
 
+        if (activityId == 5269) {
+            long now = System.currentTimeMillis();
+            this.beginTime = new Date(now - 86400000L);
+            this.openTime = this.beginTime;
+        }
+
         if (closeTime == null) {
             this.closeTime = endTime;
         }

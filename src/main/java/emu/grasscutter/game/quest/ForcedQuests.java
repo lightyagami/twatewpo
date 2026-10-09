@@ -102,9 +102,20 @@ public final class ForcedQuests {
             Grasscutter.getLogger().warn("Error cleaning up active pre-7 quests", e);
         }
 
+        // Ensure flying, stamina, and gliders are maxed
+        player.setProperty(emu.grasscutter.game.props.PlayerProperty.PROP_MAX_STAMINA, 24000);
+        player.setProperty(emu.grasscutter.game.props.PlayerProperty.PROP_CUR_PERSIST_STAMINA, 24000);
+        player.setProperty(emu.grasscutter.game.props.PlayerProperty.PROP_IS_FLYABLE, 1);
+        player.setProperty(emu.grasscutter.game.props.PlayerProperty.PROP_PLAYER_CAN_DIVE, 1);
+        emu.grasscutter.data.GameData.getAvatarFlycloakDataMap().keySet().forEach(player.getFlyCloakList()::add);
+        player.getOpenStates().put(26, 1);
+        player.getOpenStates().put(2105, 1);
+        emu.grasscutter.data.GameData.getPersonalLineDataMap().keySet().forEach(player.getPersonalLineList()::add);
+
         // Start Chapter 1700 (Quest 7011: Into the Wind, Into the Frigid North)
         try {
             player.getQuestManager().startMainQuest(7011);
+            player.getQuestManager().addQuest(701101);
         } catch (Exception e) {
             Grasscutter.getLogger().warn("Error starting 7.1 Archon quest 7011", e);
         }
@@ -183,6 +194,15 @@ public final class ForcedQuests {
         player.save();
         notify(player, questIds);
         return forced.size() - before;
+    }
+
+    /** Removes them from forced finished quests, remembers it, and saves. Survives a relog. */
+    public static int unforce(Player player, Collection<Integer> questIds) {
+        var forced = player.getForcedFinishedQuests();
+        int before = forced.size();
+        forced.removeAll(questIds);
+        player.save();
+        return before - forced.size();
     }
 
     private static void send(Player player, List<Integer> ids) {

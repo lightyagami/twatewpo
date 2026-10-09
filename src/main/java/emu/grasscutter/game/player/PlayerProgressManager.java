@@ -40,7 +40,7 @@ public final class PlayerProgressManager extends BasePlayerDataManager {
     // off nothing ever satisfies that condition, so the features stay locked for good rather than
     // just unlocking late - the Nod-Krai and Natlan menu entries among them. Unlocked outright.
     public static final Set<Integer> QUEST_GATED_7_0_OPEN_STATES =
-            Set.of(6701, 6702, 6706, 7011, 7014, 7015, 7016, 7021, 7025, 7055, 7056, 7059);
+            Set.of(4700, 4701, 4702, 4703, 4704, 4705, 4706, 4707, 4708, 4709, 4710, 6701, 6702, 6706, 7011, 7014, 7015, 7016, 7021, 7025, 7055, 7056, 7059);
 
     // Set of open states that are set per default for all accounts. Can be overwritten by an entry in
     // `map`.
@@ -164,7 +164,7 @@ public final class PlayerProgressManager extends BasePlayerDataManager {
         return this.player.getOpenStates().getOrDefault(openState, 0);
     }
 
-    private void setOpenState(int openState, int value, boolean sendNotify) {
+    public void setOpenState(int openState, int value, boolean sendNotify) {
         int previousValue = this.player.getOpenStates().getOrDefault(openState, -1 /* non-existent */);
 
         if (value != previousValue) {
@@ -180,7 +180,7 @@ public final class PlayerProgressManager extends BasePlayerDataManager {
         }
     }
 
-    private void setOpenState(int openState, int value) {
+    public void setOpenState(int openState, int value) {
         this.setOpenState(openState, value, true);
     }
 
@@ -198,16 +198,29 @@ public final class PlayerProgressManager extends BasePlayerDataManager {
                     }
                 }
                 case OPEN_STATE_COND_QUEST -> {
+                    int subQuestId = condition.getParam();
+                    if (this.player.getForcedFinishedQuests().contains(subQuestId)
+                            || this.player.getForcedFinishedQuests().contains(subQuestId / 100)) {
+                        continue;
+                    }
+                    var qData = GameData.getQuestDataMap().get(subQuestId);
+                    if (qData != null && this.player.getForcedFinishedQuests().contains(qData.getMainId())) {
+                        continue;
+                    }
                     // check sub quest id for quest finished met requirements
-                    var quest = this.player.getQuestManager().getQuestById(condition.getParam());
+                    var quest = this.player.getQuestManager().getQuestById(subQuestId);
                     if (quest == null || quest.getState() != QuestState.QUEST_STATE_FINISHED) {
                         return false;
                     }
                 }
                 case OPEN_STATE_COND_PARENT_QUEST -> {
+                    int mainQuestId = condition.getParam();
+                    if (this.player.getForcedFinishedQuests().contains(mainQuestId)) {
+                        continue;
+                    }
                     // check main quest id for quest finished met requirements
                     // TODO not sure if its having or finished quest
-                    var mainQuest = this.player.getQuestManager().getMainQuestById(condition.getParam());
+                    var mainQuest = this.player.getQuestManager().getMainQuestById(mainQuestId);
                     if (mainQuest == null
                             || mainQuest.getState() != ParentQuestState.PARENT_QUEST_STATE_FINISHED) {
                         return false;
@@ -257,7 +270,7 @@ public final class PlayerProgressManager extends BasePlayerDataManager {
         // Get list of open states that are not yet unlocked.
         var lockedStates =
                 GameData.getOpenStateList().stream()
-                        .filter(s -> this.player.getOpenStates().getOrDefault(s, 0) == 0)
+                        .filter(s -> this.player.getOpenStates().getOrDefault(s.getId(), 0) == 0)
                         .toList();
 
         // Try unlocking all of them.

@@ -100,7 +100,7 @@ public class seCommand implements CommandHandler {
             return;
         }
         int activeAvatarId = currentEntity.getAvatar().getAvatarId();
-        String failure;
+        String failure = null;
         if (activeAvatarId == GameConstants.MAIN_CHARACTER_MALE
                 || activeAvatarId == GameConstants.MAIN_CHARACTER_FEMALE) {
             failure = changeAvatarElement(targetPlayer, activeAvatarId, element);
@@ -108,8 +108,16 @@ public class seCommand implements CommandHandler {
                 ConstellationsHandler.change(targetPlayer, element, constellation);
             }
         } else {
-            failure = String.format("the active character is %d, switch to the Traveler first",
-                    activeAvatarId);
+            boolean changedAny = false;
+            for (int travelerId : List.of(GameConstants.MAIN_CHARACTER_MALE, GameConstants.MAIN_CHARACTER_FEMALE)) {
+                if (targetPlayer.getAvatars().getAvatarById(travelerId) != null) {
+                    changeAvatarElement(targetPlayer, travelerId, element);
+                    changedAny = true;
+                }
+            }
+            if (!changedAny) {
+                failure = "No Traveler avatar found";
+            }
         }
         if (failure == null) {
             int scene = targetPlayer.getSceneId();

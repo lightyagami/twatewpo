@@ -30,6 +30,14 @@ public final class SetPropCommand implements CommandHandler {
             this.props.put(key, new Prop(name, prop));
         }
 
+        Prop ar =
+                new Prop("Player Level", PlayerProperty.PROP_PLAYER_LEVEL);
+        this.props.put("ar", ar);
+        this.props.put("al", ar);
+        this.props.put("playerlevel", ar);
+        this.props.put("adventure_rank", ar);
+        this.props.put("adventurerank", ar);
+
         Prop worldlevel =
                 new Prop("World Level", PlayerProperty.PROP_PLAYER_WORLD_LEVEL, PseudoProp.WORLD_LEVEL);
         this.props.put("worldlevel", worldlevel);
@@ -245,7 +253,7 @@ public final class SetPropCommand implements CommandHandler {
                                     var scenePointEentry = GameData.getScenePointEntryById(sceneId, p);
                                     var pointData = scenePointEentry.getPointData();
 
-                                    boolean forbidSimpleUnlock = pointData.isForbidSimpleUnlock();
+                                    boolean forbidSimpleUnlock = pointData.isForbidSimpleUnlock() && p != 1628;
                                     boolean sceneBuildingPointLocked =
                                             "SceneBuildingPoint".equals(pointData.getType()) && !pointData.isUnlocked();
 

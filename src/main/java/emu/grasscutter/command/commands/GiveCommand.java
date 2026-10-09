@@ -22,9 +22,9 @@ import lombok.Setter;
 
 @Command(
         label = "give",
-        aliases = {"g", "item", "giveitem"},
+        aliases = {"g", "item", "giveitem", "giveall"},
         usage = {
-            "(<itemId>|<avatarId>|all|weapons|mats|avatars|artifacts) [lv<level 1-100, default 100>] [r<refinement>] [x<amount>] [c<constellation>] [sl<skilllevel>]",
+            "(<itemId>|<avatarId>|all|weapons|mats|avatars|artifacts) [lv<level 1-100, default 90>] [r<refinement>] [x<amount>] [c<constellation>] [sl<skilllevel>]",
             "<artifactId> [lv<level>] [x<amount>] [<mainPropId>] [<appendPropId>[,<times>]]..."
         },
         permission = "player.give",
@@ -108,11 +108,15 @@ public final class GiveCommand implements CommandHandler {
     }
 
     private static void giveAllAvatars(Player player, GiveItemParameters param) {
+        if (param.lvl <= 0) param.lvl = 90;
         int promoteLevel = Avatar.getMinPromoteLevel(param.lvl);
         if (param.constellation < 0 || param.constellation > 6)
-            param.constellation =
-                    6; // constellation's default is -1 so if no parameters set for constellations it'll
-        // automatically be 6
+            param.constellation = 2; // Default C2
+        if (!param.skillLevelGiven)
+            param.skillLevel = 10; // Default max talent
+        param.constellationGiven = true;
+        param.lvlGiven = true;
+        param.skillLevelGiven = true;
         for (AvatarData avatarData : GameData.getAvatarDataMap().values()) {
             int id = avatarData.getId();
             // Plenty of rows ship no useType at all, and dereferencing it killed the whole
@@ -298,9 +302,10 @@ public final class GiveCommand implements CommandHandler {
     }
 
     private static void giveAllWeapons(Player player, GiveItemParameters param) {
+        if (param.lvl <= 0) param.lvl = 90;
         int promoteLevel = GameItem.getMinPromoteLevel(param.lvl);
-        int quantity = Math.min(param.amount, 5);
-        int refinement = param.refinement - 1;
+        int quantity = Math.min(param.amount, 1);
+        int refinement = Math.max(0, param.refinement - 1);
 
         List<GameItem> itemList = new ArrayList<>();
         for (ItemData itemdata : GameData.getItemDataMap().values()) {
@@ -442,9 +447,8 @@ public final class GiveCommand implements CommandHandler {
 
     @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
-        if (args.size() < 1) { // *No args*
-            sendUsageMessage(sender);
-            return;
+        if (args.isEmpty()) {
+            args = new ArrayList<>(List.of("all"));
         }
         try {
             GiveItemParameters param = parseArgs(sender, args);
@@ -584,7 +588,7 @@ public final class GiveCommand implements CommandHandler {
      * <p>Handing out level 1 meant every give was followed by a levelling command, so the default
      * is the cap instead.
      */
-    private static final int DEFAULT_LEVEL = 100;
+    private static final int DEFAULT_LEVEL = 90;
 
     /**
      * The highest level an avatar or weapon can be given at.

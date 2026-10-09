@@ -1,0 +1,13 @@
+syntax = "proto3";
+option java_package = "emu.grasscutter.net.proto";
+
+import "GetGameplayRecommendationRsp.proto";
+
+message OCBIKGCIONN {
+  repeated GetGameplayRecommendationRsp BMKPJPNCADB = 1;
+  bool KFNDPKDFJAB = 8;
+  int32 retcode = 9;
+  uint32 LAFAECIBDKF = 6;
+  uint32 avatar_id = 7;
+  uint32 reason = 14;
+}

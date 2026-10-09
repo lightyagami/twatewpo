@@ -17,7 +17,12 @@ public class PacketDungeonEntryInfoRsp extends BasePacket {
         DungeonEntryInfoRsp.Builder proto =
                 DungeonEntryInfoRsp.newBuilder().setPointId(pointData.getId());
 
-        if (pointData.getDungeonIds() != null) {
+        if (pointData.getId() == 1628) {
+            for (int dungeonId : new int[]{20000, 20001, 20002, 20003, 20004, 20005}) {
+                DungeonEntryInfo info = DungeonEntryInfo.newBuilder().setDungeonId(dungeonId).build();
+                proto.addDungeonEntryList(info);
+            }
+        } else if (pointData.getDungeonIds() != null) {
             for (int dungeonId : pointData.getDungeonIds()) {
                 DungeonEntryInfo info = DungeonEntryInfo.newBuilder().setDungeonId(dungeonId).build();
                 proto.addDungeonEntryList(info);
@@ -39,7 +44,11 @@ public class PacketDungeonEntryInfoRsp extends BasePacket {
         var packet = DungeonEntryInfoRsp.newBuilder().setPointId(pointData.getId());
 
         // Add dungeon IDs from the point data.
-        if (pointData.getDungeonIds() != null) {
+        if (pointData.getId() == 1628) {
+            for (int id : new int[]{20000, 20001, 20002, 20003, 20004, 20005}) {
+                packet.addDungeonEntryList(DungeonEntryInfo.newBuilder().setDungeonId(id));
+            }
+        } else if (pointData.getDungeonIds() != null) {
             Arrays.stream(pointData.getDungeonIds())
                     .forEach(
                             id -> packet.addDungeonEntryList(DungeonEntryInfo.newBuilder().setDungeonId(id)));
@@ -65,7 +74,16 @@ public class PacketDungeonEntryInfoRsp extends BasePacket {
         }
 
         LinkedHashSet<Integer> dungeonIds = new LinkedHashSet<>();
-        if (pointData.getDungeonIds() != null) {
+        if (pointData.getId() == 1628){
+        /*if (sceneId == 48000 && pointData.getId() == 1) {
+            dungeonIds.add(149);
+            dungeonIds.add(150);
+            dungeonIds.add(151);
+        } else if (pointData.getId() == 1628) {*/
+            for (int id = 20000; id <= 20005; id++) {
+                dungeonIds.add(id);
+            }
+        } else if (pointData.getDungeonIds() != null) {
             for (int id : pointData.getDungeonIds()) if (id > 0) dungeonIds.add(id);
         }
         if (additional != null) {

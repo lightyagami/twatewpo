@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package emu.grasscutter.net.proto;
+
+message EntityMoveRoomNotify {
+    uint32 dest_room_id = 5;
+    uint32 entity_id = 12;
+}

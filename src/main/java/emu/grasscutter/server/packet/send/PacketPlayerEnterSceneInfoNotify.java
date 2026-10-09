@@ -85,10 +85,15 @@ public class PacketPlayerEnterSceneInfoNotify extends BasePacket {
                 .setFloatValue(moonPhaseCount)
                 .build();
 
+        boolean inNatlan = player.getScene() != null && player.getScene().getId() == 101;
         AbilitySyncStateInfo.Builder teamInfo = AbilitySyncStateInfo.newBuilder()
-                .addSgvDynamicValueMap(scalarValue)
                 .addSgvDynamicValueMap(hexLevel)
                 .addSgvDynamicValueMap(moonPhaseLevel);
+
+        if (inNatlan) {
+            teamInfo.addSgvDynamicValueMap(scalarValue);
+            player.setPhlogistonValue(100);
+        }
 
         if (moonPhaseCount > 0) {
             teamInfo.addDynamicValueMap(AbilityScalarValueEntry.newBuilder()

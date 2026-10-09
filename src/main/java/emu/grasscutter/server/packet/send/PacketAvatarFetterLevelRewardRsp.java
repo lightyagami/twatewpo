@@ -8,15 +8,18 @@ public class PacketAvatarFetterLevelRewardRsp extends BasePacket {
     public PacketAvatarFetterLevelRewardRsp(long guid, int fetterLevel, int rewardId) {
         super(PacketOpcodes.AvatarFetterLevelRewardRsp);
 
-        AvatarFetterLevelRewardRsp proto =
+        AvatarFetterLevelRewardRsp.Builder proto =
                 AvatarFetterLevelRewardRsp.newBuilder()
                         .setAvatarGuid(guid)
-                        .setFetterLevel(fetterLevel)
+                        .setFetterLevel(fetterLevel <= 0 ? 10 : fetterLevel)
                         .setRetcode(0)
-                        .setRewardId(rewardId)
-                        .build();
+                        .setRewardId(rewardId);
 
-        this.setData(proto);
+        if (rewardId > 0) {
+            proto.addRewardIdList(rewardId);
+        }
+
+        this.setData(proto.build());
     }
 
     public PacketAvatarFetterLevelRewardRsp(long guid, int fetterLevel) {
@@ -25,7 +28,7 @@ public class PacketAvatarFetterLevelRewardRsp extends BasePacket {
         AvatarFetterLevelRewardRsp proto =
                 AvatarFetterLevelRewardRsp.newBuilder()
                         .setAvatarGuid(guid)
-                        .setFetterLevel(fetterLevel)
+                        .setFetterLevel(fetterLevel <= 0 ? 10 : fetterLevel)
                         .setRetcode(1)
                         .setRewardId(0)
                         .build();

@@ -161,6 +161,7 @@ public final class DomainHandbookHelper {
         for (Map.Entry<Integer, List<Integer>> entry : HANDBOOK_ENTRIES.entrySet()) {
             player.getUnlockedScenePoints(entry.getKey()).addAll(entry.getValue());
         }
+        player.getUnlockedScenePoints(3).add(1628);
     }
 
     private static void scheduleDeferredSync(Player player) {

@@ -66,12 +66,8 @@ public class TowerResult extends BaseDungeonResult {
         boolean success =
                 getDungeonStats().getDungeonResult() == DungeonEndReason.COMPLETED
                         || (challenge != null && challenge.isSuccess());
-        if (success) {
-            if (hasNextLevel) {
-                continueStatus = CONTINUE_STATE_CAN_ENTER_NEXT_LEVEL;
-            } else if (canJump) {
-                continueStatus = CONTINUE_STATE_CAN_ENTER_NEXT_FLOOR;
-            }
+        if (success && hasNextLevel) {
+            continueStatus = CONTINUE_STATE_CAN_ENTER_NEXT_LEVEL;
         }
 
         var towerLevelEndNotify =
@@ -92,9 +88,6 @@ public class TowerResult extends BaseDungeonResult {
                             .build());
         }
 
-        if (nextFloorId > 0 && canJump) {
-            towerLevelEndNotify.setNextFloorId(nextFloorId);
-        }
         builder.setTowerLevelEndNotify(towerLevelEndNotify.build());
     }
 }
