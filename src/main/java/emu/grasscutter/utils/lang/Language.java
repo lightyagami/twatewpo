@@ -360,6 +360,8 @@ public final class Language {
                     // Try loading from cache
                     Grasscutter.getLogger().debug("Loading cached 'TextMaps'...");
                     textMapStrings = loadTextMapsCache();
+                    nameWhatTheTextMapsMissed(textMapStrings);
+                    scannedTextmaps = true;
                     return;
                 }
             } catch (NoSuchFileException ignored) {
@@ -424,7 +426,10 @@ public final class Language {
     }
 
     /** Internal names that are not what the thing ended up being called. */
-    private static final Map<String, String> RENAMED = Map.of("MarionetteNew", "Sandrone");
+    private static final Map<String, String> RENAMED =
+            Map.ofEntries(
+                    Map.entry("MarionetteNew", "Sandrone"),
+                    Map.entry("105005", "Sanctifying Elixir"));
 
     /**
      * The shipped text maps and the excel tables come from different dumps, and the drift between

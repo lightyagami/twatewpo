@@ -532,9 +532,15 @@ public final class GiveCommand implements CommandHandler {
                             targetPlayer.getUid());
                     return;
                 default:
-                    targetPlayer
-                            .getInventory()
-                            .addItem(new GameItem(param.data, param.amount), ActionReason.SubfieldDrop);
+                    boolean success =
+                            targetPlayer
+                                    .getInventory()
+                                    .addItem(new GameItem(param.data, param.amount), ActionReason.SubfieldDrop);
+                    if (!success) {
+                        CommandHandler.sendMessage(
+                                sender, "Failed to give item: inventory tab is full or item was rejected.");
+                        return;
+                    }
                     CommandHandler.sendTranslatedMessage(
                             sender,
                             "commands.give.given",
