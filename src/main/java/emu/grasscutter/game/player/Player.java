@@ -759,6 +759,15 @@ public class Player implements PlayerHook, FieldFetch {
         int exp = getExp();
         int reqExp = getExpRequired(level);
 
+        if (reqExp <= 0) {
+            // Already at max Adventure Rank (AR 60): convert EXP to Mora (1 EXP = 10 Mora)
+            getInventory().addItem(202, gain * 10, ActionReason.PlayerUpgradeReward);
+            if (exp > 0) {
+                this.setProperty(PlayerProperty.PROP_PLAYER_EXP, 0);
+            }
+            return;
+        }
+
         exp += gain;
 
         while (exp >= reqExp && reqExp > 0) {
@@ -767,6 +776,14 @@ public class Player implements PlayerHook, FieldFetch {
             reqExp = getExpRequired(level);
 
             this.setLevel(level);
+        }
+
+        if (reqExp <= 0) {
+            // Reached max level: convert remaining overflow exp to Mora
+            if (exp > 0) {
+                getInventory().addItem(202, exp * 10, ActionReason.PlayerUpgradeReward);
+                exp = 0;
+            }
         }
 
         this.setProperty(PlayerProperty.PROP_PLAYER_EXP, exp);

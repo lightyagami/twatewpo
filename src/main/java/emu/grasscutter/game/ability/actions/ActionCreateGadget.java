@@ -5,6 +5,7 @@ import emu.grasscutter.Grasscutter;
 import emu.grasscutter.data.binout.AbilityModifier.AbilityModifierAction;
 import emu.grasscutter.game.ability.Ability;
 import emu.grasscutter.game.ability.IneffaRelayHelper;
+import emu.grasscutter.game.ability.MarionetteAbilityHelper;
 import emu.grasscutter.game.ability.VentiSkillObjHelper;
 import emu.grasscutter.game.entity.*;
 import emu.grasscutter.game.props.CampTargetType;
@@ -169,6 +170,17 @@ public class ActionCreateGadget extends AbilityActionHandler {
         // caster (Q duplicate stormeye, or E field while Hexenzirkel-infused NA fires).
         if (VentiSkillObjHelper.isVentiClientSkillObj(action.gadgetID)) {
             VentiSkillObjHelper.purgeServerShells(ability.getPlayerOwner());
+            return true;
+        }
+
+        // Marionette (Sandrone) skill objects: Robot summon, funnels, extra attack bullets / loops.
+        // Client owns these via EvtCreateGadgetNotify. Server EntityGadget copies create empty
+        // shells that never despawn and cause massive client stutter / entity accumulation.
+        if (MarionetteAbilityHelper.isMarionetteClientSkillObj(action.gadgetID)) {
+            var player = ability.getPlayerOwner();
+            if (player != null) {
+                MarionetteAbilityHelper.purgeServerShells(player);
+            }
             return true;
         }
 

@@ -1,7 +1,8 @@
 import asyncio
+import json
 import genshin
 
-UID = 851880405
+UID = 654257927
 COOKIES = {
     "ltuid_v2": "188852545",
     "ltmid_v2": "199n8h80m2_hy",
@@ -45,55 +46,85 @@ SUB_STAT_MAP = {
     28: "em",
 }
 
-async def generate():
+async def run():
     client = genshin.Client(COOKIES, game=genshin.Game.GENSHIN, region=genshin.Region.OVERSEAS)
-    print("Fetching detailed characters from HoYoLAB...")
+    print(f"Fetching detailed data for UID {UID} from HoYoLAB...")
     det = await client.get_genshin_detailed_characters(UID)
-    print(f"Retrieved {len(det.characters)} characters.")
+    print(f"Successfully retrieved {len(det.characters)} characters.")
 
+    full_data = []
     commands = []
 
-    # World and Player Progression
-    commands.append("prop player ar 60")
-    commands.append("prop player wl 8")
-    commands.append("quest skip_to_7")
-    commands.append("achievement grantall")
-
-    # Give standard materials & mora
-    commands.append("give 201 x100000000") # 100M Mora
-    commands.append("give 202 x100000")    # 100k Primogems
-    commands.append("give 223 x1000")      # 1000 Intertwined Fate
-    commands.append("give 224 x1000")      # 1000 Acquaint Fate
-
     for c in det.characters:
-        # Determine highest talent level
+        char_dict = {
+            "id": c.id,
+            "name": c.name,
+            "element": getattr(c, "element", None),
+            "rarity": c.rarity,
+            "level": c.level,
+            "constellation": c.constellation,
+            "fetter": getattr(c, "fetter", 10),
+            "weapon": None,
+            "artifacts": []
+        }
+
+        # 1. Avatar command
         skill_lv = 10
         if hasattr(c, "skills") and c.skills:
             active_skills = [s.level for s in c.skills if getattr(s, "skill_type", 0) == 1]
             if active_skills:
                 skill_lv = max(active_skills)
-
-        # 1. Avatar
         commands.append(f"give {c.id} lv{c.level} c{c.constellation} sl{skill_lv}")
 
         # 2. Weapon
         if c.weapon:
-            commands.append(f"give {c.weapon.id} lv{c.weapon.level} r{c.weapon.refinement}")
+            w = c.weapon
+            char_dict["weapon"] = {
+                "id": w.id,
+                "name": w.name,
+                "rarity": w.rarity,
+                "level": w.level,
+                "refinement": w.refinement,
+                "promote_level": getattr(w, "promote_level", 6)
+            }
+            commands.append(f"give {w.id} lv{w.level} r{w.refinement}")
 
         # 3. Artifacts
         for a in c.artifacts:
-            main_short = MAIN_STAT_MAP.get(a.main_stat.info.type)
-            if not main_short:
-                # Fallback to id
-                main_short = str(a.main_stat.info.type)
+            art_dict = {
+                "id": a.id,
+                "name": a.name,
+                "pos": getattr(a, "pos", None),
+                "pos_name": getattr(a, "pos_name", None),
+                "rarity": a.rarity,
+                "level": a.level,
+                "set": {
+                    "id": getattr(a.set, "id", None),
+                    "name": getattr(a.set, "name", None)
+                },
+                "main_stat": {
+                    "type": a.main_stat.info.type,
+                    "name": a.main_stat.info.name,
+                    "value": a.main_stat.value
+                },
+                "sub_stats": []
+            }
 
+            main_short = MAIN_STAT_MAP.get(a.main_stat.info.type, str(a.main_stat.info.type))
             subs = []
             for s in a.sub_stats:
-                s_short = SUB_STAT_MAP.get(s.info.type)
-                if not s_short:
-                    continue
                 rolls = getattr(s, "times", 0) + 1
-                subs.append(f"{s_short},{rolls}")
+                art_dict["sub_stats"].append({
+                    "type": s.info.type,
+                    "name": s.info.name,
+                    "value": s.value,
+                    "rolls": rolls
+                })
+                s_short = SUB_STAT_MAP.get(s.info.type)
+                if s_short:
+                    subs.append(f"{s_short},{rolls}")
+
+            char_dict["artifacts"].append(art_dict)
 
             sub_str = " ".join(subs)
             if sub_str:
@@ -101,11 +132,19 @@ async def generate():
             else:
                 commands.append(f"give {a.id} lv{a.level} {main_short}")
 
-    out_file = "/home/venomsnake/Desktop/genshi/AstaPS/import_venomsnakee.txt"
-    with open(out_file, "w", encoding="utf-8") as f:
-        f.write("\n".join(commands) + "\n")
+        full_data.append(char_dict)
 
-    print(f"Generated {len(commands)} commands in {out_file}")
+    # Save JSON dump
+    json_path = "/home/venomsnake/Desktop/genshi/scraped_654257927.json"
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(full_data, f, indent=2, ensure_ascii=False)
+    print(f"Saved complete JSON data ({len(full_data)} characters, {sum(len(c['artifacts']) for c in full_data)} artifacts) to {json_path}")
+
+    # Save Command TXT
+    txt_path = "/home/venomsnake/Desktop/genshi/commands_654257927.txt"
+    with open(txt_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(commands) + "\n")
+    print(f"Saved {len(commands)} give commands to {txt_path}")
 
 if __name__ == "__main__":
-    asyncio.run(generate())
+    asyncio.run(run())

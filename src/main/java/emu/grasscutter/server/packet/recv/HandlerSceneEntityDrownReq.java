@@ -14,19 +14,25 @@ public class HandlerSceneEntityDrownReq extends PacketHandler {
     public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
         SceneEntityDrownReq req = SceneEntityDrownReq.parseFrom(payload);
 
-        GameEntity entity = session.getPlayer().getScene().getEntityById(req.getEntityId());
-
-        if (entity == null || !(entity instanceof EntityMonster || entity instanceof EntityAvatar)) {
+        int entityId = req.getEntityId();
+        if (session.getPlayer() == null || session.getPlayer().getScene() == null) {
             return;
         }
 
-        entity.setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, 0);
+        var scene = session.getPlayer().getScene();
+        GameEntity entity = scene.getEntityById(entityId);
 
-        // TODO: make a list somewhere of all entities to remove per tick rather than one by one
-        session.getPlayer().getScene().killEntity(entity, 0);
-        session
-                .getPlayer()
-                .getScene()
-                .broadcastPacket(new PacketSceneEntityDrownRsp(req.getEntityId()));
+        if (entity != null) {
+            if (entity instanceof EntityMonster || entity instanceof EntityAvatar) {
+                entity.setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, 0);
+                scene.killEntity(entity, 0);
+            } else if (entity instanceof EntityClientGadget || entity instanceof EntityGadget) {
+                scene.removeEntity(entity);
+            }
+        }
+
+        // Always acknowledge drown requests to satisfy the client actor state machine
+        // and prevent endless retry storms.
+        scene.broadcastPacket(new PacketSceneEntityDrownRsp(entityId));
     }
 }
