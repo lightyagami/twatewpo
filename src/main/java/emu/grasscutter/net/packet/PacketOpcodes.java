@@ -695,7 +695,7 @@ public final class PacketOpcodes {
     public static final int HomePlantWeedReq = 21538;
     public static final int GetPlayerHomeCompInfoReq = 6450;
     public static final int _BeyondHallChangeTagsReq = 28249;
-    public static final int TakeAchievementGoalRewardReq = 0; // 7.1 CmdId unknown (7.0: 4089)
+    public static final int TakeAchievementGoalRewardReq = 28295;
     public static final int NormalUidOpNotify = 22391;
     public static final int CutSceneEndNotify = 472;
     // public static final int ANPPHOKNGJD = 24720;
@@ -1118,7 +1118,7 @@ public final class PacketOpcodes {
     public static final int GCGTavernNpcInfoNotify = 25416;
     public static final int DestroyMaterialReq = 8587;
     public static final int ChangeMpTeamAvatarRsp = 24192;
-    public static final int TakeAchievementRewardReq = 0; // 7.1 CmdId unknown (7.0: 7185)
+    public static final int TakeAchievementRewardReq = 25857;
     public static final int _WeekActiveInteractNotify = 0; // 7.1 CmdId unknown (7.0: 7193)
     // public static final int MFEKMJONFGL = 20086;
     // public static final int NBANNLGLBMG = 22177;
