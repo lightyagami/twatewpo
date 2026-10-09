@@ -23,6 +23,11 @@ public final class ActionKillSelf extends AbilityActionHandler {
             return true;
         }
 
+        if (emu.grasscutter.game.ability.NeuvilletteAbilityHelper.isNeuvilletteDroplet(target)) {
+            // Neuvillette's Sourcewater Droplets do not go away after absorption (infinite droplets)
+            return true;
+        }
+
         if (action.configIdArray != null && action.configIdArray.length > 0) {
             if (!(target instanceof EntityBaseGadget gadget)
                     || Arrays.stream(action.configIdArray).noneMatch(id -> id == gadget.getGadgetId())) {

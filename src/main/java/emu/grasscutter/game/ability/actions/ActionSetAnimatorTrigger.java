@@ -18,6 +18,10 @@ public final class ActionSetAnimatorTrigger extends AbilityActionHandler {
     public boolean execute(
             Ability ability, AbilityModifierAction action, ByteString abilityData, GameEntity target) {
         if (action.animatorParamName == null || target.getScene() == null) return true;
+        if (emu.grasscutter.game.ability.NeuvilletteAbilityHelper.shouldBlockAnimatorTrigger(
+                target, action.animatorParamName)) {
+            return true;
+        }
         broadcastAnimatorParam(target, action.animatorParamName, TRIGGER_TYPE, true);
         return true;
     }

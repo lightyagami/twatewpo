@@ -98,7 +98,8 @@ public final class ActionPredicated extends AbilityActionHandler {
         for (var child : actions) {
             if (child == null || !allowed(child)) continue;
             // In order, on this thread: a later block reads what an earlier one writes.
-            mgr.executeActionNow(ability, child, abilityData, "Target".equals(child.target) ? candidate : self);
+            boolean isOtherTarget = "Target".equals(child.target) || "Other".equals(child.target);
+            mgr.executeActionNow(ability, child, abilityData, isOtherTarget ? candidate : self);
         }
     }
 

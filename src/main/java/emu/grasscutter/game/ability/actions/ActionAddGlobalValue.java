@@ -30,6 +30,21 @@ public final class ActionAddGlobalValue extends AbilityActionHandler {
 
         float currentGlobalValue = target.getGlobalAbilityValues().getOrDefault(valueKey, 0f);
 
+        if (emu.grasscutter.game.ability.NeuvilletteAbilityHelper.shouldPreventChargeTimeDecay(
+                target, valueKey, valueToAdd)) {
+            // Keep charge time at maximum (3.0f) so Equitable Judgment continues infinitely even at C0
+            target.getGlobalAbilityValues().put(valueKey, 3.0f);
+            target.onAbilityValueUpdate();
+            if (!AbilityManager.isServerOwnedChain()) {
+                var scene = target.getScene();
+                var recipient = scene == null ? ability.getPlayerOwner() : scene.getHost();
+                if (recipient != null) {
+                    recipient.sendPacket(new PacketServerGlobalValueChangeNotify(target, valueKey, 3.0f));
+                }
+            }
+            return true;
+        }
+
         float newValue = currentGlobalValue + valueToAdd;
         if (action.useLimitRange) {
             newValue = Math.max(minValue, Math.min(maxValue, newValue));

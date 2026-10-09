@@ -356,7 +356,7 @@ public class EntityAvatar extends GameEntity {
                         .setAvatarId(avatar.getAvatarId())
                         .setGuid(avatar.getGuid())
                         .setPeerId(player.getPeerId())
-                        .addAllTalentIdList(avatar.getTalentIdList())
+                        .addAllTalentIdList(emu.grasscutter.game.ability.NeuvilletteAbilityHelper.getEffectiveTalentList(avatar))
                         .setCoreProudSkillLevel(avatar.getCoreProudSkillLevel())
                         .putAllSkillLevelMap(avatar.getSkillLevelMap())
                         .setSkillDepotId(avatar.getSkillDepotId())
