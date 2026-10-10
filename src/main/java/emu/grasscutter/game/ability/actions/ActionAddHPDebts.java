@@ -36,9 +36,20 @@ public final class ActionAddHPDebts extends AbilityActionHandler {
         if (action.target != null && !action.target.isEmpty()) {
             debtTarget = getTarget(ability, ability.getOwner(), action.target);
         }
-        if (!(debtTarget instanceof EntityAvatar avatar)) {
-            Grasscutter.getLogger().warn("[ActionAddHPDebts] Cannot add HP debt to non-avatar entity");
-            return false;
+        EntityAvatar avatar;
+        if (debtTarget instanceof EntityAvatar ea) {
+            avatar = ea;
+        } else {
+            EntityAvatar fallback = ability.getCasterEntity();
+            if (fallback == null && ability.getPlayerOwner() != null && ability.getPlayerOwner().getTeamManager() != null) {
+                fallback = ability.getPlayerOwner().getTeamManager().getCurrentAvatarEntity();
+            }
+            if (fallback != null) {
+                avatar = fallback;
+            } else {
+                Grasscutter.getLogger().warn("[ActionAddHPDebts] Cannot add HP debt to non-avatar entity");
+                return false;
+            }
         }
 
         // After Q clear, late Burst_Cast AddHPDebts used to refill BoL while the client bar

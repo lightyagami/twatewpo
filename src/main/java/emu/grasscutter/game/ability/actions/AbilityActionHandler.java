@@ -78,12 +78,19 @@ public abstract class AbilityActionHandler {
 
         return switch (target) {
             case "Self", "Target", "Applier" -> entity;
-            case "Caster", "Owner" -> ability.getOwner();
+            case "Caster" -> {
+                EntityAvatar caster = ability.getCasterEntity();
+                if (caster != null) yield caster;
+                if (teamManager != null && teamManager.getCurrentAvatarEntity() != null) yield teamManager.getCurrentAvatarEntity();
+                yield ability.getOwner();
+            }
+            case "Owner" -> ability.getOwner();
             case "Team" -> teamManager != null ? teamManager.getEntity() : null;
-            case "OriginOwner", "CurLocalAvatar" -> teamManager != null
-                    ? teamManager.getCurrentAvatarEntity()
-                    : null;
-            case "CasterOriginOwner" -> null; // TODO: Figure out.
+            case "OriginOwner", "CurLocalAvatar", "CasterOriginOwner" -> {
+                EntityAvatar caster = ability.getCasterEntity();
+                if (caster != null) yield caster;
+                yield teamManager != null ? teamManager.getCurrentAvatarEntity() : null;
+            }
             default -> {
                 Grasscutter.getLogger().debug("Unknown ability target type: {}", target);
                 yield entity;

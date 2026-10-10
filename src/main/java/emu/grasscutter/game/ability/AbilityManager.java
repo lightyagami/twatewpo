@@ -1368,11 +1368,11 @@ public final class AbilityManager extends BasePlayerManager {
         if (avatarData.getAbilities() != null) {
             for (int hash : avatarData.getAbilities()) addAbilityByHash(avatar, hash);
         }
-        // DynamicAbility_Phlogiston is what makes the client draw the phlogiston gauge at all,
-        // and it used to be attached only inside scene 101. That is why the party's global value
-        // was invisible everywhere else: the value was there, nothing was drawing it. It is a
-        // default ability like the rest of them now, so the gauge follows the party.
+        // DynamicAbility_Phlogiston must only be attached when inside Natlan (scene 101).
+        boolean inNatlan = player.getScene() != null && player.getScene().getId() == 101;
+        int phlogistonHash = emu.grasscutter.utils.Utils.abilityHash("DynamicAbility_Phlogiston");
         for (int hash : emu.grasscutter.GameConstants.DEFAULT_ABILITY_HASHES) {
+            if (hash == phlogistonHash && !inNatlan) continue;
             addAbilityByHash(avatar, hash);
         }
         for (int hash : player.getTeamManager().getTeamResonancesConfig()) {
@@ -1383,6 +1383,7 @@ public final class AbilityManager extends BasePlayerManager {
             for (int hash : skillDepot.getAbilities()) addAbilityByHash(avatar, hash);
         }
         for (String name : avatar.getAvatar().getExtraAbilityEmbryos()) {
+            if ("DynamicAbility_Phlogiston".equals(name) && !inNatlan) continue;
             var data = GameData.getAbilityData(name);
             avatar.getInstancedAbilities().add(data != null ? new Ability(data, avatar, player) : null);
         }

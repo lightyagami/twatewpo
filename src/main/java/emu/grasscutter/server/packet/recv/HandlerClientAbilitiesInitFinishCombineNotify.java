@@ -8,6 +8,8 @@ import emu.grasscutter.net.proto.AbilityInvokeEntryOuterClass.AbilityInvokeEntry
 import emu.grasscutter.net.proto.ClientAbilitiesInitFinishCombineNotifyOuterClass.ClientAbilitiesInitFinishCombineNotify;
 import emu.grasscutter.net.proto.EntityAbilityInvokeEntryOuterClass.EntityAbilityInvokeEntry;
 import emu.grasscutter.server.game.GameSession;
+import emu.grasscutter.server.packet.send.PacketCombineDataNotify;
+import emu.grasscutter.server.packet.send.PacketOpenStateUpdateNotify;
 
 @Opcodes(PacketOpcodes.ClientAbilitiesInitFinishCombineNotify)
 public class HandlerClientAbilitiesInitFinishCombineNotify extends PacketHandler {
@@ -21,11 +23,13 @@ public class HandlerClientAbilitiesInitFinishCombineNotify extends PacketHandler
 
         Player player = session.getPlayer();
 
-        // 7.0 client waits for these empty acks before enabling combine UI.
-        session.send(new BasePacket(PacketOpcodes.ClientAbilitiesInitFinishCombineRsp1));
-        session.send(new BasePacket(PacketOpcodes.ClientAbilitiesInitFinishCombineRsp2));
+        if (player.getUnlockedCombines().isEmpty()) {
+            player.getServer().getCombineSystem().onPlayerLogin(player);
+        }
+        session.send(new PacketCombineDataNotify(player.getUnlockedCombines()));
+        session.send(new PacketOpenStateUpdateNotify(player));
 
-        Grasscutter.getLogger().debug("Handled combine UI init (2819) for uid {}", player.getUid());
+        Grasscutter.getLogger().debug("Handled combine UI init for uid {}", player.getUid());
 
         // Call skill end in the player's ability manager.
         player.getAbilityManager().onSkillEnd(player);

@@ -7,6 +7,7 @@ import emu.grasscutter.game.dungeons.DomainDungeonHelper;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.player.Player.SceneLoadState;
 import emu.grasscutter.game.player.WidgetPetHelper;
+import emu.grasscutter.game.props.PlayerProperty;
 import emu.grasscutter.net.packet.*;
 import emu.grasscutter.net.proto.SceneInitFinishReqOuterClass.SceneInitFinishReq;
 import emu.grasscutter.server.game.GameSession;
@@ -47,6 +48,9 @@ public class HandlerSceneInitFinishReq extends PacketHandler {
 
             session.send(new PacketSceneTimeNotify(player));
             session.send(new PacketPlayerGameTimeNotify(player));
+            boolean inNatlan = player.getScene() != null && player.getScene().getId() == 101;
+            player.setProperty(PlayerProperty.PROP_PHLOGISTON_ENABLE, inNatlan ? 1 : 0);
+            session.send(new PacketPlayerPropNotify(player, PlayerProperty.PROP_PHLOGISTON_ENABLE));
             session.send(new PacketPlayerEnterSceneInfoNotify(player));
             int moonPhaseCount = (int) player.getTeamManager().getActiveTeam().stream()
                     .filter(e -> PacketPlayerEnterSceneInfoNotify.getMoonphaseIds().contains(e.getAvatar().getAvatarId()))
@@ -67,6 +71,11 @@ public class HandlerSceneInitFinishReq extends PacketHandler {
 
             // Follower pets need the attach-ability notify again after scene ability block is set
             WidgetPetHelper.syncEquippedWidget(player);
+            session.send(new PacketOpenStateUpdateNotify(player));
+            if (player.getUnlockedCombines().isEmpty()) {
+                player.getServer().getCombineSystem().onPlayerLogin(player);
+            }
+            session.send(new PacketCombineDataNotify(player.getUnlockedCombines()));
 
             session.send(new PacketSceneInitFinishRsp(player));
             BasePacket watermarkPacket = buildWatermarkPacket();

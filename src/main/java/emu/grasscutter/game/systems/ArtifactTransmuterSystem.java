@@ -384,14 +384,20 @@ public final class ArtifactTransmuterSystem {
             if (decoded.containsKey(3)) {
                 groups.addAll(filterGroupIds(decoded.get(3)));
             }
-            if (decoded.containsKey(8) && !decoded.get(8).isEmpty()) {
-                equipType = decoded.get(8).get(0);
-            }
             if (decoded.containsKey(9) && !decoded.get(9).isEmpty()) {
                 versionIdx = decoded.get(9).get(0);
             }
-            if (decoded.containsKey(1) && !decoded.get(1).isEmpty()) {
-                mainIndex = decoded.get(1).get(0);
+            int candidateA = decoded.containsKey(1) && !decoded.get(1).isEmpty() ? decoded.get(1).get(0) : 0;
+            int candidateB = decoded.containsKey(8) && !decoded.get(8).isEmpty() ? decoded.get(8).get(0) : 0;
+            if (candidateA >= 1 && candidateA <= 5 && (candidateB == 0 || candidateB > 5 || candidateA != candidateB)) {
+                equipType = candidateA;
+                mainIndex = candidateB > 0 ? candidateB : 1;
+            } else if (candidateB >= 1 && candidateB <= 5) {
+                equipType = candidateB;
+                mainIndex = candidateA > 0 ? candidateA : 1;
+            } else {
+                equipType = candidateA > 0 ? candidateA : (candidateB > 0 ? candidateB : 1);
+                mainIndex = candidateB > 0 ? candidateB : candidateA;
             }
         } else {
             // Older capture layout: 1=groups 2=equip 3=version 4=schedule 5=main
@@ -407,6 +413,13 @@ public final class ArtifactTransmuterSystem {
             if (decoded.containsKey(5) && !decoded.get(5).isEmpty()) {
                 mainIndex = decoded.get(5).get(0);
             }
+        }
+
+        // Auto-heal swap if equipType and mainIndex were inverted
+        if ((equipType < 1 || equipType > 5) && mainIndex >= 1 && mainIndex <= 5) {
+            int tmp = equipType;
+            equipType = mainIndex;
+            mainIndex = tmp;
         }
 
         // Fallback: any multi-value field that looks like affix group ids (crit=20, critdmg=22, etc.).
@@ -433,7 +446,7 @@ public final class ArtifactTransmuterSystem {
             }
         }
 
-        Grasscutter.getLogger().debug(
+        Grasscutter.getLogger().info(
                 "ArtifactTransmuter define parse uid={} versionIdx={} equipType={} mainIndex={} groups={} decoded={}",
                 player.getUid(), versionIdx, equipType, mainIndex, groups, decoded);
 
@@ -446,7 +459,7 @@ public final class ArtifactTransmuterSystem {
 
         GameItem relic = createDefinedReliquary(setData, equipType, mainIndex, groups);
         if (relic == null) {
-            Grasscutter.getLogger().warn("ArtifactTransmuter define: failed to create relic set={}", setData.getId());
+            Grasscutter.getLogger().warn("ArtifactTransmuter define: failed to create relic set={} equipType={} mainIndex={}", setData.getId(), equipType, mainIndex);
             player.sendPacket(new PacketReliquaryOfferDefineRsp(versionIdx));
             return;
         }
@@ -728,6 +741,12 @@ public final class ArtifactTransmuterSystem {
             if (score > bestScore || (score == bestScore && (best == null || data.getId() < best.getId()))) {
                 best = data;
                 bestScore = score;
+            }
+        }
+        if (best == null && (equipType < 1 || equipType > 5)) {
+            for (int fallbackEt = 3; fallbackEt <= 5; fallbackEt++) {
+                best = pickDefinedPiece(setId, fallbackEt);
+                if (best != null) break;
             }
         }
         return best;

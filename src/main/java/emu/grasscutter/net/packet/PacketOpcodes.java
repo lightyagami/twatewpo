@@ -208,7 +208,7 @@ public final class PacketOpcodes {
     // public static final int LFDNKOGLGDK = 6593;
     // public static final int ReserveRogueDiaryAvatarReq = 25976;
     // public static final int BAMFFFPKDEH = 206;
-    public static final int CombineDataNotify = 0; // 7.1 CmdId unknown (7.0: 985)
+    public static final int CombineDataNotify = 6095;
     public static final int GetMapMarkTipsRsp = 26050;
     // public static final int NCDHECPCPPO = 20999;
     // public static final int HMDJCNLNHNE = 1001;
@@ -2716,7 +2716,7 @@ public final class PacketOpcodes {
     public static final int DungeonRestartInviteNotify = 8198;
     // public static final int NDELMIPKPED = 26651;
     public static final int HomeResourceTakeFetterExpReq = 0; // 7.1 CmdId unknown (7.0: 28435)
-    public static final int GetDailyDungeonEntryInfoReq = 0; // 7.1 CmdId unknown (7.0: 28445)
+    public static final int GetDailyDungeonEntryInfoReq = 20841;
     // public static final int JIOHELNPINH = 22474;
     public static final int HomePreviewBlueprintReq = 7639;
     // public static final int SorushTrialStartGalleryRsp = 6839;

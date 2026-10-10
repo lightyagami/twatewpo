@@ -19,6 +19,13 @@ public class HandlerSceneEntityDrownReq extends PacketHandler {
             return;
         }
 
+        if (entityId == 0 && session.getPlayer().getTeamManager() != null) {
+            var curAvatar = session.getPlayer().getTeamManager().getCurrentAvatarEntity();
+            if (curAvatar != null) {
+                entityId = curAvatar.getId();
+            }
+        }
+
         var scene = session.getPlayer().getScene();
         GameEntity entity = scene.getEntityById(entityId);
 
@@ -33,6 +40,7 @@ public class HandlerSceneEntityDrownReq extends PacketHandler {
 
         // Always acknowledge drown requests to satisfy the client actor state machine
         // and prevent endless retry storms.
+        session.send(new PacketSceneEntityDrownRsp(entityId));
         scene.broadcastPacket(new PacketSceneEntityDrownRsp(entityId));
     }
 }

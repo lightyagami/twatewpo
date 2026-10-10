@@ -9,6 +9,7 @@ public class PacketNpcTalkRsp extends BasePacket {
 
         NpcTalkRsp p =
                 NpcTalkRsp.newBuilder()
+                        .setRetcode(0)
                         .setNpcEntityId(npcEntityId)
                         .setCurTalkId(curTalkId)
                         .setEntityId(entityId)

@@ -59,7 +59,6 @@ public class PacketPlayerEnterSceneInfoNotify extends BasePacket {
                         .build())
                         .setFloatValue(100)
                 .build();
-                player.setPhlogistonValue(100);
 
         long hexCount = player.getTeamManager().getActiveTeam().stream()
                 .filter(e -> e != null && getHexenzirkelIds().contains(e.getAvatar().getAvatarId()))

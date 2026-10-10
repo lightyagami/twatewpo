@@ -97,6 +97,12 @@ public final class PlayerProgressManager extends BasePlayerDataManager {
         // already met before certain open state unlocks were implemented.
         this.tryUnlockOpenStates(false);
 
+        // Always unlock crafting bench open states (Craft, Convert, Strongbox)
+        this.setOpenState(30, 1, false);
+        this.setOpenState(74, 1, false);
+        this.setOpenState(84, 1, false);
+        this.setOpenState(1600, 1, false);
+
         if (!GAME_OPTIONS.questing.enabled) {
             // Match remote LunaGC login unlocks when questing is off.
             // IMPORTANT: do this BEFORE OpenStateUpdateNotify so the login snapshot already

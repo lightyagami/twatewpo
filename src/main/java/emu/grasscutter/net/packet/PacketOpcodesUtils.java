@@ -28,6 +28,7 @@ public class PacketOpcodesUtils {
                     PacketOpcodes.SceneAvatarStaminaStepRsp,
                     PacketOpcodes.GetWidgetQuickSlotListReq,
                     PacketOpcodes.ClientAIStateNotify,
+                    PacketOpcodes.SceneEntityDrownReq,
                     PacketOpcodes.UnionCmdNotify);
     private static final Int2ObjectMap<String> opcodeMap;
 

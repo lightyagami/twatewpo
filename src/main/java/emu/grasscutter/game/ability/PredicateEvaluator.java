@@ -43,6 +43,7 @@ public final class PredicateEvaluator {
             case "ByHasModifier"      -> byHasModifier(pred, ability, resolved);
             case "ByTargetGlobalValue" -> byTargetGlobalValue(pred, ability, resolved);
             case "ByTargetHPRatio"    -> byTargetHPRatio(pred, ability, resolved);
+            case "LPKOBOLMDBI", "ByTargetHPDebts", "ByTargetCurHPDebts" -> byTargetHPDebts(pred, ability, resolved);
             default -> true;
         };
     }
@@ -221,17 +222,60 @@ public final class PredicateEvaluator {
         };
     }
 
+    private static boolean byTargetHPDebts(Map<String, Object> pred, Ability ability, GameEntity target) {
+        GameEntity evalTarget = target;
+        if (!(evalTarget instanceof EntityAvatar) && ability != null) {
+            EntityAvatar caster = ability.getCasterEntity();
+            if (caster != null) {
+                evalTarget = caster;
+            } else if (ability.getPlayerOwner() != null && ability.getPlayerOwner().getTeamManager() != null) {
+                evalTarget = ability.getPlayerOwner().getTeamManager().getCurrentAvatarEntity();
+            }
+        }
+        if (evalTarget == null) return false;
+        float curDebt = evalTarget.getFightProperty(emu.grasscutter.game.props.FightProperty.FIGHT_PROP_CUR_HP_DEBTS);
+
+        Object valObj = pred.get("value");
+        Object logicObj = pred.get("logic");
+
+        if (valObj == null && logicObj == null) {
+            return curDebt > 0f;
+        }
+
+        float threshold = valObj == null ? 0f : readFloat(valObj, ability, evalTarget);
+        String logic = logicObj instanceof String s ? s : "Greater";
+        return switch (logic) {
+            case "Lesser", "LessThan" -> curDebt < threshold;
+            case "LesserOrEqual", "LessThanAndEqual", "LessOrEqual" -> curDebt <= threshold;
+            case "GreaterOrEqual", "MoreThanAndEqual", "MoreOrEqual" -> curDebt >= threshold;
+            case "Equal" -> Math.abs(curDebt - threshold) < 1e-3f;
+            case "NotEqual" -> Math.abs(curDebt - threshold) >= 1e-3f;
+            default -> curDebt > threshold; // Greater / MoreThan
+        };
+    }
+
     private static float readFloat(Object v) {
-        return readFloat(v, null);
+        return readFloat(v, null, null);
+    }
+
+    private static float readFloat(Object v, Ability ability) {
+        return readFloat(v, ability, null);
     }
 
     /**
      * Resolves predicate bounds, including DynamicFloat op lists such as
-     * {@code ["MoonOverGrow_CountMax", 1.0, "SUB"]} used by Columbina PermanentSkill_2.
+     * {@code ["MoonOverGrow_CountMax", 1.0, "SUB"]} used by Columbina PermanentSkill_2,
+     * or {@code ["HPDebts_CriticalPointRatio", "FIGHT_PROP_MAX_HP", "MUL"]} used by Arlecchino.
      */
-    private static float readFloat(Object v, Ability ability) {
+    private static float readFloat(Object v, Ability ability, GameEntity target) {
         if (v instanceof Number n) return n.floatValue();
         if (v instanceof String s) {
+            if (target != null) {
+                try {
+                    var fp = emu.grasscutter.game.props.FightProperty.valueOf(s);
+                    return target.getFightProperty(fp);
+                } catch (IllegalArgumentException ignored) {}
+            }
             if (ability != null) {
                 return ability.getAbilitySpecials().getOrDefault(s, 0f);
             }
@@ -260,10 +304,22 @@ public final class PredicateEvaluator {
             }
             if (!ops.isEmpty()) {
                 var df = new DynamicFloat(ops);
-                if (ability != null) {
-                    return df.get(ability.getAbilitySpecials(), 0f);
+                var props = new it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap<String>();
+                if (target != null) {
+                    for (var property : emu.grasscutter.game.props.FightProperty.values()) {
+                        props.put(property.name(), target.getFightProperty(property));
+                    }
                 }
-                return df.get(0f);
+                if (ability != null) {
+                    props.putAll(ability.getAbilitySpecials());
+                }
+                if (props.getOrDefault("HPDebts_CriticalPointRatio", 0f) <= 0f) {
+                    props.put("HPDebts_CriticalPointRatio", 0.30f);
+                }
+                if (props.getOrDefault("DebtsCompare", 0f) <= 0f) {
+                    props.put("DebtsCompare", 0.25f);
+                }
+                return df.get(props, 0f);
             }
         }
         return 0f;

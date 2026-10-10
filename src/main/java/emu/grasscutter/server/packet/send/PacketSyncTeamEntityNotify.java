@@ -16,13 +16,20 @@ public class PacketSyncTeamEntityNotify extends BasePacket {
     public PacketSyncTeamEntityNotify(Player player) {
         super(PacketOpcodes.SyncTeamEntityNotify);
 
-        AbilityScalarValueEntryOuterClass.AbilityScalarValueEntry scalarValue = AbilityScalarValueEntryOuterClass.AbilityScalarValueEntry.newBuilder()
-                .setKey(AbilityStringOuterClass.AbilityString.newBuilder().setHash(Utils.abilityHash("SGV_PlayerTeam_Phlogiston"))
-                        .setStr("SGV_PlayerTeam_Phlogiston")
-                        .build())
-                .setFloatValue(player.getPhlogistonValue())
-                .build();
-        AbilitySyncStateInfo phlogiston = AbilitySyncStateInfo.newBuilder().addSgvDynamicValueMap(scalarValue).build();
+        boolean inNatlan = player.getScene() != null && player.getScene().getId() == 101;
+        AbilitySyncStateInfo.Builder teamAbilityInfoBuilder = AbilitySyncStateInfo.newBuilder();
+        if (inNatlan) {
+            AbilityScalarValueEntryOuterClass.AbilityScalarValueEntry scalarValue =
+                    AbilityScalarValueEntryOuterClass.AbilityScalarValueEntry.newBuilder()
+                            .setKey(AbilityStringOuterClass.AbilityString.newBuilder()
+                                    .setHash(Utils.abilityHash("SGV_PlayerTeam_Phlogiston"))
+                                    .setStr("SGV_PlayerTeam_Phlogiston")
+                                    .build())
+                            .setFloatValue(player.getPhlogistonValue())
+                            .build();
+            teamAbilityInfoBuilder.addSgvDynamicValueMap(scalarValue);
+        }
+        AbilitySyncStateInfo phlogiston = teamAbilityInfoBuilder.build();
 
         SyncTeamEntityNotify.Builder proto =
                 SyncTeamEntityNotify.newBuilder().setSceneId(DomainDungeonHelper.notifySceneId(player));

@@ -33,9 +33,21 @@ public final class ActionReduceHPDebts extends AbilityActionHandler {
         if (action.target != null && !action.target.isEmpty()) {
             debtTarget = getTarget(ability, ability.getOwner(), action.target);
         }
-        if (!(debtTarget instanceof EntityAvatar avatar)) {
-            Grasscutter.getLogger().warn("[ActionReduceHPDebts] CANNOT REDUCE HP DEBT TO NON AVATAR ENTITY");
-            return false;
+        EntityAvatar avatar;
+        if (debtTarget instanceof EntityAvatar ea) {
+            avatar = ea;
+        } else {
+            EntityAvatar fallback = ability.getCasterEntity();
+            if (fallback == null && ability.getPlayerOwner() != null && ability.getPlayerOwner().getTeamManager() != null) {
+                fallback = ability.getPlayerOwner().getTeamManager().getCurrentAvatarEntity();
+            }
+            if (fallback != null) {
+                avatar = fallback;
+                debtTarget = fallback;
+            } else {
+                Grasscutter.getLogger().warn("[ActionReduceHPDebts] CANNOT REDUCE HP DEBT TO NON AVATAR ENTITY");
+                return false;
+            }
         }
 
         String abilityName =

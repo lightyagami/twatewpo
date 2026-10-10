@@ -33,6 +33,13 @@ public class PacketOpenStateUpdateNotify extends BasePacket {
         player.getOpenStates().put(45, 1);
         proto.putOpenStateMap(45, 1);
 
+        // Always unlock crafting bench tabs (Craft, Convert, Mystic Offering Strongbox).
+        int[] craftOpenStates = {30, 74, 84, 1600};
+        for (int cos : craftOpenStates) {
+            player.getOpenStates().put(cos, 1);
+            proto.putOpenStateMap(cos, 1);
+        }
+
         this.setData(proto);
     }
 }

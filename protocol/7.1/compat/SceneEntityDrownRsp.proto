@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option java_package = "emu.grasscutter.net.proto";
+option java_outer_classname = "SceneEntityDrownRspOuterClass";
+
+// 7.1 CmdId 28813
+message SceneEntityDrownRsp {
+  uint32 entity_id = 3;
+  int32 retcode = 4;
+}

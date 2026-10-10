@@ -10,8 +10,14 @@ public class HandlerNpcTalkReq extends PacketHandler {
     @Override
     public void handle(GameSession session, byte[] header, byte[] payload) throws Exception {
         var req = NpcTalkReq.parseFrom(payload);
+        emu.grasscutter.Grasscutter.getLogger().info(
+                "NpcTalkReq: talkId={}, npcEntityId={}, entityId={}",
+                req.getTalkId(),
+                req.getNpcEntityId(),
+                req.getEntityId());
 
         session.getPlayer().getTalkManager().triggerTalkAction(req.getTalkId(), req.getEntityId());
         session.send(new PacketNpcTalkRsp(req.getNpcEntityId(), req.getTalkId(), req.getEntityId()));
+        session.send(new emu.grasscutter.server.packet.send.PacketFinishedTalkIdListNotify(req.getTalkId()));
     }
 }
