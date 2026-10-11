@@ -26,7 +26,7 @@ public final class ActionSetAnimatorTrigger extends AbilityActionHandler {
         return true;
     }
 
-    static void broadcastAnimatorParam(GameEntity target, String paramName, int paraType, boolean boolVal) {
+    public static void broadcastAnimatorParam(GameEntity target, String paramName, int paraType, boolean boolVal) {
         var value = AnimatorParameterValueInfo.newBuilder()
                 .setParaType(paraType)
                 .setBoolVal(boolVal)
@@ -43,7 +43,7 @@ public final class ActionSetAnimatorTrigger extends AbilityActionHandler {
         target.getScene().broadcastPacket(new PacketCombatInvocationsNotify(entry));
     }
 
-    static void broadcastAnimatorParamInt(GameEntity target, String paramName, int paraType, int intVal) {
+    public static void broadcastAnimatorParamInt(GameEntity target, String paramName, int paraType, int intVal) {
         var value = AnimatorParameterValueInfo.newBuilder()
                 .setParaType(paraType)
                 .setIntVal(intVal)

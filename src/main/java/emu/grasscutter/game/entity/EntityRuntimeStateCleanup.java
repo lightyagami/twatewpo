@@ -36,6 +36,7 @@ public final class EntityRuntimeStateCleanup {
         // Per-entity cleanup of the Qiqi skill HoT, the Kuki Shinobu C6 cooldown and similar.
         ShinobuC6Helper.clearEntityState(entityId);
         QiqiEHealHelper.clearEntityState(entityId);
+        emu.grasscutter.game.ability.OdetteAbilityHelper.clearEntityState(entityId);
         GatherInteractHelper.clearEntityState(entityId);
     }
 }

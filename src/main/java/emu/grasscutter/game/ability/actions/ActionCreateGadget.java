@@ -123,7 +123,9 @@ public class ActionCreateGadget extends AbilityActionHandler {
         // below only recognises summons belonging to the one controller it is standing on - so the
         // previous cast's singers match nothing, and neither does the KillGadget that should retire
         // them when the skill ends.
-        if (clientOwnsChain(entity)) {
+        if (action.gadgetID == OdetteAbilityHelper.ODETTE_PARTNER_GADGET_ID) {
+            // MoveAsist (41150002) creates visible Partner (41150001). Do not suppress via clientOwnsChain.
+        } else if (clientOwnsChain(entity)) {
             return true;
         }
 
@@ -185,14 +187,9 @@ public class ActionCreateGadget extends AbilityActionHandler {
             return true;
         }
 
-        // Odette skill objects: Partner shadow (41150001), move assist (41150002), bullets (41150003),
-        // and duo dance loop attack collider (41150004) are client-owned via EvtCreateGadgetNotify.
-        // Server EntityGadget copies create empty shells that stay in one place and don't attack.
-        if (OdetteAbilityHelper.isOdetteClientSkillObj(action.gadgetID)) {
-            var player = ability.getPlayerOwner();
-            if (player != null) {
-                OdetteAbilityHelper.purgeServerShells(player);
-            }
+        // Odette attack bullets and collider: client-owned
+        if (action.gadgetID == OdetteAbilityHelper.ODETTE_BULLET_FOLLOW_AVATAR
+                || action.gadgetID == OdetteAbilityHelper.ODETTE_DUO_DANCE_COLLIDER) {
             return true;
         }
 
@@ -258,6 +255,10 @@ public class ActionCreateGadget extends AbilityActionHandler {
         }
 
         entity.getScene().addEntity(entityCreated);
+
+        if (entityCreated.getGadgetId() == OdetteAbilityHelper.ODETTE_PARTNER_GADGET_ID) {
+            OdetteAbilityHelper.onPartnerCreated(ability.getPlayerOwner(), entityCreated);
+        }
 
         Grasscutter.getLogger()
                 .trace(

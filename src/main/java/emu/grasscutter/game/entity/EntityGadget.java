@@ -46,8 +46,21 @@ public class EntityGadget extends EntityBaseGadget {
 
     @Getter private final Position bornPos;
     @Getter private final Position bornRot;
-    @Getter @Setter private GameEntity owner = null;
+    @Getter private GameEntity owner = null;
     @Getter @Setter private List<GameEntity> children = new ArrayList<>();
+
+    public void setOwner(GameEntity owner) {
+        this.owner = owner;
+        if (owner != null && this.configGadget != null && this.configGadget.getCombat() != null
+                && this.configGadget.getCombat().getProperty() != null
+                && this.configGadget.getCombat().getProperty().isUseCreatorProperty()) {
+            GameEntity root = owner;
+            while (root instanceof EntityGadget eg && eg.getOwner() != null) {
+                root = eg.getOwner();
+            }
+            this.getFightProperties().putAll(root.getFightProperties());
+        }
+    }
 
     @Getter private int state;
     @Getter @Setter private int pointType;

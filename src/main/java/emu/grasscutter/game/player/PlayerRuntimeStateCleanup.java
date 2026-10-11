@@ -55,6 +55,7 @@ public final class PlayerRuntimeStateCleanup {
         run("ShinobuC6", () -> ShinobuC6Helper.clearPlayerState(player));
         run("PartyRevive", () -> PartyReviveHelper.clearPlayerState(player));
         run("QiqiEHeal", () -> QiqiEHealHelper.clearPlayerState(player));
+        run("Odette", () -> emu.grasscutter.game.ability.OdetteAbilityHelper.clearPlayerState(player));
         run("AvatarSkillStart", () -> ActionAvatarSkillStart.clearPlayerState(player));
         run("BattlePass", () -> BattlePassCompatHelper.clearPlayerState(uid));
         run("Domain continue", () -> DomainContinueSpawnHelper.clearPlayerState(uid));

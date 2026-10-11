@@ -39,7 +39,12 @@ public final class ActionKillGadget extends AbilityActionHandler {
                                                 && gadget.getOwner() == owner)
                         .toList();
 
-        doomed.forEach(scene::killEntity);
+        doomed.forEach(entity -> {
+            if (entity instanceof EntityGadget gadget && gadget.getChildren() != null) {
+                gadget.getChildren().forEach(scene::killEntity);
+            }
+            scene.killEntity(entity);
+        });
         return true;
     }
 }

@@ -52,6 +52,9 @@ public final class NyxSkillHook {
                     PartyReviveHelper.onQiqiBurst(player, entityAvatar);
                 }
             }
+            if (n3 == OdetteAbilityHelper.ODETTE_AVATAR_ID) {
+                OdetteAbilityHelper.onSkillStart(player, entityAvatar, n);
+            }
             if (!NyxHelper.isSkirkEntity(entityAvatar)) {
                 return;
             }

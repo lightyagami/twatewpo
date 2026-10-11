@@ -43,7 +43,5 @@ public class HandlerEvtCreateGadgetNotify extends PacketHandler {
         // Escoffier's cooking pot: register the entity and clear the server-side shell.
         EscoffierSkillCookHelper.onCookGadgetCreated(
                 session.getPlayer(), gadget.getId(), gadget.getGadgetId());
-        // Odette partner / move assist: drop leftover server shells once the real client one exists.
-        OdetteAbilityHelper.onClientGadgetCreated(session.getPlayer(), gadget);
     }
 }
