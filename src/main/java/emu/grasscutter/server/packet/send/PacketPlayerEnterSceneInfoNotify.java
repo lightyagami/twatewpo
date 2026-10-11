@@ -53,13 +53,6 @@ public class PacketPlayerEnterSceneInfoNotify extends BasePacket {
     public PacketPlayerEnterSceneInfoNotify(Player player) {
         super(PacketOpcodes.PlayerEnterSceneInfoNotify);
 
-        AbilityScalarValueEntry scalarValue = AbilityScalarValueEntry.newBuilder()
-                .setKey(AbilityStringOuterClass.AbilityString.newBuilder().setHash(Utils.abilityHash("SGV_PlayerTeam_Phlogiston"))
-                        .setStr("SGV_PlayerTeam_Phlogiston")
-                        .build())
-                        .setFloatValue(100)
-                .build();
-
         long hexCount = player.getTeamManager().getActiveTeam().stream()
                 .filter(e -> e != null && getHexenzirkelIds().contains(e.getAvatar().getAvatarId()))
                 .count();
@@ -84,14 +77,17 @@ public class PacketPlayerEnterSceneInfoNotify extends BasePacket {
                 .setFloatValue(moonPhaseCount)
                 .build();
 
-        boolean inNatlan = player.getScene() != null && player.getScene().getId() == 101;
         AbilitySyncStateInfo.Builder teamInfo = AbilitySyncStateInfo.newBuilder()
                 .addSgvDynamicValueMap(hexLevel)
                 .addSgvDynamicValueMap(moonPhaseLevel);
-
-        if (inNatlan) {
-            teamInfo.addSgvDynamicValueMap(scalarValue);
-            player.setPhlogistonValue(100);
+        if (player.isInNatlan()) {
+            teamInfo.addSgvDynamicValueMap(AbilityScalarValueEntry.newBuilder()
+                    .setKey(AbilityString.newBuilder()
+                            .setHash(Utils.abilityHash("SGV_PlayerTeam_Phlogiston"))
+                            .setStr("SGV_PlayerTeam_Phlogiston")
+                            .build())
+                    .setFloatValue(player.getPhlogistonValue())
+                    .build());
         }
 
         if (moonPhaseCount > 0) {

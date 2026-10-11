@@ -441,10 +441,10 @@ public class EntityAvatar extends GameEntity {
             }
         }
 
-        boolean inNatlan = this.getPlayer().getScene() != null && this.getPlayer().getScene().getId() == 101;
-        int phlogistonHash = emu.grasscutter.utils.Utils.abilityHash("DynamicAbility_Phlogiston");
+        boolean inNatlan = this.getPlayer().isInNatlan();
         for (int id : GameConstants.DEFAULT_ABILITY_HASHES) {
-            if (id == phlogistonHash && !inNatlan) continue;
+            // The client attaches this ability and draws the bar even without an SGV value.
+            if (!GameConstants.shouldAttachDefaultAvatarAbility(id, inNatlan)) continue;
             AbilityEmbryo emb =
                     AbilityEmbryo.newBuilder()
                             .setAbilityId(++embryoId)
@@ -516,6 +516,7 @@ public class EntityAvatar extends GameEntity {
         event.call();
 
         super.move(event.getDestination(), rotation);
+        this.getPlayer().refreshPhlogistonRegion();
     }
 
     @Override

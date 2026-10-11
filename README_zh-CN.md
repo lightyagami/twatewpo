@@ -55,40 +55,23 @@ Windows 上用 `.\gradlew.bat`，或运行 `gradlew-jar.bat`。
 
 没有注册页面。账号通过以下任一方式创建：
 
-- **从控制台。** `account create <username> [<password>] [@UID]`（密码与 UID 均可选，新账号仅使用配置中的默认权限，不自动获得 `*` 管理员权限）。
+- **从控制台。** `account create <username> [password] [@UID]`（密码与 UID 均可选，新账号仅使用配置中的默认权限，不自动获得 `*` 管理员权限）。
 - **在登录时。** 用一个没人占用的名字登录即注册该账号。开启 `account.useIntegrationPassword` 时，在用户名框中填 `name&&password`，密码框留空——当你要同时代理大量客户端、又不想为每个都建用户时很方便。
 
-设置的密码以 BCrypt 哈希存储。不指定密码时，账号暂不校验密码，可通过 `account resetpass` 后续设置。控制台需要把 `server.game.enableConsole` 设为 `true`。
+设置的密码以 BCrypt 哈希存储。不指定密码时，账号暂不校验密码，可通过 `account resetpassword` 后续设置。控制台需要把 `server.game.enableConsole` 设为 `true`。
 
 ## 命令
 
-内置命令已迁移至 **Picocli**，支持位置参数、具名选项和子命令。输入 `help` 查看命令及别名，`help <命令>` 查看命令语法，或用 `help <命令> <子命令>` 查看子命令语法（例如 `help teleport pos`）。参数输入错误时会显示错误原因和对应语法。交互式服务器控制台通过 JLine 支持 **Tab 自动补全**。游戏内命令以 `/` 开头，服务器控制台不需要。
+游戏内命令以 `/` 开头，服务器控制台不需要。输入 `help` 查看命令列表，`help <命令> [子命令...]` 查看语法和别名。控制台支持 Tab 补全，参数错误时会显示对应语法。
 
-**玩家选择器（`playerSelector`）：** `@UID`（玩家 UID）、`username@`（账号用户名）或 `username@UID`（用户名与 UID 同时匹配）。指定已有玩家时使用该语法。
-
-| 命令 | 用途 |
-|---|---|
-| `give` | 发放角色、武器、圣遗物和材料；支持 `--amount`、`--level` 等选项，默认等级为 100。 |
-| `account create / clone / delete / resetpass` | 创建、克隆、删除账号和重置密码，**仅限服务器控制台**。 |
-| `ban <playerSelector> [endTime] [原因...]` | 封禁账号，需要 `server.ban` 权限；封禁他人账号还需要 `server.ban.others`。`endTime` 为 Unix 时间戳。 |
-| `ban <IPv4> [原因...]` / `unban ip <密钥> <IPv4>` | 使用 `server.banip` 权限管理永久 IP 封禁；解封时使用配置中的 keystore 密钥。 |
-| `mail send` / `mail system` | 向指定玩家或所有玩家发送邮件、管理系统邮件，替代旧的 `sysmail`。 |
-
-服务器控制台示例：
+玩家选择器支持 `@UID`、`username@` 和 `username@UID`。账号管理仅限服务器控制台。
 
 ```text
-help give
 help teleport pos
 give 202 --amount 3 @10001
-tp pos 1000 200 300 3 @10001
-account create alice
-account create bob secret @10001
-account clone alice alice-copy @10002
 ```
 
-在 `account create` 和 `account clone` 中，可选的 `@UID` 表示**新账号的 UID**。克隆要求源玩家离线，不复制好友关系和共享音游谱面。重置密码使用 `account resetpass <username> <new-password>`，会撤销旧登录令牌和会话令牌，并断开玩家连接。
-
-详细说明见 [CLI 迁移文档](docs/cli-picocli-migration.md)；插件开发者请参阅 [命令 API v5 文档](docs/plugin-command-api-v5.md)。
+详细说明见 [CLI 迁移文档](docs/cli-picocli-migration.md)；插件开发参阅 [命令 API v5](docs/plugin-command-api-v5.md)。
 
 ## TPS 射击（7.1）
 
