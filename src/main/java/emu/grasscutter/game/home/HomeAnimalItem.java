@@ -8,6 +8,8 @@ import lombok.experimental.FieldDefaults;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder(builderMethodName = "of")
 public class HomeAnimalItem {

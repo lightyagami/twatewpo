@@ -7,14 +7,14 @@ import emu.grasscutter.game.world.Position;
 import emu.grasscutter.net.proto.HomeMarkPointFurnitureDataOuterClass;
 import emu.grasscutter.net.proto.HomeMarkPointNPCDataOuterClass;
 import emu.grasscutter.net.proto.HomeNpcDataOuterClass;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.Nullable;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder(builderMethodName = "of")
 public class HomeNPCItem implements HomeMarkPointProtoFactory {

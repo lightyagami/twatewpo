@@ -14,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder(builderMethodName = "of")
 public class HomeFurnitureItem implements HomeMarkPointProtoFactory {

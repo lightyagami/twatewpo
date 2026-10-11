@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder(builderMethodName = "of")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HomeSceneItem {

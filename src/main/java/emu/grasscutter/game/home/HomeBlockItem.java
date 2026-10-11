@@ -12,6 +12,8 @@ import lombok.experimental.FieldDefaults;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder(builderMethodName = "of")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HomeBlockItem {

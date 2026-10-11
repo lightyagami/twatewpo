@@ -34,7 +34,7 @@ import picocli.CommandLine.Parameters;
 
 @Command(
         label = "give",
-        aliases = {"g", "item", "giveitem", "giveall"},
+        aliases = {"g", "giveall"},
         permission = "player.give",
         permissionTargeted = "player.give.others",
         threading = true)
