@@ -72,7 +72,64 @@ public final class DomainDungeonHelper {
     }
 
     public static int resolveClientSceneId(int n) {
-        return n;
+        int n2 = CLIENT_SCENE_CACHE.get(n);
+        if (n2 != Integer.MIN_VALUE) {
+            return n2;
+        }
+        int n3 = n;
+        if (n >= 40816 && n <= 40819) {
+            n3 = 40754 + (n - 40816);
+        } else if (n >= 40704 && n <= 40707) {
+            n3 = 40754 + (n - 40704);
+        } else if (n >= 40760 && n <= 40763) {
+            // Fontaine artifact (Pale Forgotten Glory) -> Lost Lunar Court / Spire of Solitary Enlightenment
+            n3 = 40754 + (n - 40760);
+        } else if (n >= 40764 && n <= 40767) {
+            // Natlan talent (Blazing Ruins) -> Steeple of Ignorance
+            n3 = 40750 + (n - 40764);
+        } else if (n >= 40770 && n <= 40773) {
+            // Fontaine talent -> Steeple of Ignorance
+            n3 = 40750 + (n - 40770);
+        } else if (n >= 40774 && n <= 40777) {
+            // Natlan weapon (Ancient Watchtower) -> Steeple of Ignorance
+            n3 = 40750 + (n - 40774);
+        } else if (n >= 40780 && n <= 40783) {
+            // Fontaine weapon (Echoes of Deep Tides) -> Steeple of Ignorance
+            n3 = 40750 + (n - 40780);
+        } else if (n >= 40784 && n <= 40791) {
+            // Fontaine artifact (Denouement of Sin / Waterfall Wen) -> Lost Lunar Court
+            n3 = 40754 + ((n - 40784) % 4);
+        } else if (n >= 40792 && n <= 40799) {
+            // Natlan artifact (Sanctum of Rainbow Spirits / Chamber of Thought) -> Lost Lunar Court
+            n3 = 40754 + ((n - 40792) % 4);
+        } else if (n >= 40810 && n <= 40813) {
+            n3 = 40506;
+        } else if (n >= 40820 && n <= 40823) {
+            // Moonchild / NDKL Cycle3: the client has no 40820-40823 art, so reuse the Lost Lunar Court scene
+            n3 = 40754 + (n - 40820);
+        } else if (n >= 40824 && n <= 40827) {
+            // MDDungeon Cycle05: no client art, so reuse the Lost Lunar Court scene
+            n3 = 40754 + (n - 40824);
+        } else if (n >= 40828 && n <= 40831) {
+            // Ice Erosion: the client has no 40828-40831 art, so reuse the Lost Lunar Court scene
+            n3 = 40754 + (n - 40828);
+        } else if (n >= 40832 && n <= 40835) {
+            // Snezhnaya weapon: replicate the Lost Lunar Court (40754-40757) client scene art
+            n3 = 40754 + (n - 40832);
+        } else if (n >= 40836 && n <= 40839) {
+            // Snezhnaya talent -> Steeple of Ignorance
+            n3 = 40750 + (n - 40836);
+        } else if (n >= 40700 && n <= 40703) {
+            n3 = n;
+        } else if (n >= 40840 && n <= 40847) {
+            // Extra custom domains without client art - reuse the Lost Lunar Court scene
+            n3 = 40754 + ((n - 40840) % 4);
+        }
+        if (n3 != n) {
+            // empty if block
+        }
+        CLIENT_SCENE_CACHE.put(n, n3);
+        return n3;
     }
 
     /** Scene id advertised to the client for art/team bind (may differ from server scene id). */

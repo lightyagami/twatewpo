@@ -8,20 +8,23 @@ import emu.grasscutter.utils.ProtoWire;
 import java.io.ByteArrayOutputStream;
 
 /**
- * MDCPAKFIAEG (465) — all.proto:
- *   HBLBDKIBOCG = 5  // version / set index
- *   OLGBLCNIAEF = 15 // schedule 700
- *   retcode = 13
+ * MPIJBOMAAJK (3259) — 7.1.0:
+ *   JAOLHCKONIP = 1  // version / set index
+ *   NCLJJHCJNGB = 3  // schedule 700
+ *   retcode = 11
  */
 public class PacketReliquaryOfferDefineRsp extends BasePacket {
 
     public PacketReliquaryOfferDefineRsp(int versionIdx) {
-        super(PacketOpcodes.ReliquaryOfferDefineRsp);
+        this(versionIdx, 0, 0);
+    }
+
+    public PacketReliquaryOfferDefineRsp(int versionIdx, int retcode, int clientSequence) {
+        super(PacketOpcodes.ReliquaryOfferDefineRsp, clientSequence);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        // 7.1 numbers (7.0: 5 and 15)
         ProtoWire.writeUint32Force(out, 1, versionIdx);
         ProtoWire.writeUint32Force(out, 3, ArtifactTransmuterSystem.SCHEDULE_ID);
-        // retcode 0 omitted (proto3 default)
+        ProtoWire.writeUint32Force(out, 11, retcode);
         this.setData(out.toByteArray());
     }
 }

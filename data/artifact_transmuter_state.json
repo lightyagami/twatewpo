@@ -1,6 +1,9 @@
 {
   "851880405": {
-    "definedSuites": {},
+    "definedSuites": {
+      "15024": 2,
+      "15026": 1
+    },
     "extractedThisCycle": 0,
     "progress": 2,
     "cycleEndUnix": 1791829684

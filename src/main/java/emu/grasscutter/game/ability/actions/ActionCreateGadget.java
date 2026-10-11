@@ -6,6 +6,7 @@ import emu.grasscutter.data.binout.AbilityModifier.AbilityModifierAction;
 import emu.grasscutter.game.ability.Ability;
 import emu.grasscutter.game.ability.IneffaRelayHelper;
 import emu.grasscutter.game.ability.MarionetteAbilityHelper;
+import emu.grasscutter.game.ability.OdetteAbilityHelper;
 import emu.grasscutter.game.ability.VentiSkillObjHelper;
 import emu.grasscutter.game.entity.*;
 import emu.grasscutter.game.props.CampTargetType;
@@ -180,6 +181,17 @@ public class ActionCreateGadget extends AbilityActionHandler {
             var player = ability.getPlayerOwner();
             if (player != null) {
                 MarionetteAbilityHelper.purgeServerShells(player);
+            }
+            return true;
+        }
+
+        // Odette skill objects: Partner shadow (41150001), move assist (41150002), bullets (41150003),
+        // and duo dance loop attack collider (41150004) are client-owned via EvtCreateGadgetNotify.
+        // Server EntityGadget copies create empty shells that stay in one place and don't attack.
+        if (OdetteAbilityHelper.isOdetteClientSkillObj(action.gadgetID)) {
+            var player = ability.getPlayerOwner();
+            if (player != null) {
+                OdetteAbilityHelper.purgeServerShells(player);
             }
             return true;
         }

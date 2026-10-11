@@ -55,7 +55,10 @@ public final class GiveCommand implements CommandHandler {
         @Parameters(index = "0", paramLabel = "<id|name|all|weapons|mats|avatars|artifacts>")
         private String target;
 
-        @Option(names = {"-n", "--amount"}, defaultValue = "1", paramLabel = "<count>")
+        @Parameters(index = "1", arity = "0..1", paramLabel = "[count]", defaultValue = "0")
+        private int positionalAmount;
+
+        @Option(names = {"-n", "--amount"}, defaultValue = "0", paramLabel = "<count>")
         private int amount;
 
         @Option(names = {"-l", "--level"}, paramLabel = "<level>")
@@ -70,10 +73,10 @@ public final class GiveCommand implements CommandHandler {
         @Option(names = "--skill-level", paramLabel = "<level>")
         private Integer skillLevel;
 
-        @Option(names = "--main-stat", paramLabel = "<id|stat>")
+        @Option(names = {"-m", "--main-stat"}, paramLabel = "<id|stat>")
         private String mainStat;
 
-        @Option(names = "--substat", paramLabel = "<id|stat[_tier][,rolls]>")
+        @Option(names = {"-s", "--substat"}, split = "[,;]", paramLabel = "<id|stat[_tier][:rolls]>")
         private List<String> substats = new ArrayList<>();
 
         private Args(Player sender, Player targetPlayer) {
@@ -83,6 +86,9 @@ public final class GiveCommand implements CommandHandler {
 
         @Override
         public void run() {
+            if (amount <= 0) {
+                amount = positionalAmount > 0 ? positionalAmount : 1;
+            }
             if (amount < 1) {
                 CommandOutput.sendTranslatedMessage(sender, "commands.generic.invalid.amount");
                 return;
@@ -250,9 +256,10 @@ public final class GiveCommand implements CommandHandler {
             if (substats != null && !substats.isEmpty()) {
                 param.appendPropIdList = new ArrayList<>();
                 for (String raw : substats) {
-                    String[] rollParts = raw.split(",", 2);
-                    int rolls = rollParts.length == 2 ? Math.min(Integer.parseInt(rollParts[1]), 200) : 1;
-                    int id = getAppendPropId(rollParts[0], param.data);
+                    if (raw == null || raw.isBlank()) continue;
+                    String[] rollParts = raw.contains(":") ? raw.split(":", 2) : raw.split(",", 2);
+                    int rolls = rollParts.length == 2 ? Math.min(Integer.parseInt(rollParts[1].trim()), 200) : 1;
+                    int id = getAppendPropId(rollParts[0].trim(), param.data);
                     for (int i = 0; i < rolls; i++) param.appendPropIdList.add(id);
                 }
             }

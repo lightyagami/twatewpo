@@ -3,6 +3,7 @@ package emu.grasscutter.server.packet.recv;
 import emu.grasscutter.game.ability.EscoffierSkillCookHelper;
 import emu.grasscutter.game.ability.IneffaRelayHelper;
 import emu.grasscutter.game.ability.MarionetteAbilityHelper;
+import emu.grasscutter.game.ability.OdetteAbilityHelper;
 import emu.grasscutter.game.ability.VentiSkillObjHelper;
 import emu.grasscutter.game.entity.*;
 import emu.grasscutter.net.packet.*;
@@ -42,5 +43,7 @@ public class HandlerEvtCreateGadgetNotify extends PacketHandler {
         // Escoffier's cooking pot: register the entity and clear the server-side shell.
         EscoffierSkillCookHelper.onCookGadgetCreated(
                 session.getPlayer(), gadget.getId(), gadget.getGadgetId());
+        // Odette partner / move assist: drop leftover server shells once the real client one exists.
+        OdetteAbilityHelper.onClientGadgetCreated(session.getPlayer(), gadget);
     }
 }

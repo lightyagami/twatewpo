@@ -6,29 +6,41 @@ import emu.grasscutter.utils.ProtoWire;
 import java.io.ByteArrayOutputStream;
 
 /**
- * Configurable ReliquaryDust SelectRsp probe. Default assumes 7281 / retcode field 9; the live
- * probe may override opcode + field while hunting the real 7273 pair.
+ * ReliquaryDust SelectRsp (7.1.0: CmdId 9200 JHFKFGNEJNJ { int32 retcode = 2; }).
  */
 public class PacketReliquaryDustSelectRsp extends BasePacket {
-    public static final int OPCODE = 7281;
+    public static final int OPCODE = 9200;
 
     public PacketReliquaryDustSelectRsp(int retcode) {
-        this(OPCODE, 9, retcode, null, 0L);
+        this(OPCODE, 2, retcode, 0, null, 0L);
+    }
+
+    public PacketReliquaryDustSelectRsp(int retcode, int clientSequence) {
+        this(OPCODE, 2, retcode, clientSequence, null, 0L);
     }
 
     public PacketReliquaryDustSelectRsp(int retcode, byte[] requestHeader) {
-        this(OPCODE, 9, retcode, requestHeader, 0L);
+        this(OPCODE, 2, retcode, 0, requestHeader, 0L);
+    }
+
+    public PacketReliquaryDustSelectRsp(
+            int opcode, int retcodeField, int retcode, int clientSequence) {
+        this(opcode, retcodeField, retcode, clientSequence, null, 0L);
     }
 
     public PacketReliquaryDustSelectRsp(
             int opcode, int retcodeField, int retcode, byte[] requestHeader, long guid) {
-        super(opcode);
+        this(opcode, retcodeField, retcode, 0, requestHeader, guid);
+    }
+
+    public PacketReliquaryDustSelectRsp(
+            int opcode, int retcodeField, int retcode, int clientSequence, byte[] requestHeader, long guid) {
+        super(opcode, clientSequence);
         if (requestHeader != null && requestHeader.length > 0) {
             this.setHeader(requestHeader);
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         if (guid != 0L) {
-            // Common layouts: guid=4 (8036), guid=8 (4711), guid=14 (6541)
             if (opcode == 8036) {
                 ProtoWire.writeUint64Force(out, 4, guid);
             } else if (opcode == 6541) {

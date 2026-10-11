@@ -722,7 +722,7 @@ public final class PacketOpcodes {
     public static final int GachaSimpleInfoNotify = 29467;
     public static final int DungeonDataNotify = 1057;
     // public static final int FPIOIMMDMJE = 1288;
-    public static final int ReadPrivateChatReq = 0; // 7.1 CmdId unknown (7.0: 4231)
+    public static final int ReadPrivateChatReq = 26929;
     public static final int CodexDataUpdateNotify = 24419;
     public static final int SeaLampFlyLampRsp = 27616;
     // public static final int EKDANHFDCCG = 23502;
@@ -1134,7 +1134,9 @@ public final class PacketOpcodes {
     // public static final int FDODCJHJPCA = 2707;
     public static final int MpPlayGuestReplyNotify = 21009;
     // public static final int HKABPCDBKCJ = 5894;
-    // public static final int JGGGGCPPBPM = 9185;
+    public static final int JGGGGCPPBPM = 9185;
+    public static final int ReliquaryDustSelectReq = 9185;
+    public static final int ReliquaryDustSelectRsp = 9200;
     public static final int _TrialAvatarInDungeonTrainingStepNotify = 5979;
     public static final int CoopProgressUpdateNotify = 5436;
     // public static final int JPMLNONDGHG = 7672;
@@ -1607,6 +1609,10 @@ public final class PacketOpcodes {
     public static final int ItemGivingReq = 2045;
     // public static final int AEMOOKJLIKH = 20622;
     // public static final int KCLEOJEHIPA = 28021;
+    public static final int ReliquaryDustConfirmReq = 28022;
+    public static final int ReliquaryDustConfirmRsp = 22317;
+    public static final int HANFLKLLEOI = 28022;
+    public static final int HBGAHEIKJCH = 22317;
     public static final int _TowerDefenseEnterDungeonReq = 28435;
     public static final int SpiceActivityGivingRecordNotify = 21748;
     // public static final int BDKFNPIGDAM = 27484;
@@ -2356,7 +2362,7 @@ public final class PacketOpcodes {
     // public static final int DDEHNBPLDIP = 4215;
     public static final int _DungeonQuickOpenRsp = 20791;
     // public static final int IFIMCGFEDCI = 3060;
-    public static final int ReadPrivateChatRsp = 0; // 7.1 CmdId unknown (7.0: 25913)
+    public static final int ReadPrivateChatRsp = 21003;
     // public static final int KCGJCLKNIHN = 22518;
     // public static final int PJFEBILHHJJ = 21312;
     // public static final int GCGReplayBriefDataNotify = 3831;
@@ -2757,7 +2763,7 @@ public final class PacketOpcodes {
     public static final int EntityFightPropUpdateNotify = 9736;
     public static final int GetChatEmojiCollectionRsp = 7739;
     // public static final int BFAOJJLGAOM = 21803;
-    public static final int GetPlayerFriendListReq = 427;
+    public static final int GetPlayerFriendListReq = 25851;
     // public static final int FJFCPJNEBLD = 871;
     public static final int CreateVehicleRsp = 27567;
     // public static final int CMOGELPOKKP = 29991;

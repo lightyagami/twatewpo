@@ -3,6 +3,7 @@ package emu.grasscutter.server.packet.recv;
 import emu.grasscutter.game.ability.EscoffierSkillCookHelper;
 import emu.grasscutter.game.ability.IneffaRelayHelper;
 import emu.grasscutter.game.ability.MarionetteAbilityHelper;
+import emu.grasscutter.game.ability.OdetteAbilityHelper;
 import emu.grasscutter.game.entity.EntityClientGadget;
 import emu.grasscutter.game.entity.GameEntity;
 import emu.grasscutter.net.packet.*;
@@ -27,6 +28,7 @@ public class HandlerEvtDestroyGadgetNotify extends PacketHandler {
         if (gadgetId > 0) {
             IneffaRelayHelper.onClientGadgetDestroyed(session.getPlayer(), entityId, gadgetId);
             MarionetteAbilityHelper.onClientGadgetDestroyed(session.getPlayer(), entityId, gadgetId);
+            OdetteAbilityHelper.onClientGadgetDestroyed(session.getPlayer(), entityId, gadgetId);
         }
         // Escoffier's cooking pot destroyed: schedule the fallback payout, still preferring SkillCookReq.
         EscoffierSkillCookHelper.onCookGadgetDestroyed(session.getPlayer(), entityId);

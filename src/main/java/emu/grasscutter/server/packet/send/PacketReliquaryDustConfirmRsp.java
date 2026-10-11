@@ -5,17 +5,22 @@ import emu.grasscutter.utils.ProtoWire;
 
 import java.io.ByteArrayOutputStream;
 
-/** S2C confirm rsp — guid + retcode (EBAHKKBAKFO 4711 layout as safe default). */
+/** S2C confirm rsp — retcode (7.1: HBGAHEIKJCH 22317, retcode field 5). */
 public class PacketReliquaryDustConfirmRsp extends BasePacket {
-    public static final int OPCODE = 4711;
+    public static final int OPCODE = 22317;
 
     public PacketReliquaryDustConfirmRsp(long guid, int retcode) {
-        super(OPCODE);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        if (guid != 0L) {
-            ProtoWire.writeUint64Force(out, 8, guid);
+        this(guid, retcode, 0, null);
+    }
+
+    public PacketReliquaryDustConfirmRsp(
+            long guid, int retcode, int clientSequence, byte[] requestHeader) {
+        super(OPCODE, clientSequence);
+        if (requestHeader != null && requestHeader.length > 0) {
+            this.setHeader(requestHeader);
         }
-        ProtoWire.writeUint32Force(out, 7, retcode);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ProtoWire.writeUint32Force(out, 5, retcode);
         this.setData(out.toByteArray());
     }
 }

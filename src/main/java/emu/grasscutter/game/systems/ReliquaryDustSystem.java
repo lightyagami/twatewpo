@@ -54,9 +54,10 @@ public final class ReliquaryDustSystem {
     public static final int OPCODE_DUST_RSP = 0; // 7.0: 21898, GetAllActivatedBargainDataRsp in 7.1
     public static final int OPCODE_DUST_COMPANION_REQ = -1102; // 7.0: 26587
     public static final int OPCODE_DUST_COMPANION_RSP = 26599;
-    public static final int OPCODE_DUST_SELECT_REQ = -1103; // 7.0: 7273
-    public static final int OPCODE_DUST_CONFIRM_REQ_A = -1104; // 7.0: 2210
+    public static final int OPCODE_DUST_SELECT_REQ = 9185; // 7.1: GMGMANMAKNK (7.0: 7273)
+    public static final int OPCODE_DUST_CONFIRM_REQ_A = 28022; // 7.1: HANFLKLLEOI (7.0: 2210)
     public static final int OPCODE_DUST_CONFIRM_REQ_B = -1105; // 7.0: 21945
+    public static final int OPCODE_DUST_CONFIRM_RSP = 22317; // 7.1: HBGAHEIKJCH
 
     /**
      * SelectRsp opcode probe (local debugging only). Keep false on production - wrong opcodes and
@@ -241,23 +242,18 @@ public final class ReliquaryDustSystem {
      * S2C opcodes when {@link #ENABLE_RSP_PROBE} is true.
      */
     private static void sendReshapeSuccessPackets(
-            Player player, int selectRet, byte[] requestHeader, boolean advanceProbe) {
+            Player player, int selectRet, int clientSequence, boolean advanceProbe) {
         PlayerDustState st = state(player);
         sendDataNotify(player);
 
-        final byte[] hdr =
-                requestHeader != null && requestHeader.length > 0
-                        ? java.util.Arrays.copyOf(requestHeader, requestHeader.length)
-                        : null;
-
         if (selectRet != 0) {
-            player.sendPacket(new PacketReliquaryDustSelectRsp(selectRet, hdr));
+            player.sendPacket(new PacketReliquaryDustSelectRsp(selectRet, clientSequence));
             Grasscutter.getLogger()
-                    .debug(
-                            "ReliquaryDust send-fail uid={} ret={} hdrLen={}",
+                    .info(
+                            "ReliquaryDust send-fail uid={} ret={} seq={}",
                             player.getUid(),
                             selectRet,
-                            hdr != null ? hdr.length : 0);
+                            clientSequence);
             return;
         }
 
@@ -265,7 +261,7 @@ public final class ReliquaryDustSystem {
         sendDataNotify(player);
 
         int opcode = PacketReliquaryDustSelectRsp.OPCODE;
-        int retField = 9;
+        int retField = 2; // 7.1: JHFKFGNEJNJ field 2 (7.0: 9)
         long guid = st.pending != null ? st.pending.guid : 0L;
 
         if (ENABLE_RSP_PROBE) {
@@ -292,27 +288,26 @@ public final class ReliquaryDustSystem {
             RECV_LOG_UNTIL.put(player.getUid(), System.currentTimeMillis() + 8_000L);
             Grasscutter.getLogger()
                     .debug(
-                            "ReliquaryDust RspProbe uid={} idx={}/{} opcode={} retField={} guid={} hdrLen={} advance={}",
+                            "ReliquaryDust RspProbe uid={} idx={}/{} opcode={} retField={} guid={} advance={}",
                             player.getUid(),
                             idx % SELECT_RSP_PROBES.length,
                             SELECT_RSP_PROBES.length,
                             opcode,
                             retField,
                             guid,
-                            hdr != null ? hdr.length : 0,
                             advanceProbe);
         }
 
-        player.sendPacket(new PacketReliquaryDustSelectRsp(opcode, retField, 0, hdr, guid));
+        player.sendPacket(new PacketReliquaryDustSelectRsp(opcode, retField, 0, clientSequence));
         sendDataNotify(player);
         Grasscutter.getLogger()
-                .debug(
-                        "ReliquaryDust send-success uid={} opcode={} pending={} progress={} hdrLen={}",
+                .info(
+                        "ReliquaryDust send-success uid={} opcode={} pending={} progress={} seq={}",
                         player.getUid(),
                         opcode,
                         guid,
                         st.progress,
-                        hdr != null ? hdr.length : 0);
+                        clientSequence);
     }
 
     /** C2S 7273 - primary ReliquaryDustReq (guid + chosen append affix ids). */
@@ -328,8 +323,14 @@ public final class ReliquaryDustSystem {
             Player player, byte[] payload, int clientSequence, byte[] requestHeader) {
         PlayerDustState st = state(player);
         Map<Integer, List<Object>> fields = ProtoWire.parse(payload);
-        long guid = firstUint64(fields, 1);
-        List<Integer> chosen = ProtoWire.asUint32List(fields.get(9));
+        long guid = firstUint64(fields, 6);
+        if (guid == 0L) {
+            guid = firstUint64(fields, 1);
+        }
+        List<Integer> chosen = ProtoWire.asUint32List(fields.get(13));
+        if (chosen.isEmpty()) {
+            chosen = ProtoWire.asUint32List(fields.get(9));
+        }
         if (guid != 0L) {
             st.focusGuid = guid;
         }
@@ -341,29 +342,28 @@ public final class ReliquaryDustSystem {
         if (st.pending != null && (guid == 0L || st.pending.guid == guid)) {
             ensurePendingShowsDiff(player, st.pending);
             Grasscutter.getLogger()
-                    .debug(
+                    .info(
                             "ReliquaryDust select exist-candidate uid={} guid={} pending={}",
                             player.getUid(),
                             st.focusGuid,
                             st.pending.guid);
             // Already have a candidate: re-push so client can open comparison (exit-dialog path).
             // Keep retcode=0 - 14320 can toast as an error and block the working exit-to-compare jump.
-            sendReshapeSuccessPackets(player, 0, requestHeader, false);
+            sendReshapeSuccessPackets(player, 0, clientSequence, false);
             return;
         }
 
         Grasscutter.getLogger()
-                .debug(
-                        "ReliquaryDust select/reshape uid={} guid={} chosen={} seq={} hdrLen={} hex={}",
+                .info(
+                        "ReliquaryDust select/reshape uid={} guid={} chosen={} seq={} hex={}",
                         player.getUid(),
                         st.focusGuid,
                         st.chosenKeys,
                         clientSequence,
-                        requestHeader != null ? requestHeader.length : 0,
                         toHex(payload));
 
         int ret = doReshape(player, st.focusGuid, st.chosenKeys);
-        sendReshapeSuccessPackets(player, ret, requestHeader, true);
+        sendReshapeSuccessPackets(player, ret, clientSequence, true);
     }
 
     /**
@@ -395,11 +395,19 @@ public final class ReliquaryDustSystem {
         player.sendPacket(new emu.grasscutter.server.packet.send.PacketReliquaryDustCompanionRsp(0));
     }
 
-    /** C2S 2210 / 21945 - adopt (true) or keep original (false). */
+    /** C2S 28022 (7.1: HANFLKLLEOI) / 2210 / 21945 - adopt (true) or keep original (false). */
     public static void handleConfirm(Player player, byte[] payload, int opcode) {
+        handleConfirm(player, payload, opcode, 0, null);
+    }
+
+    public static void handleConfirm(
+            Player player, byte[] payload, int opcode, int clientSequence, byte[] requestHeader) {
         PlayerDustState st = state(player);
         Map<Integer, List<Object>> fields = ProtoWire.parse(payload);
-        long guid = firstUint64(fields, 2);
+        long guid = firstUint64(fields, 15);
+        if (guid == 0L) {
+            guid = firstUint64(fields, 2);
+        }
         if (guid == 0L) {
             guid = firstUint64(fields, 1);
         }
@@ -407,42 +415,42 @@ public final class ReliquaryDustSystem {
             guid = st.pending.guid;
         }
         boolean adopt =
-                firstBool(fields, 15) || firstBool(fields, 6) || firstBool(fields, 13);
-        // Some builds send enum/uint: 1 = adopt, 0 = keep
-        int choice = firstUint32(fields, 15);
+                firstBool(fields, 14) || firstBool(fields, 15) || firstBool(fields, 6) || firstBool(fields, 13);
+        int choice = firstUint32(fields, 14);
+        if (choice == 0) {
+            choice = firstUint32(fields, 15);
+        }
         if (choice == 0) {
             choice = firstUint32(fields, 6);
         }
         if (choice == 0) {
             choice = firstUint32(fields, 1);
         }
-        if (choice == 1) {
-            adopt = true;
-        } else if (choice == 2) {
-            // occasionally 2 = adopt
+        if (choice == 1 || choice == 2) {
             adopt = true;
         }
 
         Grasscutter.getLogger()
-                .debug(
-                        "ReliquaryDust confirm uid={} op={} guid={} adopt={} choice={} fields={} hex={}",
+                .info(
+                        "ReliquaryDust confirm uid={} op={} guid={} adopt={} choice={} seq={} fields={} hex={}",
                         player.getUid(),
                         opcode,
                         guid,
                         adopt,
                         choice,
+                        clientSequence,
                         summarize(fields),
                         toHex(payload));
 
         int ret = applyOrDiscard(player, guid, adopt);
-        player.sendPacket(new PacketReliquaryDustConfirmRsp(guid, ret));
+        player.sendPacket(new PacketReliquaryDustConfirmRsp(guid, ret, clientSequence, requestHeader));
         // Always wipe server pending after confirm attempt.
         st.pending = null;
         st.focusGuid = 0L;
         // Empty 25355 only here, never on login - clears the client unfinished-reshape state.
         sendClearCandidateNotify(player);
         Grasscutter.getLogger()
-                .debug(
+                .info(
                         "ReliquaryDust confirm-done uid={} ret={} pendingCleared=true",
                         player.getUid(),
                         ret);

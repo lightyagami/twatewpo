@@ -363,6 +363,10 @@ public final class ArtifactTransmuterSystem {
     }
 
     public static void handleDefine(Player player, byte[] payload) {
+        handleDefine(player, payload, 0);
+    }
+
+    public static void handleDefine(Player player, byte[] payload, int clientSequence) {
         ensureGadget(player);
         PlayerState st = state(player);
         Map<Integer, List<Object>> fields = ProtoWire.parse(payload);
@@ -453,14 +457,14 @@ public final class ArtifactTransmuterSystem {
         ReliquarySetData setData = resolveSetByVersionIndex(versionIdx);
         if (setData == null) {
             Grasscutter.getLogger().warn("ArtifactTransmuter define: unknown versionIdx={}", versionIdx);
-            player.sendPacket(new PacketReliquaryOfferDefineRsp(versionIdx));
+            player.sendPacket(new PacketReliquaryOfferDefineRsp(versionIdx, 1, clientSequence));
             return;
         }
 
         GameItem relic = createDefinedReliquary(setData, equipType, mainIndex, groups);
         if (relic == null) {
             Grasscutter.getLogger().warn("ArtifactTransmuter define: failed to create relic set={} equipType={} mainIndex={}", setData.getId(), equipType, mainIndex);
-            player.sendPacket(new PacketReliquaryOfferDefineRsp(versionIdx));
+            player.sendPacket(new PacketReliquaryOfferDefineRsp(versionIdx, 1, clientSequence));
             return;
         }
 
@@ -477,21 +481,25 @@ public final class ArtifactTransmuterSystem {
         }
         inv.removeItemById(ELIXIR_ITEM_ID, cost);
 
-        inv.addItem(relic, ActionReason.PlayerUpgradeReward);
         int setId = setData.getId();
         st.definedSuites.merge(setId, 1, Integer::sum);
 
+        // Acknowledge RPC with sequence and retcode 0
+        player.sendPacket(new PacketReliquaryOfferDefineRsp(versionIdx, 0, clientSequence));
         player.sendPacket(new PacketReliquaryOfferDataNotify(st));
-        player.sendPacket(new PacketReliquaryOfferDefineRsp(versionIdx));
+
+        // Add artifact to player's inventory
+        inv.addItem(relic, ActionReason.PlayerUpgradeReward);
         saveState(player);
-        Grasscutter.getLogger().debug(
-                "ArtifactTransmuter define uid={} set={} equipType={} mainFp={} subFps={} item={} mainPropId={} append={}",
+        Grasscutter.getLogger().info(
+                "ArtifactTransmuter define success: uid={} set={} equipType={} mainFp={} subFps={} itemId={} guid={} mainPropId={} append={}",
                 player.getUid(),
                 setId,
                 equipType,
                 mainIndex,
                 groups,
                 relic.getItemId(),
+                relic.getGuid(),
                 relic.getMainPropId(),
                 relic.getAppendPropIdList());
     }

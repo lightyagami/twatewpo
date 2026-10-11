@@ -318,7 +318,10 @@ public abstract class GameEntity {
             emu.grasscutter.game.ability.AbilityMaxHpRatioHelper.onModifierAdded(
                     ability, modifierName, data, this);
             if (data != null && data.state == AbilityModifier.State.Limbo) {
-                this.trackLimboModifier(ability, modifierName, limboThresholdOf(data));
+                float threshold = limboThresholdOf(data);
+                if (!(this instanceof EntityMonster) || threshold > 0.05f) {
+                    this.trackLimboModifier(ability, modifierName, threshold);
+                }
             }
         }
     }
@@ -356,9 +359,12 @@ public abstract class GameEntity {
         if (data.state == AbilityModifier.State.Limbo) {
             // No ability instance here to resolve a named special against, so an unresolvable
             // one reads as zero. Limbo modifiers without an explicit threshold (e.g. Hu Tao C6)
-            // still need death-prevention, so fall back to a tiny floor.
-            Grasscutter.getLogger().debug("Limbo set to {}", limboThresholdOf(data));
-            this.setLimbo(limboThresholdOf(data));
+            // still need death-prevention, so fall back to a tiny floor for avatars only.
+            float threshold = limboThresholdOf(data);
+            if (!(this instanceof EntityMonster) || threshold > 0.05f) {
+                Grasscutter.getLogger().debug("Limbo set to {}", threshold);
+                this.setLimbo(threshold);
+            }
         }
     }
 
@@ -602,7 +608,9 @@ public abstract class GameEntity {
         float curHp = getFightProperty(FightProperty.FIGHT_PROP_CUR_HP);
         boolean lockHpActive = isLockHP()
                 && (!(this instanceof EntityMonster) || emu.grasscutter.game.world.EffigyCombatHelper.isEffigy((EntityMonster) this));
-        if (limbo) {
+        boolean limboActive = limbo
+                && (!(this instanceof EntityMonster) || limboHpThreshold > 0.05f);
+        if (limboActive) {
             float maxHp = getFightProperty(FightProperty.FIGHT_PROP_MAX_HP);
             float curRatio = curHp / maxHp;
             if (curRatio > limboHpThreshold) {
