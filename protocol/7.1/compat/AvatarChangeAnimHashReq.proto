@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option java_package = "emu.grasscutter.net.proto";
+
+message AvatarChangeAnimHashReq {
+  uint64 avatar_guid = 9;
+  uint32 anim_hash = 2;
+}

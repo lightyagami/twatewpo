@@ -1,14 +1,15 @@
 package emu.grasscutter.command.commands;
 
-import emu.grasscutter.command.*;
+import emu.grasscutter.command.Command;
+import emu.grasscutter.command.CommandHandler;
+import emu.grasscutter.command.CommandOutput;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.world.Position;
-import java.util.List;
+import picocli.CommandLine;
 
 @Command(
         label = "theater",
         aliases = {"theatre"},
-        usage = {""},
         permission = "player.theater",
         permissionTargeted = "player.theater.others")
 public final class TheaterCommand implements CommandHandler {
@@ -20,24 +21,40 @@ public final class TheaterCommand implements CommandHandler {
     private static final Position LIBRARY_EXIT_POS = new Position(2246.0f, 236.0f, -786.5f);
 
     @Override
-    public void execute(Player sender, Player targetPlayer, List<String> args) {
-        if (targetPlayer == null) {
-            CommandHandler.sendMessage(sender, "Target player not found.");
-            return;
+    public CommandLine createCommandLine(Player sender, Player targetPlayer) {
+        return new CommandLine(new Args(sender, targetPlayer));
+    }
+
+    @CommandLine.Command(name = "theater")
+    private final class Args implements Runnable {
+        private final Player sender;
+        private final Player targetPlayer;
+
+        private Args(Player sender, Player targetPlayer) {
+            this.sender = sender;
+            this.targetPlayer = targetPlayer;
         }
 
-        int curSceneId = targetPlayer.getSceneId();
-        if (curSceneId == THEATER_SCENE_ID || curSceneId == THEATER_ROOM_SCENE_ID) {
-            int prevScene = targetPlayer.getScene().getPrevScene();
-            if (prevScene <= 0) prevScene = 3;
-            targetPlayer.getWorld().transferPlayerToScene(targetPlayer, prevScene, LIBRARY_EXIT_POS);
-            CommandHandler.sendMessage(sender, "Teleported out of Imaginarium Theater to Mondstadt.");
-        } else {
-            boolean entered = targetPlayer.getServer().getDungeonSystem().enterDungeon(targetPlayer, 0, THEATER_DUNGEON_ID, true);
-            if (!entered) {
-                targetPlayer.getWorld().transferPlayerToScene(targetPlayer, THEATER_SCENE_ID, THEATER_BORN_POS);
+        @Override
+        public void run() {
+            if (targetPlayer == null) {
+                CommandOutput.sendMessage(sender, "Target player not found.");
+                return;
             }
-            CommandHandler.sendMessage(sender, "Teleported into Imaginarium Theater lobby.");
+
+            int curSceneId = targetPlayer.getSceneId();
+            if (curSceneId == THEATER_SCENE_ID || curSceneId == THEATER_ROOM_SCENE_ID) {
+                int prevScene = targetPlayer.getScene().getPrevScene();
+                if (prevScene <= 0) prevScene = 3;
+                targetPlayer.getWorld().transferPlayerToScene(targetPlayer, prevScene, LIBRARY_EXIT_POS);
+                CommandOutput.sendMessage(sender, "Teleported out of Imaginarium Theater to Mondstadt.");
+            } else {
+                boolean entered = targetPlayer.getServer().getDungeonSystem().enterDungeon(targetPlayer, 0, THEATER_DUNGEON_ID, true);
+                if (!entered) {
+                    targetPlayer.getWorld().transferPlayerToScene(targetPlayer, THEATER_SCENE_ID, THEATER_BORN_POS);
+                }
+                CommandOutput.sendMessage(sender, "Teleported into Imaginarium Theater lobby.");
+            }
         }
     }
 }

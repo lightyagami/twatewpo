@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "emu.grasscutter.net.proto";
+option java_outer_classname = "ClientLockGameTimeNotifyOuterClass";
+
+// 7.1 CmdId 27447. is_lock on field 7.
+message ClientLockGameTimeNotify {
+  bool is_lock = 7;
+}

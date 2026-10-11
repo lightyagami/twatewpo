@@ -209,6 +209,8 @@ public final class PacketOpcodes {
     // public static final int ReserveRogueDiaryAvatarReq = 25976;
     // public static final int BAMFFFPKDEH = 206;
     public static final int CombineDataNotify = 6095;
+    // Descriptive compatibility name; not present in the current 7.1 descriptors.
+    public static final int CraftingAvatarDataNotify = 21136;
     public static final int GetMapMarkTipsRsp = 26050;
     // public static final int NCDHECPCPPO = 20999;
     // public static final int HMDJCNLNHNE = 1001;
@@ -852,7 +854,7 @@ public final class PacketOpcodes {
     public static final int _UgcDungeonPlayRecordNotify = 5825;
     public static final int _WorldOwnerPlayerDataNotify = 3396;
     public static final int PrivateChatRsp = 0; // 7.1 CmdId unknown (7.0: 5253)
-    public static final int TakePlayerLevelRewardReq = 0; // 7.1 CmdId unknown (7.0: 5263)
+    public static final int TakePlayerLevelRewardReq = 7321; // 7.1 Katheryne rank 2/3/4 clicks, 2026-10-10
     public static final int WinterCampSetWishListRsp = 4063;
     // public static final int NCDDACPBBDF = 26654;
     // public static final int KCJCNHKHJCB = 2144;
