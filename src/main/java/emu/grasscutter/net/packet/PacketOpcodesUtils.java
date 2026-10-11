@@ -29,7 +29,9 @@ public class PacketOpcodesUtils {
                     PacketOpcodes.GetWidgetQuickSlotListReq,
                     PacketOpcodes.ClientAIStateNotify,
                     PacketOpcodes.SceneEntityDrownReq,
-                    PacketOpcodes.UnionCmdNotify);
+                    PacketOpcodes.UnionCmdNotify,
+                    PacketOpcodes.ClientAbilityChangeNotify,
+                    PacketOpcodes.ClientAbilityInitFinishNotify);
     private static final Int2ObjectMap<String> opcodeMap;
 
     static {

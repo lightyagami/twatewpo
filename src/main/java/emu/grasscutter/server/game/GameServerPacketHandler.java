@@ -171,6 +171,8 @@ public final class GameServerPacketHandler {
                 && opcode != PacketOpcodes.PingRsp
                 && opcode != PacketOpcodes.AbilityInvocationsNotify
                 && opcode != PacketOpcodes.CombatInvocationsNotify
+                && opcode != PacketOpcodes.ClientAbilityChangeNotify
+                && opcode != PacketOpcodes.ClientAbilityInitFinishNotify
                 && opcode != 22336) {
             Grasscutter.getLogger().info("RECV opcode={} ({}) len={}",
                     opcode, PacketOpcodesUtils.getOpcodeName(opcode), payload == null ? 0 : payload.length);
