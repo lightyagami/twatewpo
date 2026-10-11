@@ -28,8 +28,8 @@ public final class MissingDomainFallbackManager {
     // Standard worktop option used by domain challenge starter keys.
     private static final int START_OPTION_ID = 7;
 
-    // Shared fallback starter key config id used in the resource group scripts.
-    private static final int STARTER_KEY_CONFIG_ID = 9001;
+    // Shared fallback starter key config id used in the resource group scripts (1001 in dumped scripts, 9001 in vanilla).
+    private static final int STARTER_KEY_CONFIG_ID = 1001;
 
     private static final Map<Integer, FallbackDomainConfig> CONFIGS_BY_SCENE = Map.ofEntries(
 			// Ancient Watchtower / Scrying Shadows / Estimation / rotating Forgery variants I
@@ -894,7 +894,175 @@ public final class MissingDomainFallbackManager {
                             300,
                             new int[][] {
                                     {1001, 1002}
-                            }))
+                            })),
+
+			// Inverted Glacier / Domain of Blessing: Ice Erosion I
+			Map.entry(
+					40828,
+					FallbackDomainConfig.exactDungeonIds(
+							40828,
+							Set.of(4703),
+							240828001,
+							240828004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002, 1003}
+							})),
+
+			// Inverted Glacier / Domain of Blessing: Ice Erosion II
+			Map.entry(
+					40829,
+					FallbackDomainConfig.exactDungeonIds(
+							40829,
+							Set.of(4704),
+							240829001,
+							240829004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002, 1003}
+							})),
+
+			// Inverted Glacier / Domain of Blessing: Ice Erosion III
+			Map.entry(
+					40830,
+					FallbackDomainConfig.exactDungeonIds(
+							40830,
+							Set.of(4705),
+							240830001,
+							240830004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002, 1003}
+							})),
+
+			// Inverted Glacier / Domain of Blessing: Ice Erosion IV
+			Map.entry(
+					40831,
+					FallbackDomainConfig.exactDungeonIds(
+							40831,
+							Set.of(4706),
+							240831001,
+							240831004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002}, {1003, 1004}
+							})),
+
+			// Scars of Cursed Obsession / Domain of Forgery: Cast Iron I
+			Map.entry(
+					40832,
+					FallbackDomainConfig.exactDungeonIds(
+							40832,
+							Set.of(4707, 4711, 4715),
+							240832001,
+							240832004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002, 1003}
+							})),
+
+			// Scars of Cursed Obsession / Domain of Forgery: Cast Iron II
+			Map.entry(
+					40833,
+					FallbackDomainConfig.exactDungeonIds(
+							40833,
+							Set.of(4708, 4712, 4716),
+							240833001,
+							240833004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002, 1003}
+							})),
+
+			// Scars of Cursed Obsession / Domain of Forgery: Cast Iron III
+			Map.entry(
+					40834,
+					FallbackDomainConfig.exactDungeonIds(
+							40834,
+							Set.of(4709, 4713, 4717),
+							240834001,
+							240834004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002, 1003}
+							})),
+
+			// Scars of Cursed Obsession / Domain of Forgery: Cast Iron IV
+			Map.entry(
+					40835,
+					FallbackDomainConfig.exactDungeonIds(
+							40835,
+							Set.of(4710, 4714, 4718),
+							240835001,
+							240835004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002}, {1003, 1004}
+							})),
+
+			// Relics of the Fallen Grace / Domain of Mastery: Contemplation I
+			Map.entry(
+					40836,
+					FallbackDomainConfig.exactDungeonIds(
+							40836,
+							Set.of(4691, 4695, 4699),
+							240836001,
+							240836004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002, 1003}
+							})),
+
+			// Relics of the Fallen Grace / Domain of Mastery: Contemplation II
+			Map.entry(
+					40837,
+					FallbackDomainConfig.exactDungeonIds(
+							40837,
+							Set.of(4692, 4696, 4700),
+							240837001,
+							240837004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002, 1003}
+							})),
+
+			// Relics of the Fallen Grace / Domain of Mastery: Contemplation III
+			Map.entry(
+					40838,
+					FallbackDomainConfig.exactDungeonIds(
+							40838,
+							Set.of(4693, 4697, 4701),
+							240838001,
+							240838004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002, 1003}
+							})),
+
+			// Relics of the Fallen Grace / Domain of Mastery: Contemplation IV
+			Map.entry(
+					40839,
+					FallbackDomainConfig.exactDungeonIds(
+							40839,
+							Set.of(4694, 4698, 4702),
+							240839001,
+							240839004,
+							STARTER_KEY_CONFIG_ID,
+							300,
+							new int[][] {
+									{1001, 1002}, {1003, 1004}
+							}))
 	);
 
     private MissingDomainFallbackManager() {}
@@ -960,7 +1128,7 @@ public final class MissingDomainFallbackManager {
         }
 
         if (gadget.getGroupId() != config.combatGroupId
-                || gadget.getConfigId() != config.starterKeyConfigId) {
+                || (gadget.getConfigId() != config.starterKeyConfigId && gadget.getConfigId() != 1001 && gadget.getConfigId() != 9001)) {
             return false;
         }
 
@@ -1002,6 +1170,12 @@ public final class MissingDomainFallbackManager {
         }
 
         GameEntity entity = scene.getEntityByConfigId(config.starterKeyConfigId, config.combatGroupId);
+        if (entity == null) {
+            entity = scene.getEntityByConfigId(1001, config.combatGroupId);
+        }
+        if (entity == null) {
+            entity = scene.getEntityByConfigId(9001, config.combatGroupId);
+        }
         EntityGadget gadget;
 
         if (entity instanceof EntityGadget initialGadget) {
@@ -1024,6 +1198,12 @@ public final class MissingDomainFallbackManager {
             }
 
             entity = scene.getEntityByConfigId(config.starterKeyConfigId, config.combatGroupId);
+            if (entity == null) {
+                entity = scene.getEntityByConfigId(1001, config.combatGroupId);
+            }
+            if (entity == null) {
+                entity = scene.getEntityByConfigId(9001, config.combatGroupId);
+            }
             if (!(entity instanceof EntityGadget refreshedGadget)) {
                 Grasscutter.getLogger()
                         .warn(
