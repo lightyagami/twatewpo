@@ -2632,7 +2632,6 @@ public final class PacketOpcodes {
     public static final int ReunionBriefInfoRsp = 29308;
     public static final int FishEscapeNotify = 2486;
     public static final int BargainTerminateNotify = 7831;
-    public static final int HomeLimitedShopInfoRsp = 2652;
     public static final int ReunionBriefInfoReq = 5886;
     public static final int DungeonRestartReq = 9381;
     // public static final int OfferingPariSearchRsp = 25683;
