@@ -133,6 +133,8 @@ public class Player implements PlayerHook, FieldFetch {
     private Map<Integer, Integer> tpsAmmunition;
     // TPS weapons the TPS traveler wears; it is a trial avatar and is never saved itself.
     private List<Integer> tpsLoadout;
+    // Snezhnaya Ice Creatures this player built.
+    private List<emu.grasscutter.game.icecreature.IceCreatureRecord> iceCreatures;
     @Getter @Setter private Map<Integer, Set<Integer>> unlockedSceneAreas;
     @Getter @Setter private Map<Integer, Set<Integer>> unlockedScenePoints;
     /** Debug/test: points forced locked even if GetScenePointRsp would otherwise unlock-all. */
@@ -1190,6 +1192,16 @@ public class Player implements PlayerHook, FieldFetch {
         }
 
         target.onInteract(this, interactReq);
+        // EntityGadget, EntityItem and EntityMonster credit the quest themselves once the interaction
+        // goes through; a client-created gadget has no interaction logic of its own and still counts.
+        if (target instanceof emu.grasscutter.game.entity.EntityClientGadget clientGadget) {
+            onGadgetInteracted(clientGadget.getGadgetId());
+        }
+    }
+
+    /** Quest credit for a gadget interaction that went through. */
+    public void onGadgetInteracted(int gadgetId) {
+        this.getQuestManager().queueEvent(QuestContent.QUEST_CONTENT_INTERACT_GADGET, gadgetId);
     }
 
     public void onPause() {
@@ -1519,6 +1531,13 @@ public class Player implements PlayerHook, FieldFetch {
         return this.tpsLoadout;
     }
 
+    public List<emu.grasscutter.game.icecreature.IceCreatureRecord> getIceCreatures() {
+        if (this.iceCreatures == null) {
+            this.iceCreatures = new ArrayList<>();
+        }
+        return this.iceCreatures;
+    }
+
     public Map<Integer, Integer> getTpsAmmunition() {
         if (this.tpsAmmunition == null) {
             this.tpsAmmunition = new HashMap<>();
@@ -1757,15 +1776,16 @@ public class Player implements PlayerHook, FieldFetch {
             this.getEnterHomeRequests().values().forEach(req -> this.expireEnterHomeRequest(req, true));
             this.getEnterHomeRequests().clear();
 
-            this.save();
-            this.getTeamManager().saveAvatars();
-            this.getFriendsList().save();
-
             PlayerQuitEvent event = new PlayerQuitEvent(this);
             event.call();
         } catch (Throwable e) {
             Grasscutter.getLogger().warn("Player (UID {}) save failure", getUid(), e);
         } finally {
+            Utils.runAll(
+                    "Player (UID " + getUid() + ") logout save",
+                    this::save,
+                    () -> this.getTeamManager().saveAvatars(),
+                    () -> this.getFriendsList().save());
             removeFromServer();
         }
     }

@@ -449,6 +449,9 @@ public final class DomainDungeonHelper {
             Grasscutter.getLogger().warn("Blocked dungeon enter uid={} unknown dungeon {}", (Object)player.getUid(), (Object)n2);
             return false;
         }
+        if (dungeonData.getLimitLevel() > player.getLevel()) {
+            return false;
+        }
         Scene scene = player.getScene();
         if (scene == null) {
             return false;
@@ -456,9 +459,15 @@ public final class DomainDungeonHelper {
         if (scene.getSceneType() == SceneType.SCENE_DUNGEON
                 && (scene.getId() == dungeonData.getSceneId()
                         || scene.getId() == DomainDungeonHelper.resolveClientSceneId(dungeonData.getSceneId()))) {
-            return true;
+            // Re-entry only replays the dungeon this scene was entered for, from the same point.
+            var manager = scene.getDungeonManager();
+            return manager != null && manager.getDungeonData().getId() == n2 && scene.getPrevScenePoint() == n;
         }
-        if (scene.getSceneType() != SceneType.SCENE_WORLD) {
+        // Event dungeons have entry points in activity scenes, and some in rooms; the point below
+        // still has to offer the dungeon and the player has to stand at it.
+        if (scene.getSceneType() != SceneType.SCENE_WORLD
+                && scene.getSceneType() != SceneType.SCENE_ACTIVITY
+                && scene.getSceneType() != SceneType.SCENE_ROOM) {
             Grasscutter.getLogger().warn("Blocked dungeon enter uid={} dungeon={} from scene {} ({})", new Object[]{player.getUid(), n2, scene.getId(), scene.getSceneType()});
             return false;
         }
@@ -468,7 +477,8 @@ public final class DomainDungeonHelper {
             return false;
         }
         PointData pointData = scenePointEntry.getPointData();
-        if (!DomainDungeonHelper.containsDungeonId(pointData, n2)) {
+        if (!DomainDungeonHelper.containsDungeonId(pointData, n2)
+                && !player.getQuestManager().questsForDungeon(scenePointEntry).contains(n2)) {
             Grasscutter.getLogger().warn("Blocked dungeon enter uid={} point {} does not offer dungeon {}", new Object[]{player.getUid(), n, n2});
             return false;
         }
@@ -478,7 +488,7 @@ public final class DomainDungeonHelper {
             Grasscutter.getLogger().warn("Blocked dungeon enter uid={} point={} dungeon={}: player at ({}, {}, {}), entry at ({}, {}, {})", new Object[]{player.getUid(), n, n2, Float.valueOf(position2 != null ? position2.getX() : 0.0f), Float.valueOf(position2 != null ? position2.getY() : 0.0f), Float.valueOf(position2 != null ? position2.getZ() : 0.0f), Float.valueOf(position != null ? position.getX() : 0.0f), Float.valueOf(position != null ? position.getY() : 0.0f), Float.valueOf(position != null ? position.getZ() : 0.0f)});
             return false;
         }
-        return true;
+        return !player.isScenePointForceLocked(scene.getId(), n);
     }
 
     public static void handleQuickOpen(Player player, int n) {
