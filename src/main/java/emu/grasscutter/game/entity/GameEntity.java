@@ -658,7 +658,6 @@ public abstract class GameEntity {
                 effectiveDamage = curHp - 1;
             }
         } else if (curHp != Float.POSITIVE_INFINITY && (!lockHpActive || !respectLockHp)
-                || lockHpActive && curHp <= event.getDamage()
                 || configLockedGadgetDies(curHp, event.getDamage())) {
             effectiveDamage = event.getDamage();
         }
